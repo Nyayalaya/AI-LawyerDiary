@@ -89,4 +89,4 @@ namespace CourtApp.Application.Features.CaseType.Handlers
         }
     }
 }
-}
+

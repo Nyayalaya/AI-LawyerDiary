@@ -27,10 +27,10 @@ namespace CourtApp.Application.Features.CaseType.Handlers
 
         public async Task<Result<string>> Handle(CaseTypeUpdateCommand request, CancellationToken cancellationToken)
         {
-            
+
             var existingRecord = await repository.GetByIdAsync(request.Id);
             if (existingRecord == null) return Result<string>.Fail("Record does not exist.");
-            
+
             var duplicateRecord = await repository.QryEntities
                 .Where(e => e.Id != request.Id
                                 && e.CourtTypeId == request.CourtTypeId
@@ -40,7 +40,7 @@ namespace CourtApp.Application.Features.CaseType.Handlers
 
             if (duplicateRecord != null) return Result<string>.Fail("Another record with the same name already exists.");
 
-            
+
             existingRecord.Name_En = request.Name_En;
             existingRecord.Name_Hn = request.Name_Hn;
 
@@ -48,7 +48,8 @@ namespace CourtApp.Application.Features.CaseType.Handlers
             await _unitOfWork.Commit(cancellationToken);
 
             return Result<string>.Success("Record inserted successfully!");
-            
+
         }
     }
+}
     

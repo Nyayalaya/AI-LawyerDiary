@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using CourtApp.Application.Features.CaseCategory.Dto;
-using CourtApp.Application.Features.CaseNatures.Command;
 using CourtApp.Domain.Entities.LawyerDiary;
 
 namespace CourtApp.Application.Mappings
@@ -13,9 +12,9 @@ namespace CourtApp.Application.Mappings
             
             CreateMap<NatureEntity,CaseCategoryResponse>();
             CreateMap<NatureEntity, CaseCategoryByIdResponse>();
-            CreateMap<CreateCaseNatureCommand, NatureEntity>();
-            CreateMap<UpdateCaseNatureCommand, NatureEntity>();
-            CreateMap<DeleteCaseNatureCommand, NatureEntity>();
+            //CreateMap<Case, NatureEntity>();
+            //CreateMap<UpdateCaseNatureCommand, NatureEntity>();
+            //CreateMap<DeleteCaseNatureCommand, NatureEntity>();
         }
     }
 }
