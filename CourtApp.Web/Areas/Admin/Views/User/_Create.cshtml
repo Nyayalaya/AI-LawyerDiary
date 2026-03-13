@@ -1,0 +1,166 @@
+﻿@using CourtApp.Web.Areas.Admin.Models
+@model UserViewModel
+<style>
+    .custom-file-input {
+        opacity: 1 !important;
+    }
+
+    .input-group > .custom-file {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+
+    .text-capitalize {
+        text-transform: capitalize;
+    }
+</style>
+<form id="frmUserCreate" method="post" 
+    asp-area="Admin" 
+    asp-controller="User" 
+    asp-action="OnPostCreate"
+    asp-route-id="@Model.Id" 
+    onsubmit="return jQueryModalPost(this);"
+    enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">@localizer["User Type"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <select class="form-control select2bs4"
+                            asp-for="Role" asp-items="@Model.Roles">
+                        <option></option>
+                    </select>
+                    <small><span asp-validation-for="Role" class="text-danger"></span></small>
+                </div>
+                <label class="col-md-2 col-form-label" id="RegNoLabel">@localizer["Enrollment No"]</label>
+                <div class="col-md-4">
+                    <input type="text" class="form-control" asp-for="EnrollmentNo"></input>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">@localizer["First Name"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <input type="text" asp-for="FirstName" class="form-control text-capitalize">
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <label class="col-md-2 col-form-label">@localizer["Last Name"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <input type="text" asp-for="LastName" class="form-control text-capitalize">
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">@localizer["Email"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <input type="email" asp-for="Email" name="Email" class="form-control">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+                <label class="col-md-2 col-form-label">@localizer["Mobile"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <input type="text" asp-for="Mobile" maxlength="10" name="Mobile" class="form-control">
+                    <span asp-validation-for="Mobile" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">@localizer["Gender"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <select class="form-control select2bs4"
+                            asp-for="Gender" asp-items="@Model.Genders">
+                        <option></option>
+                    </select>
+                    <small><span asp-validation-for="Gender" class="text-danger"></span></small>
+                </div>
+                <label class="col-md-2 col-form-label">@localizer["Date Of Birth"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <input type="date" asp-for="DateOfBirth" class="form-control">
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+               @*  <label class="col-md-2 col-form-label">@localizer["Joining Date"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-4">
+                    <input type="date" asp-for="DateOfJoining" class="form-control">
+                    <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+                </div> *@
+                <label class="col-md-2 col-form-label">@localizer["Profile Picture"] </label>
+                <div class="col-md-4">
+                    <div class="input-group ">
+                        <input accept=".png,.jpg,.jpeg,.gif,.tif"
+                               name="ProfileImgFile"
+                               type="file" class="custom-file-input"
+                               onchange="document.getElementById('profilePicture').src = window.URL.createObjectURL(this.files[0])"
+                               id="customFile">
+                    </div>
+                    <span asp-validation-for="ProfileImgPath" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">@localizer["Address"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-10">
+                    <textarea asp-for="Address" class="form-control text-capitalize"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        @{
+            string ButtonText = "Save";
+            if (!string.IsNullOrEmpty(Model.Id)) ButtonText = "Update";
+        }       
+        <button type="submit" class="btn btn-success">@ButtonText</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>
+<script type="text/javascript" language=javascript>   
+    $(document).ready(function () {
+        $("#divAssociate").hide();
+        $("#Gender").select2({
+            placeholder: "Select a gender",
+            theme: "bootstrap4",
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });
+         $("#Role").select2({
+            placeholder: "Select a role",
+            theme: "bootstrap4",
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });        
+    });
+
+    $(document).ready(function () {   
+    function addAsterisk() {           
+        var regNoLabel = $('#RegNoLabel');
+          if ($('#Role').val() === "ASSOCIATE") {           
+            if ($('#RegNoLabel span').length === 0) {
+                regNoLabel.append(' <span style="color:red"> (*)</span>');
+            }
+        } else {
+            // Remove the asterisk if ClientType is not Corporate
+            $('#RegNoLabel span').remove();
+        }
+    }
+
+    // Initially check the selected value of ClientType and update RegNo label
+    addAsterisk();
+
+    // Event listener for changes to the ClientType dropdown
+    $('#Role').change(function () {
+        debugger;
+        addAsterisk(); // Call the function to update the label when the value changes
+    });
+});
+</script>

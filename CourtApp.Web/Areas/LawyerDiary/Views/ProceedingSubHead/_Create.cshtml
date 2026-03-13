@@ -1,0 +1,144 @@
+﻿<style>
+    .div_hide {
+        display: none
+    }
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        width: 100% !important;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@model ProceedingSubHeadViewModel
+<form id="create-form" method="post" asp-controller="ProceedingSubHead" asp-action="OnPostCreateOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryModalPost(this);" enctype="multipart/form-data">
+    <div class="row">        
+        <div class="col-md-12">            
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Head"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="HeadId" asp-items="@Model.PHeads">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="HeadId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Add Proceeding Heads</legend>
+                    <table id="tblProcHead" border="1" style="width:100%!important">
+                        <thead>
+                            <tr>
+                                <th width="45%"><label class="col-md-3 col-form-label">Name(En)</label></th>
+                                <th width="45%"><label class="col-md-3 col-form-label">Name(Hn)</label></th>
+                                <th width="10%"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="data-repeater">
+                            <tr class="kolom">
+                                <td><input type="text" asp-for="ProcHeads[0].Name_En" width="300px" placeholder="Please enter head (english)" class="form-control" /></td>
+                                <td><input type="text" asp-for="ProcHeads[0].Name_Hn" width="300px" placeholder="Please enter head (hindi)" class="form-control" /></td>
+                                <td class="btn-repeater">
+                                    <button class="add-btn-repeat btn btn-success" onclick="addElement($(this))" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>            
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+    $(document).ready(function () {
+        $("#HeadId").select2({
+            placeholder: "Select a Head",
+            theme: "bootstrap4",
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });
+    });
+    var btn_delete = '<button type="button" onclick="removeKolom($(this))" class="btn btn-warning"><i class="fa fa-trash" aria-hidden="true"></i></button>';
+    var btn_add = '<button class="add-btn-repeat btn btn-success" onclick="addElement($(this))" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>';
+
+    function removeKolom(e) {
+         e.parents('.kolom').remove();
+     }
+
+    function addElement(e) {
+        var trlength = $('#tblProcHead tbody tr').length;
+        if (validateNameEn()) {
+        var clonedRow = $('#tblProcHead tbody tr:last').clone();
+        clonedRow.find('input').each(function (i) {
+            var BName = "", BenchId;
+            if (i === 0) {
+                NameAtr = "ProcHeads[" + trlength + "].Name_En";
+                IdAtr = "ProcHeads_" + trlength + "__Name_En";
+            }
+            if (i === 1) {
+                NameAtr = "ProcHeads[" + trlength + "].Name_Hn";
+                IdAtr = "ProcHeads_" + trlength + "__Name_Hn";
+            }
+            $(this).attr('name', NameAtr).attr('id', IdAtr);
+        });
+        clonedRow.find('button').find('button').replaceWith(btn_add);
+        clonedRow.find('button.add-btn-repeat').replaceWith(btn_delete);
+        clonedRow.find("input").val("");
+        $('#tblProcHead tbody').append(clonedRow);
+        }else{
+            alert("Please fill in complex name before adding a new row.");
+        }
+    }
+        // Function to validate the Name_En input
+    function validateNameEn() {
+        var isValid = true;
+        var nameEnInput = $('#tblProcHead tbody tr:last input[name*="Name_En"]');
+        if (nameEnInput.val().trim() === "") {
+            isValid = false;
+            nameEnInput.addClass('error'); // Add error class to highlight the invalid input
+        } else {
+            nameEnInput.removeClass('error'); // Remove error class if input is valid
+        }
+        return isValid;
+    }
+        // Function to validate the inputs
+    function validateInputs() {
+        var isValid = true;
+        $('#tblProcHead tbody tr:last input[name*="Name_En"]').each(function () {
+            if ($(this).val().trim() === "") {
+                isValid = false;
+                $(this).addClass('error'); // Add error class to highlight the invalid input
+            } else {
+                $(this).removeClass('error'); // Remove error class if input is valid
+            }
+        });
+        return isValid;
+    }
+</script>

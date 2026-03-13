@@ -1,0 +1,302 @@
+﻿@model InjuryViewModel
+<style>
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        width: 100% !important;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+
+<form id="create-form" method="post" asp-controller="DraftingD" asp-action="OnPostCreateOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryModalPost(this);" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Case"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="CaseId" asp-items="@Model.Cases" tabindex="1">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="CaseId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Gender"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="Gender" asp-items="@Model.Genders" tabindex="2">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="Gender" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Name of Injured"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="PersonName" placeholder="Please enter name of deceased" tabindex="3" />
+                    </div>
+                    <span asp-validation-for="CaseId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Age of Injured"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="number" asp-for="PersonAge" placeholder="Please enter age of deceased" tabindex="4" />
+                    </div>
+                    <span asp-validation-for="PersonAge" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Age of Injured as per MLR"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="AgeAsPer" placeholder="Please enter age of deceased as PMR" tabindex="5" />
+                    </div>
+                    <span asp-validation-for="AgeAsPer" class="text-danger"></span>
+                </div>
+            </div>           
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Nature of Work of Injured (Occupation)"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="Occupation" placeholder="Please enter occuptation of deceased" tabindex="7" />
+                    </div>
+                    <span asp-validation-for="Occupation" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Income of Injured"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="number" asp-for="InCome" placeholder="Please enter income of deceased" tabindex="8" />
+                    </div>
+                    <span asp-validation-for="InCome" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Date of Accident"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="date" asp-for="AcciedentDate" placeholder="Please enter acciedent date" tabindex="9" />
+                    </div>
+                    <span asp-validation-for="AcciedentDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Place of Accident"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="PlaceOfAcciedent" placeholder="Please enter place of accident" tabindex="10" />
+                    </div>
+                    <span asp-validation-for="PlaceOfAcciedent" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Vehical Involved"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="VehicalType" placeholder="Please enter vehical involved" tabindex="11" />
+                    </div>
+                    <span asp-validation-for="VehicalType" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Vehical Number"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="VehicalNumber" placeholder="Please enter vehical number" tabindex="12" />
+                    </div>
+                    <span asp-validation-for="VehicalNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Fir No."]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="FirNumber" placeholder="Please enter Fir Number" tabindex="13" />
+                    </div>
+                    <span asp-validation-for="FirNumber" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Fir Date"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="date" asp-for="FirDate" placeholder="Please enter fir date" tabindex="14" />
+                    </div>
+                    <span asp-validation-for="FirDate" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Amount Claimed in Claim Petition."]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="number" asp-for="AmountClaim" placeholder="Please enter amount claimed" tabindex="15" />
+                    </div>
+                    <span asp-validation-for="AmountClaim" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Nature of Injury with % of Disablity"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="PerDisability" placeholder="Please enter future prospects" tabindex="20" />
+                    </div>
+                    <span asp-validation-for="PerDisability" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Insuracne Company"]</label>
+                <div class="col-md-7">
+                    <div class="input-group">
+                        <input class="form-control" type="text" asp-for="InsuranceCompany" placeholder="Please enter insurance company" tabindex="17" />
+                    </div>
+                    <span asp-validation-for="InsuranceCompany" class="text-danger"></span>
+                </div>
+            </div>    
+            
+            <div class="form-group row">
+                <label class="col-md-5 col-form-label">@localizer["Is Insurance Company Exponerated? if yes, then on what grounds?"]</label>
+                <div class="col-md-7">
+                    <div class="form-group row">
+                        <div class="col-sm-2 input-group">
+                            <select asp-for="IsInsurorExp" tabindex="18" class="form-control">
+                                <option></option>
+                                <option value="YES">YES</option>
+                                <option value="NO">NO</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-10">
+                            <textarea class="form-control" class="col-sm-10" tabindex="19" asp-for="ExpoGround" placeholder="Please enter ground"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>          
+
+            
+            <div class="form-group row">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Amount Awared By MACT</legend>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">@localizer["Total Medical Expenses"]</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input type="number" class="form-control" asp-for="MedlExp" placeholder="Please enter medical exppenses" tabindex="26" />
+                            </div>
+                            <span asp-validation-for="MedlExp" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">@localizer["Total Loss of Partial Income due to disability"]</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input type="text" class="form-control" asp-for="LPrtInc" placeholder="Please enter dependency" tabindex="27" />
+                            </div>
+                            <span asp-validation-for="LPrtInc" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">@localizer["Amount towards general Dameges"]</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="number" asp-for="GenDamageAmt" placeholder="Please enter Consortium Awarded amount by MACT" tabindex="28" />
+                            </div>
+                            <span asp-validation-for="GenDamageAmt" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">@localizer["Towards Pain & Suffering"]</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" asp-for="AmtPainSuff" placeholder="Please enter dependency" tabindex="29" />
+                            </div>
+                            <span asp-validation-for="AmtPainSuff" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">@localizer["Towards Special Diet"]</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" asp-for="DietAmt" placeholder="Please enter dependency" tabindex="29" />
+                            </div>
+                            <span asp-validation-for="DietAmt" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">@localizer["Towards Transportation"]</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" asp-for="TransAmt" placeholder="Please enter dependency" tabindex="29" />
+                            </div>
+                            <span asp-validation-for="TransAmt" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-5 col-form-label">@localizer["Others"]</label>
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <input class="form-control" type="text" asp-for="OtherAmt" placeholder="Please enter dependency" tabindex="29" />
+                            </div>
+                            <span asp-validation-for="OtherAmt" class="text-danger"></span>
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>       
+    </div>
+
+
+
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $(document).ready(function () {
+        $("#Gender").select2({
+            placeholder: "Select a gender",
+            theme: "bootstrap4",
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });
+    });
+</script>

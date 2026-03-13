@@ -1,0 +1,103 @@
+﻿@* @model IEnumerable<GetCaseInfoViewModel> *@
+@model PaginationViewModel<GetCaseInfoViewModel>
+<table id="tblUserCase" class="table table-striped" width="100%" cellspacing="0">
+	<thead>
+		<tr>
+			<th style="width:1%!important">Sno.</th>
+			<th style="width:10%!important">Reference</th>
+			<th style="width:16%!important">Court</th>
+			<th style="width:16%!important">Type</th>
+			<th style="width:5%!important">No.</th>
+			<th style="width:5%!important">Year</th>
+			<th style="width:30%!important">Title</th>
+			<th style="width:10%!important">Stage</th>
+			<th style="width:14%!important">Next Date</th>
+			<th style="width:3%!important">Actions</th>
+		</tr>
+	</thead>
+	<tbody>
+		@{
+			int count = 0;
+		}
+		@foreach (var bt in Model.Data)
+		{
+			<tr>
+				<td>
+					@(count = count + 1)
+				</td>
+				<td>
+					@bt.Reference
+				</td>
+				<td>
+					@bt.Court
+				</td>
+				<td>
+					@bt.CaseType
+				</td>
+				<td>
+					@bt.No
+				</td>
+				<td>
+					@if (bt.Year != "0")
+					{
+						@bt.Year
+					}
+				</td>
+				<td>
+					@bt.CaseDetail
+				</td>
+				<td>
+					@bt.CaseStage
+				</td>
+
+				<td>
+					@if (bt.NextDate != "01-01-0001")
+						@bt.NextDate
+				</td>
+				<td class="text-right">
+					@{
+						var actionModel = new CaseActionViewModel();
+						actionModel.CaseId = @bt.Id;
+						actionModel.Reference = @bt.Reference;
+						actionModel.IsCaseAssigned = @bt.IsCaseAssigned;
+						actionModel.LawyerId = @bt.LawyerId;
+					}
+					<partial name="_CaseGroupActionPartial" model="@actionModel"></partial>
+				</td>
+			</tr>
+		}
+	</tbody>
+</table>
+<script>
+	$(document).ready(function () {
+		$("#tblUserCase").DataTable({
+			"processing": true,
+			"serverSide": true,
+			"ajax": {
+				"url": "/LawyerDiary/CaseManage/LoadAll",
+				"type": "POST"
+			},
+			"columns": [
+				{ "data": "Head" },
+				{ "data": "Name_En" },
+				{ "data": "Name_Hn" },
+				{
+					"data": null,
+					"render": function (data, type, row) {
+						var actions = '<div class="btn-group">';
+						actions += '<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Action</button>';
+						actions += '<div class="dropdown-menu shadow animated--grow-in">';
+						if (data.CanEdit) {
+							actions += '<a onclick="jQueryModalGet(\'/LawyerDiary/ProceedingSubHead/OnGetCreateOrEdit?id=' + row.Id + '\',\'Edit Proceeding Sub Head Type\')" class="dropdown-item"><i class="fas fa-pencil-alt"></i> Edit</a>';
+						}
+						if (data.CanDelete) {
+							actions += '<a href="javascript:$(\'#form_delete_' + row.Id + '\').submit();" class="dropdown-item"><i class="fas fa-trash-alt"></i> Delete</a>';
+						}
+						actions += '</div></div>';
+						return actions;
+					}
+				}
+			]
+		});
+	});
+</script>

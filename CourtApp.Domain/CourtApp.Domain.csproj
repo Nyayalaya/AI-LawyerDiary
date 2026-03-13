@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Entities\Advocate\NavigationEntity.cs" />
+    <Compile Remove="Entities\Advocate\NotificationAmendedEntity.cs" />
+    <Compile Remove="Entities\Advocate\NotificationBookEntity.cs" />
+    <Compile Remove="Entities\Advocate\NotificationEntity.cs" />
+    <Compile Remove="Entities\Advocate\NotificationExtActEntity.cs" />
+    <Compile Remove="Entities\Advocate\NotificationRepealedEntity.cs" />
+    <Compile Remove="Entities\Advocate\NotificationType.cs" />
+    <Compile Remove="Entities\Advocate\RuleActExtraEntity.cs" />
+    <Compile Remove="Entities\Advocate\RuleAmendedEntity.cs" />
+    <Compile Remove="Entities\Advocate\RuleBookEntity.cs" />
+    <Compile Remove="Entities\Advocate\RuleEntity.cs" />
+    <Compile Remove="Entities\Advocate\RuleRepealedEntity.cs" />
+    <Compile Remove="Entities\Common\AuditEntity.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="audit-trail" Version="1.1.6" />
+    <PackageReference Include="AutoMapper" Version="15.1.0" />
+  </ItemGroup>
+</Project>

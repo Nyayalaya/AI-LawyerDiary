@@ -1,0 +1,162 @@
+﻿@model CaseHistoryViewModel
+<style>
+    .div_hide {
+        display: none
+    }
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        width: 100% !important;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+
+    .custom-file-input {
+        opacity: 1 !important;
+    }
+</style>
+
+
+<div class="card">
+    <div id="viewAll" class="card-body table-responsive">
+        <form asp-controller="Hearing" method="post" asp-action="UpdateCaseDate" class="d-inline">
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Case Detail Information</legend>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">@localizer["Court"]</label>
+                            <label class="col-md-4 col-form-label">@localizer[Model.Court]</label>
+                            <label class="col-md-2 col-form-label">@localizer["Case No/Year"]</label>
+                            <label class="col-md-4 col-form-label"> @localizer[Model.CaseNoYear]</label>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-md-2 col-form-label">@localizer["Case Title"]</label>
+                            <label class="col-md-10 col-form-label">@localizer[Model.Title]</label>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset class="scheduler-border">
+                <legend class="scheduler-border">Case Attached Documents Information</legend>
+
+                <table id="tblCaseHistory" class="table table-striped" width="100%" cellspacing="0" style="border: 1px solid #ddd; border-collapse: collapse;">
+                    <thead>
+                        <tr style="border: 1px solid #ddd;">
+                            <th style="border: 1px solid #ddd; padding: 8px;">Sno.</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Type</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Date</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;">Name</th>
+                            <th style="border: 1px solid #ddd; padding: 8px;"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.Docs.Count(); i++)
+                        {
+                            <tr style="border: 1px solid #ddd;">
+                                <td style="border: 1px solid #ddd; padding: 8px;">@(i + 1)</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">@Model.Docs[i].DocType </td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">@Model.Docs[i].DocDate</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">@Model.Docs[i].DocName</td>
+                                <td style="border: 1px solid #ddd; padding: 8px;">
+                                    @{
+                                        var downloadLink = $"https://drive.google.com/uc?export=download&id={Model.Docs[i].DocFilePath}";
+                                    }
+                                    <a href="@downloadLink" target="_blank" title="Download File">
+                                        <i class="fas fa-file-archive" aria-hidden="true"></i> <!-- FA 6 -->
+
+                                    </a>
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </fieldset>
+            <hr />
+            <div class="row">
+                <div class="col-md-12">
+                    <table id="tblCaseHistory" class="table table-striped" width="100%" cellspacing="0" style="border: 1px solid #ddd; border-collapse: collapse;">
+                        <thead>
+                            <tr style="border: 1px solid #ddd;">
+                                <th style="border: 1px solid #ddd; padding: 8px;">Sno.</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Type</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Stage</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Next Date</th>
+                                <th style="border: 1px solid #ddd; padding: 8px;">Proceeding</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int p = 0; p < Model.ProcHis.Count(); p++)
+                            {
+                                <tr style="border: 1px solid #ddd;">
+                                    <td colspan="5" style="text-align:center; font-weight:bold; border: 1px solid #ddd; padding: 8px;">
+                                        Proceeding Date - @Model.ProcHis[p].Date
+                                    </td>
+                                </tr>
+                                @for (int i = 0; i < @Model.ProcHis[p].History.Count(); i++)
+                                {
+                                    <tr style="border: 1px solid #ddd; background-color: aqua;">
+                                        <td style="border: 1px solid #ddd; padding: 8px;">@(i + 1)</td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">@Model.ProcHis[p].History[i].Type</td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">@Model.ProcHis[p].History[i].Stage</td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">@Model.ProcHis[p].History[i].NextDate</td>
+                                        <td style="border: 1px solid #ddd; padding: 8px;">@Model.ProcHis[p].History[i].Activity</td>
+                                    </tr>
+                                    @for (int j = 0; j < @Model.ProcHis[p].History[i].WorkDetail.Count; j++)
+                                    {
+                                        for (int k = 0; k < @Model.ProcHis[p].History[i].WorkDetail[j].Works.Count; k++)
+                                        {
+                                            <tr style="border: 1px solid #ddd;background-color:coral;">
+                                                <td colspan="1" style="border: 1px solid #ddd; padding: 8px;">@(k + 1)</td>
+                                                <td colspan="1" style="border: 1px solid #ddd; padding: 8px;">@Model.ProcHis[p].History[i].WorkDetail[j].Works[k].WorkType</td>
+                                                <td colspan="2" style="border: 1px solid #ddd; padding: 8px;">@Model.ProcHis[p].History[i].WorkDetail[j].Works[k].Work</td>
+                                                @{
+                                                    string st = @Model.ProcHis[p].History[i].WorkDetail[j].Works[k].Status;
+                                                    string msg = "Work Pending";
+                                                    string dt = @Model.ProcHis[p].History[i].WorkDetail[j].Works[k].Date;
+                                                    string appliedOn = @Model.ProcHis[p].History[i].WorkDetail[j].Works[k].AppliedOn;
+                                                    if (st != "") msg = st;
+                                                    if (dt != null) msg += " on " + dt;
+                                                    if (!string.IsNullOrEmpty(appliedOn)) msg += " | Applied on " + appliedOn;                                                    
+                                                }
+                                                <td colspan="1" style="border: 1px solid #ddd; padding: 8px;">Last Working Date - @Model.ProcHis[p].History[i].WorkDetail[j].WorkingDate | @msg </td>
+                                            </tr>
+                                        }
+                                    }
+
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+                <button type="submit" class="btn btn-warning close-button" data-dismiss="modal">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#tblCaseHistory").DataTable(
+            {
+                "language": {
+                    "emptyTable": "There is no history available for the selected case!"
+                }
+            }
+        );
+    });
+</script>

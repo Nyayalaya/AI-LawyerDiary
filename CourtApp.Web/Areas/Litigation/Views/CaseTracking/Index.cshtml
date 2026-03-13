@@ -1,0 +1,200 @@
+﻿@{
+    ViewData["Title"] = localizer["Case Search Panel"];
+}
+<style>
+    .card {
+        width: 100%;
+    }
+
+    .card-header {
+        font-weight: bold;
+    }
+</style>
+@model IEnumerable<GetCaseViewModel>
+<section class="bg-light pt-5 pb-5 shadow-sm">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-9 mb-3 d-flex align-items-stretch" style="float:left;">
+                <div class="card">
+                    <div class="card-header">Case Search Result</div>
+                    <div class="card-body">
+                        @* <partial name="_ViewAll" model="Model"></partial> *@
+                        <div id="viewAll" class="card-body table-responsive"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 mb-3 d-flex align-items-stretch" style="float:right">
+                <div class="card">
+                    <div class="card-header">Search Cases</div>
+                    <div class="card-body d-flex flex-column">
+                        <div class="px-0 py-0">
+                            <div class="global-font pt-1 px-0">
+                                Group
+                                <span class="global-font-error">*</span>
+                            </div>
+                            <div style="width:230px!important">
+                                <select class="form-control select2bs4" id="SearchBy">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="px-0 py-0">
+                            <div class="global-font pt-1 px-0">
+                                Group Item
+                                <span class="global-font-error">*</span>
+                            </div>
+                            <div>
+                                <select class="form-control select2bs4" id="GroupItem">
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <a id="btnSearch" class="btn bg-success">
+                            <i class="fa fa-search"></i> Search
+                        </a>
+                        <a id="reload" class="btn btn-primary text-white">
+                            <i class="fa fas fa-reset"></i>
+                            Reset
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            BindSearchBy();
+            loadData($("#SearchBy").val(), $("#GroupItem").val());
+            $('#reload').on('click', function () {
+                var t = $("#SearchBy").val();
+                var v = $("#GroupItem").val();
+                loadData(t, v);
+            });
+
+            $("#SearchBy").select2({
+                placeholder: "Select Search By",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+
+            $("#GroupItem").select2({
+                placeholder: "Select item",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+
+            $("#SearchBy").on("change", function () {
+                var group = $("#SearchBy").val();
+                var url = "";
+                if (group == "ORD") url = "/Litigation/CaseTracking/GDdlDOTypes?TypeId=2";
+                if (group == "DFT") url = "/Litigation/CaseTracking/GDdlDOTypes?TypeId=1";
+                if (group == "YER") url = "/Litigation/CaseTracking/DdJYears";
+                if (group == "CST") url = "/Litigation/CaseTracking/GDdlStages";
+                if (group == "CTY") url = "/Litigation/CaseTracking/GDdlCaseCategory";
+                $("#GroupItem").empty();
+                $.getJSON(url, function (data) {
+                    $.each(data, function (i, item) {
+                        $("#GroupItem").append(`<option /><option value="${item.Id}">${item.Name}</option>`);
+                    });
+                });
+            });
+
+            $("#StateCode").select2({
+                placeholder: "Select a State",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+
+            $("#DistrictCode").select2({
+                placeholder: "Select a District",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+            $("#CourtTypeCode").select2({
+                placeholder: "Select a Court Type",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+            $("#CourtId").select2({
+                placeholder: "Select a Court",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+            $("#TypeofcasesId").select2({
+                placeholder: "Select a Case Type",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+            $("#CaseId").select2({
+                placeholder: "Select a Party",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+            $("#datepicker").datepicker({
+                format: "yyyy",
+                viewMode: "years",
+                minViewMode: "years",
+                autoclose: true //to close picker once year is selected
+            });
+            $("#StateCode").on("change", function () {
+                $("#DistrictCode").empty();
+                $.getJSON("/Litigation/CaseTracking/LoadDistricts?StateCode=" + $("#StateCode").val(), function (data) {
+                    $.each(data.Data, function (i, item) {
+                        $("#DistrictCode").append(`<option /><option value="${item.DistrictCode}">${item.DistrictName}</option>`);
+                    });
+                });
+            });
+            $("#CourtTypeCode").on("change", function () {
+                $("#CourtId").empty();
+                $.getJSON("/Litigation/CaseTracking/LoadCourt?courttype=" + $("#CourtTypeCode").val(), function (data) {
+                    $.each(data.Data, function (i, item) {
+                        $("#CourtId").append(`<option /><option value="${item.UniqueId}">${item.CourtName}</option>`);
+                    });
+                });
+            });
+            $("#btnSearch").on("click", function () {
+                var t = $("#SearchBy").val();
+                var v = $("#GroupItem").val();
+                loadData(t, v);
+            });
+            $('#reload').click(function() {
+                // Reset the select elements
+                $('#SearchBy').val('').trigger('change');
+                $('#GroupItem').val('').trigger('change');
+            });
+
+        });
+        function loadData(t, v) {
+            $('#viewAll').load('/Litigation/CaseTracking/LoadAll?type=' + t + "&value=" + v);
+        }
+        BindSearchBy = function () {
+            $.getJSON("/Litigation/CaseTracking/SearchBy", function (data) {
+                $.each(data, function (i, item) {
+                    $("#SearchBy").append(`<option /><option value="${item.Id}">${item.Name}</option>`);
+                });
+            });
+        }
+    </script>
+}

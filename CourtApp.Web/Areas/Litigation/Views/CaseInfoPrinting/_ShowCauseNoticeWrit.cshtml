@@ -1,0 +1,50 @@
+﻿@model FmpShowCauseViewModel
+@foreach (var d in Model.ShowCauses)
+{
+    <div style="page-break-after: always;" class="a4-size">
+        <center>
+            <h1>    Notice to Show Cause</h1>
+            [ Appendix H Form 4 ]<br />
+            <strong>
+                In the High Court of Judicature for <br />
+                Rajasthan at Jaipur<br />
+            </strong>
+            <br />
+        </center>
+        Petitioner <strong> @d.Petitioner </strong>	&nbsp;V/s&nbsp;	<strong>@d.Respondent</strong>&nbsp;&nbsp;&nbsp;Respondent	<br />
+        State of Rajasthan
+        <br /><br />
+
+        S.B./D.B. Civil writ Petition No &emsp;&emsp;&emsp;&emsp;<strong>@d.CaseNoYear</strong>  Date. <br />
+        <br />
+        <br />
+        To,<br /><div style="float:right; border:1px solid black; height:30px; width:30px; text-align:center;">@d.FirstTitle, @d.FAddress</div>
+
+        <br />
+        <br />
+        <div style="width:100%; line-height:40px; font-size:16px; text-align:justify">
+            _________________________________________________________________________________
+            Whereas the above named petitioner/Appellant has made a writ petition to this Court under <br>
+            Article 226 of the Constitution of India, a copy of which is enclosed.
+            <br /><br /><br />
+            <br /><br /><br />
+            You are hereby informed that you may appear in person or by a pleader duly instructed on
+            the                         20       at..................................................
+            to show cause why the writ petition should should not be admitted failing which the said writ petition
+            will be heard and admitted ex-Party.
+            <br />
+            <br />
+            Given under my hand and the seal of Court, this................................................
+            day of..........................................20.
+            <br />
+            <br />
+            <br />
+            <div style="text-align:right; width:100%;">
+                <center>Registrar,</center>
+                Rajasthan High Court, Jaipur
+            </div>           
+            <br />
+        </div>
+        <br />
+    </div>
+}

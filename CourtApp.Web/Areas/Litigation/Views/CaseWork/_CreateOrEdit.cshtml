@@ -1,0 +1,83 @@
+﻿@* @model CaseWorkingViewModel
+<form id="create-form" method="post" method="post" asp-controller="CaseWork" asp-action="OnPostCreateOrEdit" asp-route-Id="" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Work Type"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="WorkTypeId" asp-items="@Model.WorkTypes">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="WorkId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Work"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="WorkId" asp-items="@Model.Works" >
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Working Date"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="date" asp-for="WorkingDate" value="@DateTime.Now.ToString("MM/dd/yyyy")" id="WorkingDate" placeholder="dd/MM/yyyy" class="form-control">
+                    </div>
+                </div>
+            </div>
+
+            @* <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Remark"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" placeholder="Please enter remark if any" asp-for="Remark" id="Remark" class="form-control" />
+                    </div>
+                </div>
+            </div> 
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    
+    $("#WorkTypeId").select2({
+        placeholder: "Select a work type",
+        theme: "bootstrap4",
+        escapeMarkup: function (m) {
+            return m;
+        }
+    });
+    $("#WorkId").select2({
+        placeholder: "Select a work",
+        theme: "bootstrap4",
+        escapeMarkup: function (m) {
+            return m;
+        }
+    });
+    $("#WorkTypeId").on("change", function () {
+        $("#WorkId").empty();
+        $.getJSON("/Litigation/CaseWork/DdlSubWorks?WorkId=" + $("#WorkId").val(), function (data) {
+            $.each(data.Data, function (i, item) {
+                $("#WorkId").append(`<option /><option value="${item.Id}">${item.Name_En}</option>`);
+            });
+        });
+    });   
+</script>
+ *@

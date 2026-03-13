@@ -1,0 +1,23 @@
+﻿@using CourtApp.Web.Areas.Admin.Models
+@model UserViewModel
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">@localizer["Joining Date"] (<span style="color:red">*</span>)</label>
+            <div class="col-md-4">
+                <input type="date" value="@DateTime.Now" asp-for="DateOfJoining" class="form-control">
+                <span asp-validation-for="DateOfJoining" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group row">
+            <label class="col-md-2 col-form-label">@localizer["User Type"] (<span style="color:red">*</span>)</label>
+            <div class="col-md-4">
+                <select class="form-control select2bs4"
+                        asp-for="Role" asp-items="@Model.Roles">
+                    <option></option>
+                </select>
+                <small><span asp-validation-for="Role" class="text-danger"></span></small>
+            </div>
+        </div>
+    </div>
+</div>

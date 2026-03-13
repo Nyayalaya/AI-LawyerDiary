@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = localizer["Book Master"];
+    ViewData["Caption"] = localizer["Manage Book Master"];
+}
+@model BookMasterViewModel
+<div class="card">
+    <div class="col-sm-12" style="padding:20px">
+        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.Books.Create)).Result.Succeeded)
+        {
+            <a onclick="jQueryModalGet('/lawyerdiary/bookmaster/OnGetCreateOrEdit','Create Book Master')" class="btn bg-success">
+                <i class="fa fa-plus-square"></i> Create
+            </a>
+        }
+
+        <a id="reload" class="btn btn-primary text-white">
+            <i class="fa fas fa-bolt"></i>
+            Reload
+        </a>
+    </div>
+    <div id="viewAll" class="card-body table-responsive">
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblBook").DataTable();
+            loadData();
+            $('#reload').on('click', function () {
+                loadData();
+            });
+            $("#BookTypeId").select2({
+                placeholder: "Select a book type",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+           
+        });
+        function loadData() {
+            $('#viewAll').load('/LawyerDiary/BookMaster/LoadAll');
+        }
+    </script>
+}

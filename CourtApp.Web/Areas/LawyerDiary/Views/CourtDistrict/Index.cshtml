@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = localizer["Court District"];
+    ViewData["Caption"] = localizer["Manage Court District"];
+}
+@model CourtDistrictViewModel
+<div class="card">
+    <div class="col-sm-12" style="padding:20px">
+        @if ((AuthorizationService.AuthorizeAsync(User, Permissions.CourtDistrict.Create)).Result.Succeeded)
+        {
+            <a onclick="jQueryModalGet('/lawyerdiary/CourtDistrict/OnGetCreateOrEdit','Create Court District')" class="btn bg-success">
+                <i class="fa fa-plus-square"></i> Create
+            </a>
+        }
+
+        <a id="reload" class="btn btn-primary text-white">
+            <i class="fa fas fa-bolt"></i>
+            Reload
+        </a>
+    </div>
+    <div id="viewAll" class="card-body table-responsive">
+    </div>
+</div>
+@section Scripts
+{
+   <script>
+            $(document).ready(function () {
+                $("#tblCourtDistrict").DataTable();
+                loadData();
+                $('#reload').on('click', function () {
+                    loadData();
+                });
+            });
+            function loadData() {
+                $('#viewAll').load('/LawyerDiary/CourtDistrict/LoadAll');
+            }
+    </script>
+
+}

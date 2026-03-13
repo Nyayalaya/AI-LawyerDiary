@@ -1,0 +1,119 @@
+﻿@model FormTemplateMapViewModel
+@{
+    ViewData["Title"] = localizer["Map template Fields"];
+    ViewData["Caption"] = localizer["Map template fields"];
+}
+<style>
+    .div_hide {
+        display: none
+    }
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        width: 100% !important;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+<form id="create-form" method="post" asp-controller="TemplateBuilder" asp-action="OnPostMapping" asp-route-id="@Model.Id" onsubmit="return jQueryModalPost(this);" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <input type="hidden" asp-for="TemplateId" value="@Model.TemplateId"></input>
+                <label class="col-md-3 col-form-label">@localizer["Form Name"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="FormId" asp-items="@Model.Forms">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="FormId" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Template Field Mapping</legend>
+                    <table id="tblMapping" border="1" style="width:100%!important">
+                        <thead>
+                            <tr>
+                                <th width="50%"><label class="col-md-6 col-form-label">Template Tags</label></th>
+                                <th width="50%"><label class="col-md-6 col-form-label">Form Fields</label></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (int i = 0; i < Model.Tags.Count; i++)
+                            {
+                                <tr class="kolom">
+                                    <td>
+                                        <input type="hidden" asp-for="Tags[i].Tag" value=" @Model.Tags[i].Tag" />
+                                        <label asp-for="Tags[i].Tag">@Model.Tags[i].Tag</label>
+                                    </td>
+                                    <td>
+                                        <select class="form-control select2bs4" asp-for="Tags[i].Key">
+                                            <option></option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </fieldset>
+            </div>
+        </div>
+    </div>
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Update Mapping</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $(document).ready(function () {
+        $("#FormId").select2({
+            placeholder: "Select a form",
+            theme: "bootstrap4",
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });
+        var Rows = $("#tblMapping tbody tr").length;
+        for (var index = 0; index < Rows; index++) {
+            $("#Tags_" + index + "__Key").append('<option/>');
+            $("#Tags_" + index + "__Key").select2({
+                placeholder: "Select a form field",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+        }
+        $("#FormId").on('change', function () {
+            $.getJSON("/Admin/TemplateBuilder/GetFormFieldsById?id=" + $("#FormId").val(), function (data) {
+                for (var index = 0; index < Rows; index++) {
+                    $("#Tags_" + index + "__Key").empty();
+                    $("#Tags_" + index + "__Key").append('<option/>');
+                    $.each(data, function (i, item) {
+                        $("#Tags_" + index + "__Key").append(`<option value="${item.Id}">${item.Name}</option>`);
+                    });
+                    $("#Tags_" + index + "__Key").select2({
+                        placeholder: "Select a form field",
+                        theme: "bootstrap4",
+                        escapeMarkup: function (m) {
+                            return m;
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>

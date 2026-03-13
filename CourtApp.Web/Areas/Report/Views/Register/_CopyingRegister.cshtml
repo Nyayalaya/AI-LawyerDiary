@@ -1,0 +1,68 @@
+﻿ @model CopyingRegisterViewModel
+<div id="viewAll" class="card-body table-responsive">
+    <form asp-controller="Register" method="post" asp-action="UpdateCopyingStatus" class="table table-striped" width="100%" cellspacing="0">
+        <div class="row">
+            <div class="col-md-12">
+                <table id="tblCopyingRegister" class="table table-striped" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Sno.</th>
+                            <th>Court.</th>
+                            <th>Type</th>
+                            <th>No</th>
+                            <th>Year</th>
+                            <th>Title</th>
+                            <th>Applied On</th>
+                            <th>Received On</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model.copyingCases.Count > 0)
+                        {
+                            @for (int i = 0; i < Model.copyingCases.Count(); i++)
+                            {
+                                <tr>
+                                    <td>
+                                        <input type="hidden" asp-for="@Model.copyingCases[i].Id" />
+                                        @(i + 1)
+                                    </td>
+                                    <td>@Model.copyingCases[i].Court</td>
+                                    <td>@Model.copyingCases[i].CaseType</td>
+                                    <td>@Model.copyingCases[i].No</td>
+                                    <td>@Model.copyingCases[i].Year</td>
+                                    <td>@(Model.copyingCases[i].FirstTitle + " Vs " + Model.copyingCases[i].SecondTitle)</td>
+                                    <td>@Model.copyingCases[i].AppliedOn</td>
+                                    <td>@Model.copyingCases[i].ReceivedOn</td>
+                                    <td>
+                                        @if (Model.copyingCases[i].ReceivedOn == "")
+                                        {
+                                            <div class="form-check m-1">
+                                                <input asp-for="@Model.copyingCases[i].Selected" class="form-check-input" />
+                                            </div>
+                                        }
+                                    </td>
+                                    <td>
+                                        <a onclick="jQueryModalGet('/Litigation/casemanage/GetFileUploadModel?CaseId=@Model.copyingCases[i].Id', 'Upload Document')" class="fa fa-file" title="Upload Document"></a>
+                                        <a onclick="jQueryModalGet('/Litigation/casemanage/OnGetCaseHistory?CaseId=@Model.copyingCases[i].Id', 'See History')" class="fa fa-history"></a>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="5" align="center">
+                                    Record is not there
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+            <button type="submit" class="btn btn-success">Update</button>
+        </div>
+    </form>
+</div>

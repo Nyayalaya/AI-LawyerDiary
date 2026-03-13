@@ -1,0 +1,169 @@
+﻿@{
+    ViewData["Note"] = localizer["For selected lawyer only disposal case will be display in dropdown!"];
+}
+<style>
+    .div_hide {
+        display: none
+    }
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        width: 100% !important;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@model BringCaseViewModel
+<form id="BringDetail" method="post"
+      asp-controller="Lawyer"
+      asp-action="OnPostCaseByLawyer"
+      enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Lawyer"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" id="LawyerId"
+                                asp-for="LawyerId"
+                                asp-items="@Model.Lawyers">
+                            <option></option>
+                        </select>
+                        <span asp-validation-for="LawyerId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Case Info"] (<span style="color:red">*</span>)</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="CaseId" id="CaseId">
+                            <option></option>
+                        </select>
+                        <span asp-validation-for="CaseId" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group row" id="divClientDetail">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Case Client Detail</legend>
+                    <div class="col-md-12">
+                        <input type="hidden" id="hdnClientId"></input>
+                        <table id="tblCourtBench" border="1" style="width:100%!important">
+                            <tr>
+                                <td>Name</td>
+                                <td><label id="lblName"></label><input type="hidden" id="hdnlblName"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Mobile</td>
+                                <td><label id="lblMobile"></label><input type="hidden" id="hdnlblMobile"></input></td>
+                            </tr>
+                            <tr>
+                                <td>Address</td>
+                                <td><label id="lblAddress"></label></td>
+                            </tr>
+                        </table>
+                    </div>
+                </fieldset>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <a href="javascript:void(0);" class="btn btn-secondary" onclick="btnSaveClientInfo()">Copy Client Info from selected Case</a>
+        <button class="btn btn-primary">Copy Information Case</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $(document).ready(function () {
+        $("#divClientDetail").hide();
+        $("#LawyerId").select2({
+            placeholder: "Select a lawyer",
+            theme: "bootstrap4",
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });
+        $("#CaseId").select2({
+            placeholder: "Select a Case",
+            theme: "bootstrap4",
+            escapeMarkup: function (m) {
+                return m;
+            }
+        });
+       $("#LawyerId").on("change", function () {
+            $("#CaseId").empty();
+                $.getJSON("/Litigation/CaseManage/ddlCaseInfoByLawyer?UserId=" + $("#LawyerId").val(), function (data) {
+                    console.log(data);
+                    $.each(data, function (i, item) {                       
+                        $("#CaseId").append(`<option /><option value="${item.Id}">${item.Name}</option>`);
+                    });
+                });
+        });
+        $("#CaseId").on("change",function()
+        {
+            $.getJSON("/LawyerDiary/lawyer/GetClientDetailByCase?CaseId=" + $("#CaseId").val(), function (data) {
+                if(data!=null)
+                {
+                $("#lblName").text(data.Name);
+                $("#lblMobile").text(data.Mobile);
+                $("#lblAddress").text(data.Address);
+                $("#hdnClientId").val(data.Id);
+                $("#hdnlblName").val(data.Name);
+                $("#hdnlblMobile").val(data.Mobile);
+                }
+        });
+            $("#divClientDetail").show();
+        });
+        btnSaveClientInfo=function(){
+               var param = {
+        ClientId: $("#hdnClientId").val()
+    };
+
+    $.ajax({
+        url: "/Client/ManageClient/OnCreateClientByCaseId?ClientId="+$("#hdnClientId").val()+"&Name="+$("#hdnlblName").val()+"&Mobile="+$("#hdnlblMobile").val()+"",
+        type: "POST",
+         contentType: 'application/json',
+         datatype: "json",
+        success: function (response) {           
+            var msg=""; txt="";icn="";
+            if (response === true) {
+                msg="Client is created successfully!";
+                txt="Success";
+                icn="success";
+                $("#btnCopyCaseInfo").removeAttr('disabled');
+            }
+            else{
+                 msg="The client is already exist for the logged in user!";
+                txt="error";
+                icn="waning";
+            }
+            Swal.fire({
+                        title: msg,
+                        text: txt,
+                        icon: icn
+                    });
+        },
+        error: function (xhr) {
+            console.error('An error occurred:', xhr.responseText);
+        }
+    });
+
+        }
+    });
+</script>

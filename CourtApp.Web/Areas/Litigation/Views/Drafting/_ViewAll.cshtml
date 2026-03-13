@@ -1,0 +1,52 @@
+﻿@model IEnumerable<FormCaseMappingViewModel>
+<table id="tblFormCaseMappingDt" class="table table-striped" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Sr.</th>
+            <th>Title</th>
+
+            <th>Linked Template</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+        }
+        @foreach (var bt in Model)
+        {
+            <tr>
+                <td>
+                    @(++count)
+                </td>
+                <td>
+                    @bt.CaseTitle.ToUpper()
+                </td>
+
+                <td>
+                    @bt.TemplateName
+                </td>
+
+                <td>
+                    <a asp-area="Litigation" asp-controller="Drafting" asp-action="Petition" asp-route-id="@bt.Id" title="Edit Drafting">
+                        <i class="fa fa-pencil-square-o"></i>
+                    </a>
+                    &nbsp;
+                    |
+                    &nbsp;
+                    <a asp-area="Litigation" asp-controller="Drafting" asp-action="GetReport"
+                       asp-route-id="@bt.Id" asp-route-langCode="@bt.LangCode" title="Generate Report">
+                        <i class="fa fa-file-word-o"></i>
+                    </a>
+
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        $("#tblFormCaseMappingDt").DataTable();
+    });
+</script>

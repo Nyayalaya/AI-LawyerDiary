@@ -1,0 +1,442 @@
+﻿@using Microsoft.AspNetCore.Mvc.Localization
+@inject IHtmlLocalizer<SharedResource> localizer
+@inject IAuthorizationService AuthorizationService
+
+<aside id="sideBar" class="main-sidebar sidebar-dark-primary">
+    <a href="/" class="brand-link">
+        <img src="~/images/logo-transparent.png" id="brand-logo" alt="logo" class="brand-image img-circle" style="opacity: .8">
+        <span class="brand-text font-weight-light" style="font-size:0.8em!important">Lawyer Diary</span>
+    </a>
+
+    <div class="sidebar">
+        <nav class="mt-2">
+            <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                @{
+                    var canAccessAdminPanel = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.canAccessAdminPanel")).Succeeded;
+                    var canAccessTemplateDesign = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.Template")).Succeeded;
+                    var canAccessUsers = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.User")).Succeeded;
+                    var canAccessRoles = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.Role")).Succeeded;
+                    var canAccessFormBuilder = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.FormBuilder")).Succeeded;
+                    var canAccessLawyerDirectory = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.LawyerDirectory")).Succeeded;
+                    var canAccessClient = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.Client")).Succeeded;
+                    var canAccessAssociate = (await AuthorizationService.AuthorizeAsync(User, "AdminPanel.Menu.Associate")).Succeeded;
+
+                    var canAccessDashboard = (await AuthorizationService.AuthorizeAsync(User, Permissions.Dashboard.MenuAccess)).Succeeded;
+
+
+                    var canAccessCasePanel = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.canAccessCasePanel")).Succeeded;
+                    var canAccessCaseManage = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.ManageCase")).Succeeded;
+                    var canAccessCompleteTitle = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.CompleteTitle")).Succeeded;
+                    var canAccessTodayHearing = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.TodayHearing")).Succeeded;
+                    var canAccessWithoutHearingDate = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.WithoutHearingDate")).Succeeded;
+                    var canAccessPendingWork = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.PendingWork")).Succeeded;
+                    var canAccessCaseSearch = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.CaseSearch")).Succeeded;
+                    var canAccessCaseDrafting = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.CaseDrafting")).Succeeded;
+                    var canAccessFormPrint = (await AuthorizationService.AuthorizeAsync(User, "CasePanel.Menu.FormPrint")).Succeeded;
+
+                    var canAccessRegister = (await AuthorizationService.AuthorizeAsync(User, "Register.Menu.canAccessCasePanel")).Succeeded;
+                    var canAccessDispReg = (await AuthorizationService.AuthorizeAsync(User, "Register.Menu.Disposal")).Succeeded;
+                    var canAccessCopReg = (await AuthorizationService.AuthorizeAsync(User, "Register.Menu.Copying")).Succeeded;
+                    var canAccessInspReg = (await AuthorizationService.AuthorizeAsync(User, "Register.Menu.Institue")).Succeeded;
+                    var canAccessOthpReg = (await AuthorizationService.AuthorizeAsync(User, "Register.Menu.Other")).Succeeded;
+
+                    var canAccessTools = (await AuthorizationService.AuthorizeAsync(User, "Menu.Tools.canAccess")).Succeeded;
+                    var canAccessCourtFeeCalculator = (await AuthorizationService.AuthorizeAsync(User, "Menu.CourtFeeCalculator.canAccess")).Succeeded;
+                    var canAccessLimitationCounterCalculator = (await AuthorizationService.AuthorizeAsync(User, "Menu.LimitationCounterCalculator.canAccess")).Succeeded;
+                    var canAccessInterestCalculator = (await AuthorizationService.AuthorizeAsync(User, "Menu.InterestCalculator.canAccess")).Succeeded;
+                    var canAccessStampDutyCalculator = (await AuthorizationService.AuthorizeAsync(User, "Menu.StampDutyCalculator.canAccess")).Succeeded;
+
+                    var canAccessAppMaster = User.IsInRole("SuperAdmin");
+                }
+
+                @if (canAccessDashboard)
+                {
+                    <li class="nav-item">
+                        <a href="/" class="nav-link">
+                            <i class="nav-icon fas fa-th"></i>
+                            <p>@localizer["Dashboard"] <span class="right badge badge-danger">@localizer["New"]</span></p>
+                        </a>
+                    </li>
+                }
+
+
+                @if (canAccessAppMaster)
+                {
+                    <li is-active-route asp-area="LawyerDiary" class="nav-item has-treeview">
+                        <a is-active-route asp-area="LawyerDiary" class="nav-link">
+                            <i class="nav-icon fas fa-book-reader"></i>
+                            <p>
+                                @localizer["App Master's"]
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="CourtType" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Type of court"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="CaseNature" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Case Category"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="TypeOfCases" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Case Type"]</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="CaseStage" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Case Stage"]</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="CourtDistrict" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Court District"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="CourtComplex" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Court Complex"]</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="CourtMaster" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Court"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="ProceedingHead" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Proceeding Type"]</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="ProceedingSubHead" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Proceeding Master"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="WorkMaster" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Work Type"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="WorkMasterSub" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Work Master"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="DOType" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Draft & Order Types"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="Title" asp-action="fstitle" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["First & Second Title"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="cadre" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Cadre Master"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="courtform" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Court forms"]</p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a is-active-route asp-area="Admin" asp-controller="MultiLangWord" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Word Translation"]</p>
+                                </a>
+                            </li>
+                            @* <li class="nav-item">
+                                <a is-active-route asp-area="LawyerDiary" asp-controller="CourtFee" asp-action="index" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p>@localizer["Court Fee"]</p>
+                                </a>
+                            </li> *@
+                        </ul>
+                    </li>
+                }
+
+
+                @if (canAccessAdminPanel)
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-users-cog"></i>
+                            <p>@localizer["Admin Panel"] <i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (canAccessUsers)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="User" asp-action="Index" class="nav-link">
+                                        <i class="far fa-user-circle nav-icon"></i>
+                                        <p>@localizer["Users"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessRoles)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="Role" asp-action="Index" class="nav-link">
+                                        <i class="far fa-user-circle nav-icon"></i>
+                                        <p>@localizer["Roles"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessFormBuilder)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Admin" asp-controller="GenerateForm" asp-action="Index" class="nav-link">
+                                        <i class="fa fa-wpforms nav-icon"></i>
+                                        <p>@localizer["Form Builder"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessTemplateDesign)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Admin" asp-controller="TemplateBuilder" asp-action="index" class="nav-link">
+                                        <i class="fa fa-file-archive-o nav-icon"></i>
+                                        <p>@localizer["Template Design"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessLawyerDirectory)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="LawyerDiary" asp-controller="Lawyer" asp-action="index" class="nav-link">
+                                        <i class="fa fa-gavel nav-icon"></i>
+                                        <p>@localizer["Lawyer Directory"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessClient)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Client" asp-controller="ManageClient"
+                                       asp-action="index" class="nav-link">
+                                        <i class="fa fa-user nav-icon" aria-hidden="true"></i>
+                                        <p>@localizer["Client"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessAssociate)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Admin" asp-controller="User" asp-action="index"
+                                       class="nav-link">
+                                        <i class="far fa-user-circle nav-icon"></i>
+                                        <p>@localizer["Associate/Clerk"]</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+
+                @if (canAccessCasePanel)
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-balance-scale" style="color:royalblue"></i>
+                            <p>@localizer["Case Info"] <i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (canAccessCaseManage)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Litigation" asp-controller="CaseManage" asp-action="Index" class="nav-link">
+                                        <i class="fa fa-gavel"></i> <p>@localizer["Manage Cases"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessCompleteTitle)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="LawyerDiary" asp-controller="Title" asp-action="index" class="nav-link">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                        <p>@localizer["Complete Title"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessTodayHearing)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Litigation" asp-controller="Hearing" asp-action="index" class="nav-link">
+                                        <i class="fa fa-deaf" style="color:navy" aria-hidden="true"></i>
+                                        <p>@localizer["Today Hearing"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessWithoutHearingDate)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Litigation" asp-controller="CaseManage" asp-action="GetCaseWoh" class="nav-link">
+                                        <i class="fa fa-calendar" style="color:red"></i>
+                                        <p>@localizer["Without Hearing Date"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessPendingWork)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Litigation" asp-controller="CaseWork" asp-action="index" class="nav-link">
+                                        <i class="fa fa-gavel" aria-hidden="true"></i>
+                                        <p>@localizer["Pending Work"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessFormPrint)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Litigation" asp-controller="CaseInfoPrinting" asp-action="index" class="nav-link">
+                                        <i class="fa fa-print" aria-hidden="true"></i>
+                                        <p>@localizer["Form Print"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessCaseDrafting)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Litigation" asp-controller="Drafting" asp-action="index" class="nav-link">
+                                        <i class="fas fa-fill" aria-hidden="true"></i>
+                                        <p>@localizer["Case Drafting"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessCaseSearch)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Litigation" asp-controller="CaseTracking" asp-action="Index" class="nav-link">
+                                        <i class="fa fa-search"></i> <p>@localizer["Case Search"]</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+
+
+                @if (canAccessRegister)
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-registered"></i>
+                            <p>@localizer["Registers"] <i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (canAccessInspReg)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Report" asp-controller="Register" asp-action="InstitionRegister" class="nav-link">
+                                        <i class="fa fa-registered" aria-hidden="true"></i>
+                                        <p>@localizer["Institution Register"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessCopReg)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Report" asp-controller="Register" asp-action="CopyingRegister" class="nav-link">
+                                        <i class="fa fa-copy" aria-hidden="true"></i>
+                                        <p>@localizer["Copying Register"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessDispReg)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Report" asp-controller="Register" asp-action="DisposalRegister" class="nav-link">
+                                        <i class="fa fa-check-circle"></i> <i class="fa fa-file-text-o"></i> <p>@localizer["Disposal Register"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessOthpReg)
+                            {
+                                <li class="nav-item">
+                                    <a is-active-route asp-area="Report" asp-controller="Register" asp-action="OtherRegister" class="nav-link">
+                                        <i class="fa fa-hourglass-half"></i>
+                                        <p>@localizer["Pending Register"]</p>
+                                    </a>
+                                </li>
+                            }
+
+                        </ul>
+                    </li>
+                }
+
+                @* @if (canAccessTools)
+                {
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tools"></i>
+                            <p>@localizer["Tools"] <i class="right fas fa-angle-left"></i></p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            @if (canAccessCourtFeeCalculator)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Tools" asp-controller="CourtFee" asp-action="index" class="nav-link">
+                                        <i class="fas fa-file-invoice-dollar"></i> <p>@localizer["Court Fee Calculator"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessLimitationCounterCalculator)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Tools" asp-controller="CourtFee" asp-action="index" class="nav-link">
+                                        <i class="fas fa-hourglass-half"></i> <p>@localizer["Limitation Counter"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessInterestCalculator)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Tools" asp-controller="CourtFee" asp-action="index" class="nav-link">
+                                        <i class="fas fa-percentage"></i> <p>@localizer["Interest Calculator"]</p>
+                                    </a>
+                                </li>
+                            }
+                            @if (canAccessStampDutyCalculator)
+                            {
+                                <li class="nav-item">
+                                    <a asp-area="Tools" asp-controller="CourtFee" asp-action="index" class="nav-link">
+                                        <i class="fas fa-stamp"></i> <p>@localizer["StampDuty Calculator"]</p>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </li>
+                }
+ *@
+
+            </ul>
+        </nav>
+    </div>
+</aside>

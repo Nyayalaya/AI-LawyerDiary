@@ -1,0 +1,131 @@
+﻿@{
+    ViewData["Title"] = localizer["Advalrem Court Fee Calculator"];
+}
+@model AdvalremFeeViewModel
+<div class="card">
+    <div class="col-sm-12" style="padding:20px">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@localizer["State"]</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <select name="StateCode" class="form-control select2bs4" id="StateCode" asp-for="StateCode" asp-items="@Model.States">
+                            </select>
+                        </div>
+                        <span asp-validation-for="StateCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@localizer["Fee Type"]</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <select name="FeeKindCode" class="form-control select2bs4" id="FeeKindCode" asp-for="FeeKindCode" asp-items="@Model.FeeKind">
+                            </select>
+                        </div>
+                        <span asp-validation-for="FeeKindCode" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Amount</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <input type="number" asp-for="Amount" name="Year" id="Amount" class="form-control" />
+                        </div>
+                        <span asp-validation-for="Amount" class="text-danger"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row" id="divRowCalculation" style="display:none">
+          
+            <div class="col-md-12">
+                <hr />
+                <div class="form-group row">
+                    <label class="col-md-12 col-form-label" style="font-weight:bold; align-content:center">Calculative Court Fee</label>                    
+                </div>
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label pull-right">@localizer["State"]</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <label class="col-md-12 col-form-label"><span id="StateName"></span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">@localizer["Fee Type"]</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <label class="col-md-12 col-form-label"><span id="FeeType"></span></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-md-3 col-form-label">Amount</label>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <label class="col-md-12 col-form-label"  style="color:red"><span id="CalculativeAmount"></span></label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+            <button type="button" id="btnCalculate" class="btn btn-success">Calculate</button>
+            <button type="reset" class="btn btn-outline-warning">Reset</button>
+        </div>
+
+    </div>
+</div>
+@section Scripts
+{
+
+    <script type="text/javascript" language=javascript>
+        $.validator.unobtrusive.parse(document);
+    </script>
+    <script>
+        $(document).ready(function () {
+            $("#StateCode").select2({
+                placeholder: "Select a state",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+
+            $("#FeeKindCode").select2({
+                placeholder: "Select a fee type",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });
+
+            $("#btnCalculate").click(function () {
+                $.post("/Client/Tools/AdvalremFeeCalResult",
+                    {
+                        statecode: $("#StateCode").val(),
+                        feekind: $("#FeeKindCode").val(),
+                        amount: $("#Amount").val()
+                    },
+                    function (data, status) {
+                        $("#StateName").text($("#StateCode option:selected").text());
+                        $("#FeeType").text($("#FeeKindCode option:selected").text());
+                        $("#CalculativeAmount").text(data);
+                    }
+                )
+                $("#divRowCalculation").show();
+            });
+        });
+
+    </script>
+}
+
+
+

@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = localizer["Case Drafting"];
+    ViewData["Caption"] = localizer["Drafting Details"];
+}
+<div class="card">
+    <div class="col-sm-12" style="padding:20px">
+            <a asp-area="Litigation" asp-controller="Drafting" asp-action="Petition" class="btn bg-success">
+                <i class="fa fa-plus-square"></i> Add Petition
+            </a>
+       
+
+        <a id="reload" class="btn btn-primary text-white">
+            <i class="fa fas fa-bolt"></i>
+            Reload
+        </a>
+    </div>
+    <div id="viewAll" class="card-body table-responsive">
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#tblFormCaseMappingDt").DataTable();
+            loadData();
+            $('#reload').on('click', function () {
+                loadData();
+            });            
+        });
+        function loadData() {
+            $('#viewAll').load('/Litigation/Drafting/LoadAll');
+        }
+    </script>
+}

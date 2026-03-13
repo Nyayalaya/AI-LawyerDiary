@@ -1,0 +1,207 @@
+﻿@{
+    ViewData["Title"] = localizer["Add New Court"];
+    ViewData["Caption"] = localizer["Manage Court"];
+}
+<style>
+    .div_hide {
+        display: none
+    }
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        width: 100% !important;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+</style>
+@model CourtMasterViewModel
+<form id="create-form" method="post" asp-controller="CourtMaster" asp-action="OnPostCreateOrEdit"
+      asp-route-id="@Model.Id" onsubmit="return jQueryModalPost(this);" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">State</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select name="StateCode" class="form-control select2bs4" id="StateCode" asp-for="StateCode"
+                                asp-items="@Model.States">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="StateCode" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Court Type</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select name="CourtTypeId" class="form-control select2bs4" id="CourtTypeId"
+                                asp-for="CourtTypeId" placeholder="Select Court Type"
+                                asp-items="@Model.CourtTypes">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="CourtTypeId" class="text-danger"></span>
+                </div>
+            </div>
+
+            
+            @if (@Model.Id == Guid.Empty)
+            {
+                <div class="form-group row div_hide" id="c_district">
+                    <label class="col-md-3 col-form-label">@localizer["Court District"]</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <select name="CourtDistrictId" class="form-control select2bs4" id="CourtDistrictId" asp-for="CourtDistrictId">
+                            </select>
+                        </div>
+                        <span asp-validation-for="CourtDistrictId" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <div class="form-group row div_hide" id="d_court_Complex">
+                    <label class="col-md-3 col-form-label">@localizer["Court Complex"]</label>
+                    <div class="col-md-9">
+                        <div class="input-group">
+                            <select name="CourtComplexId" class="form-control select2bs4" id="CourtComplexId" asp-for="CourtComplexId">
+                            </select>
+                        </div>
+                        <span asp-validation-for="CourtComplexId" class="text-danger"></span>
+                    </div>
+                </div>
+
+
+                <div class="form-group row">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Court/Bench Detail</legend>
+                        <table id="tblCourtBench" border="1" style="width:100%!important">
+                            <thead>
+                                <tr>
+                                    <th width="60%">Court/Bench</th>
+                                    <th width="40%">Address</th>
+                                    <th width="10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="data-repeater">
+                                <tr class="kolom">
+                                    <td><input type="text" asp-for="CourtBenches[0].CourtBench_En" width="300px" placeholder="Enter court/Bench name" class="form-control" /></td>
+                                    <td><input type="text" asp-for="CourtBenches[0].Address" width="300px" placeholder="Enter court/Bench adress" class="form-control" /></td>
+                                    <td class="btn-repeater">
+                                        <button class="add-btn-repeat btn btn-success" onclick="addElement($(this))" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+
+                <div class="form-group row">
+                    <div class="col-md-3">
+                    </div>
+                </div>
+            }
+            else
+            {
+                @if (Model.IsHighCourt != true && Model.CourtBenches != null)
+                {
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">@localizer["Court District"]</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <select class="form-control select2bs4"
+                                        asp-for="CourtDistrictId" asp-items="@Model.CourtDistricts">
+                                </select>
+                            </div>
+                            <span asp-validation-for="CourtDistrictId" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <div class="form-group row">
+                        <label class="col-md-3 col-form-label">@localizer["Court Complex"]</label>
+                        <div class="col-md-9">
+                            <div class="input-group">
+                                <select class="form-control select2bs4"
+                                        asp-for="CourtComplexId"
+                                        asp-items="@Model.CourtComplexes">
+                                </select>
+                            </div>
+                            <span asp-validation-for="CourtComplexId" class="text-danger"></span>
+                        </div>
+                    </div>
+                }
+                
+
+                <div class="form-group row">
+                    <fieldset class="scheduler-border">
+                        <legend class="scheduler-border">Court/Bench Detail</legend>
+                        <table id="tblCourtBench" border="1" style="width:100%!important">
+                            <thead>
+                                <tr>
+                                    <th width="60%">Court/Bench</th>
+                                    <th width="40%">Address</th>
+                                    <th width="10%"></th>
+                                </tr>
+                            </thead>
+                            <tbody class="data-repeater">
+                                @if (Model.CourtBenches != null)
+                                {
+                                    @for (int i = 0; i < Model.CourtBenches.Count; i++)
+                                    {
+                                        <tr class="kolom">
+                                            <td><input type="text" asp-for="CourtBenches[i].CourtBench_En" width="300px" placeholder="Enter court/Bench name" class="form-control" /></td>
+                                            <td><input type="text" asp-for="CourtBenches[i].Address" width="300px" placeholder="Enter court/Bench adress" class="form-control" /></td>
+                                            @if (i == 0)
+                                            {
+                                                <td class="btn-repeater">
+                                                    <button class="add-btn-repeat btn btn-success" onclick="addElement($(this))" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="btn-repeater">
+                                                    <button type="button" onclick="removeKolom($(this))" class="btn btn-warning"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                                                </td>
+
+                                            }
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr class="kolom">
+                                        <td><input type="text" asp-for="CourtBenches[0].CourtBench_En" width="300px" placeholder="Enter court/Bench name" class="form-control" /></td>
+                                        <td><input type="text" asp-for="CourtBenches[0].Address" width="300px" placeholder="Enter court/Bench adress" class="form-control" /></td>
+                                        <td class="btn-repeater">
+                                            <button class="add-btn-repeat btn btn-success" onclick="addElement($(this))" type="button"><i class="fa fa-plus" aria-hidden="true"></i></button>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </fieldset>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        @{
+            string ButtonText = "Save";
+            if (Model.Id != Guid.Empty) ButtonText = "Update";
+        }
+        <button type="submit" class="btn btn-success">@ButtonText</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script src="~/js/lawyer/courtmaster.js"></script>

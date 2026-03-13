@@ -1,0 +1,60 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net9.0</TargetFramework>
+    <Title>audit-trail</Title>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Features\LawyerDiary\**" />
+    <Compile Remove="Features\Litigation\**" />
+    <Compile Remove="Features\Queries\Cases\**" />
+    <EmbeddedResource Remove="Features\LawyerDiary\**" />
+    <EmbeddedResource Remove="Features\Litigation\**" />
+    <EmbeddedResource Remove="Features\Queries\Cases\**" />
+    <None Remove="Features\LawyerDiary\**" />
+    <None Remove="Features\Litigation\**" />
+    <None Remove="Features\Queries\Cases\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Interfaces\AdvocateRepositories\IBookServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\IEGazzetDataServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\IFileServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\IGazzetServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\IGenericServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\INavigationAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\INotifcationTypeAsyncService.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\INotificationServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\IRuleServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\ISubGazzetServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\ISubjectServiceAsync.cs" />
+    <Compile Remove="Interfaces\AdvocateRepositories\IUriService.cs" />
+    <Compile Remove="Mappings\UserCaseEntryMappings.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AspNetCoreHero.Results" Version="1.1.1" />
+    <PackageReference Include="AutoMapper" Version="15.1.0" />
+   
+    <PackageReference Include="AspNetCoreHero.ThrowR" Version="1.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+    <PackageReference Include="MediatR" Version="14.1.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CourtApp.Domain\CourtApp.Domain.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="DTOs\APIRes\" />
+    <Folder Include="DTOs\CaseCategory\" />
+    <Folder Include="DTOs\Work\" />
+    <Folder Include="Features\CaseType\Validators\" />
+    <Folder Include="Features\Client\" />
+    <Folder Include="Interfaces\CacheRepositories\LawyerDiary\" />
+    <Folder Include="Interfaces\CacheRepositories\Litigation\" />
+    <Folder Include="Interfaces\CacheRepositories\Client\" />
+  </ItemGroup>
+</Project>

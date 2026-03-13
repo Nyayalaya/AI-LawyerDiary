@@ -1,0 +1,218 @@
+﻿@model CaseAttacheDocumentViewModel
+<style>
+    .div_hide {
+        display: none
+    }
+
+    fieldset.scheduler-border {
+        border: 1px groove #ddd !important;
+        padding: 0 1.4em 1.4em 1.4em !important;
+        margin: 0 0 1.5em 0 !important;
+        -webkit-box-shadow: 0px 0px 0px 0px #000;
+        box-shadow: 0px 0px 0px 0px #000;
+        width: 100% !important;
+    }
+
+    legend.scheduler-border {
+        font-size: 1.2em !important;
+        font-weight: bold !important;
+        text-align: left !important;
+        width: auto;
+        padding: 0 10px;
+        border-bottom: none;
+    }
+
+    .custom-file-input {
+        opacity: 1 !important;
+    }
+</style>
+<form id="create-form" method="post" asp-controller="CaseManage" asp-action="UploadCaseDocs" enctype="multipart/form-data">
+    <input type="hidden" asp-for="CaseId" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Type"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="DOTypeId" asp-items="@Model.DocTypes">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="DOTypeId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Draft or Order"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="DOId" asp-items="@Model.DocTypes">
+                            <option></option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Upload Draft or Order"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <div class="custom-file form-image">
+                            <input accept=".doc,.pdf"
+                                   type="file" class="custom-file-input"
+                                   id="customFile">
+                            <label class="custom-file-label" for="customFile">Choose file</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                @* <button class="add-btn-repeat btn btn-success"
+                onclick="addElement()" type="button">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                </button> *@
+                <button class="add-btn-repeat btn btn-success"
+                        onclick="AddSelectedData()" type="button">
+                    <i class="fa fa-plus" aria-hidden="true"></i>
+                </button>
+            </div>
+
+            <div class="form-group row">
+                <fieldset class="scheduler-border">
+                    <legend class="scheduler-border">Case Document Information</legend>
+                    <div class="col-md-12">
+                        <div class="form-group row">
+                            <div class="col-md-6">
+                                DRAFTING
+                                <table id="tblDrafting">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:70%!important">Name</th>
+                                            <th style="width:30%!important">Document</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                            <div class="col-md-6">
+                                ORDER
+                                <table id="tblOrder">
+                                    <thead>
+                                        <tr>
+                                            <th style="width:70%!important">Name</th>
+                                            <th style="width:30%!important">Document</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    @* <table id="tblCourtBench" border="1" style="width:100%!important">
+                    <thead>
+                    <tr>
+                    <th width="50%"><label class="col-md-3 col-form-label">Drafting</label></th>
+                    <th width="50%"><label class="col-md-3 col-form-label">Order</label></th>
+                    </tr>
+                    </thead>
+                    <tbody class="data-repeater" id="casedocubody">
+                    @* <tr class="kolom">
+                    <td></td>
+                    <td></td>
+                    </tr>
+                    </tbody>
+                    </table> *@
+                </fieldset>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Save</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+    $("#DOTypeId").select2({
+        placeholder: "Select a work type",
+        theme: "bootstrap4",
+        escapeMarkup: function (m) {
+            return m;
+        }
+    });
+    $("#DOId").select2({
+        placeholder: "Select a work",
+        theme: "bootstrap4",
+        escapeMarkup: function (m) {
+            return m;
+        }
+    });
+    $("#DOTypeId").on("change", function () {
+        $("#DOId").empty();
+        $.getJSON("/Litigation/casemanage/DdlDOTypes?TypeId=" + $("#DOTypeId").val(), function (data) {
+            $.each(data.Data, function (i, item) {
+                $("#DOId").append(`<option /><option value="${item.Id}">${item.Name_En}</option>`);
+            });
+        });
+    });
+    var casedoclist = [];
+    var caseId = 0;
+    function addElement() {
+        caseId += 1;
+        var dotype = $("#DOId option:selected").text();
+        var did = $("#DOTypeId").val();
+        casedoclist.push({ caseId: caseId, DocumentTypeName: dotype, DocumentTypeId: did, DraftOrderName: $("#DOId option:selected").text(), DraftOrderid: $("#DOId").val(), FileName: $("#customFile")[0].files[0].name, File: $("#customFile")[0].files });
+        var drf = "";
+        var ord = "";
+        if (did == '2') { ord = dotype + "<a id='blah_" + caseId + "' href='#' target='_blank'/>" + $("#customFile")[0].files[0].name + " </a>" }
+        else { drf = dotype + "<a id='blah_" + caseId + "' href='#' target='_blank'/>" + $("#customFile")[0].files[0].name + " </a>" }
+        var content = "<tr><td>" + drf + "</td><td>" + ord + "</td></tr>";
+        $("#casedocubody").append(content);
+        const [file] = $("#customFile")[0].files;
+        if (file) {
+            $("#blah_" + caseId).attr("href", URL.createObjectURL(file));
+        }
+        $("#customFile").val('');
+        $("#DOId option:selected").val('');
+        $("#DOTypeId option:selected").val('');
+    };
+
+    var drtCount = 0, oCount = 0;
+    function AddSelectedData() {             
+        var document = $("#DOId option:selected").text();
+        var doId = $("#DOId").val();
+        var type = $("#DOTypeId").val();
+        var fileName = $("#customFile")[0].files[0].name;
+        const [file] = $("#customFile")[0].files;
+        if (type == 1) {
+            var tbl = '<tr class="data-contact-person">' +
+                '<td><input type="hidden" name="DrftDocument[' + drtCount + '].TypeId" value=' + doId + ' /><label>' + document + '</label></td>' +
+                '<td><input type="hidden" name="DrftDocument[' + drtCount + '].Document" value=' + URL.createObjectURL(file) + ' /><a id="blah_' + drtCount + '" href="#" target="_blank">' + fileName + '</a></td>' +
+                '</tr>';
+            $("#tblDrafting").append(tbl);
+            drtCount += 1;
+           
+        }
+        else {
+
+            var tbl = '<tr class="data-contact-person">' +
+                '<td><input type="hidden" name="OrdDocument[' + oCount + '].TypeId" value=' + doId + ' /><label>' + document + '</label></td>' +
+                '<td><input type="hidden" name="OrdDocument[' + oCount + '].Document" value=' + file + ' /><label>' + fileName + '</label></td>' +
+                '</tr>';
+            $("#tblOrder").append(tbl);
+            oCount += 1;
+        }
+        if (file) {
+            $("#blah_" + caseId).attr("href", URL.createObjectURL(file));
+        }
+        $("#customFile").val('');
+    }
+
+</script>

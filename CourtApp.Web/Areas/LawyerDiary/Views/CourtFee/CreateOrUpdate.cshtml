@@ -1,0 +1,99 @@
+@{
+    ViewData["Title"] = localizer["Manage Court Fee Structure"];
+    //ViewData["Caption"] = localizer["Manage Court Fee Structure"];
+}
+<hr />
+@model CourtFeeStructureViewModel
+<form id="create-form" method="post" asp-controller="CourtFee" asp-action="OnPostCreateOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryModalPost(this);" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["State"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select name="StateCode" class="form-control select2bs4" id="StateCode" asp-for="StateCode" asp-items="@Model.States">
+                        <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="StateCode" class="text-danger"></span>
+                </div>
+            </div>
+            
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Min Value</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="number" asp-for="MinValue" name="MinValue" id="MinValue" class="form-control" />
+                    </div>
+                    <span asp-validation-for="MinValue" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Max Value</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="number" placeholder="Please enter max value" asp-for="MaxValue" name="MaxValue" id="MaxValue" class="form-control" />
+                    </div>
+                    <span asp-validation-for="MaxValue" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Rate</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="number" asp-for="Rate" name="Rate" id="Rate" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Rate" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">Fixed Amount</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="number" asp-for="FixAmount" name="FixAmount" id="FixAmount" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FixAmount" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        @if (Model.Id == Guid.Parse("00000000-0000-0000-0000-000000000000"))
+        {
+            <button type="submit" class="btn btn-success">Save</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-success">Update</button>
+        }
+        <button type="button" class="btn btn-default close-button" onclick="goPrev()">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>
+@section Scripts
+{   
+    <script>
+        function goPrev() {
+            window.history.back();
+        }
+        $(document).ready(function () {
+            
+            $("#StateCode").select2({
+                placeholder: "Select a state",
+                theme: "bootstrap4",
+                escapeMarkup: function (m) {
+                    return m;
+                }
+            });            
+        });
+    </script>
+} 

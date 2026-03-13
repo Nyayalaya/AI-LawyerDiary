@@ -1,0 +1,91 @@
+﻿@model PendingWorkDataViewModel
+
+<div class="card">
+    <div id="viewAll" class="card-body table-responsive">
+        <form asp-controller="CaseWork" method="post" asp-action="Update" class="d-inline">
+            <table class="table table-striped" id="tblPendingWork">
+                <thead>
+                    <tr>
+                        <th>
+                            @localizer["Sno"]
+                        </th>
+                        <th>
+                            @localizer["Case Description"]
+                        </th>
+                        <th>
+                            @localizer["Last Proceeding Date"]
+                        </th>
+                        <th>
+                            @localizer["Last Date of Work"]
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @for (int i = 0; i < Model.PendingWork.Count(); i++)
+                    {
+                        <tr>
+                            <td>
+                                @(i + 1)
+                            </td>
+                            <td>
+                                <input asp-for="@Model.PendingWork[i].Id" type="hidden" />
+                                <input asp-for="@Model.PendingWork[i].CaseTitle" type="hidden" />
+                                @Model.PendingWork[i].CaseTitle
+                                <table>
+                                    @for (int j = 0; j < Model.PendingWork[i].Works.Count(); j++)
+                                    {
+                                        <tr>
+                                            <td>
+                                                <input asp-for="@Model.PendingWork[i].Works[j].Id" type="hidden" />
+                                                <input asp-for="@Model.PendingWork[i].Works[j].WorkId" type="hidden" />
+                                                <input asp-for="@Model.PendingWork[i].Works[j].Work" type="hidden" />
+                                                @Model.PendingWork[i].Works[j].Work
+                                            </td>
+                                            <td>
+                                                <div class="form-check m-1">
+                                                    <input asp-for="@Model.PendingWork[i].Works[j].Selected" class="form-check-input" />
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    }
+                                </table>
+                            </td>
+                            <td>
+                                @Model.PendingWork[i].ProceedingDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Model.PendingWork[i].WorkDate.ToString("dd/MM/yyyy")
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            @if (Model.PendingWork.Count() > 0)
+            {
+                <div class="col-sm-12" style="padding: 20px 20px 0px 0px">
+                    <button type="submit" id="save" class="btn bg-success">
+                        <i class="fa fa-check"></i>
+                        Save
+                    </button>
+                </div>
+            }
+        </form>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        JqueryDataTable('tblPendingWork','Pending Work Register','0,1,2');
+    });
+    // $(document).ready(function () {
+    //     $("#tblPendingWork").DataTable(
+    //         {
+    //             "language": {
+    //                 "emptyTable": "There are no pending works!"
+    //             }
+    //         }
+    //     );
+    // });
+</script>
+
+

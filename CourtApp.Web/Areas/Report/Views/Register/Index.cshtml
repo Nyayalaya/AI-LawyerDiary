@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = ViewBag.PageTitle;
+}
+<div class="card">
+    <div class="col-sm-12" style="padding:20px">
+        <div class="form-group row">
+            <div class="col-sm-2" style="text-align:right">
+                <strong>@localizer["Search"]</strong>
+            </div>
+            <div class="col-sm-3">
+                <input type="date" id="from" class="form-control" />
+            </div>
+            <div class="col-sm-3">
+                <input type="date" id="to" class="form-control" />
+            </div>
+            <div class="col-sm-4">
+                <a id="btnSearch" class="btn bg-success">
+                    <i class="fa fa-search"></i> Search
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="viewAll" class="card-body table-responsive">
+</div>
+@section Scripts
+{
+    <script src="~/js/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            loadData();
+            $('#reload').on('click', function () {
+                loadData();
+            });
+        });
+        function loadData() {
+            $('#viewAll').load("/Report/Register/LoadAll?rt=ins&f="+$("#from").val()+"&to="+$("#to").val());
+        }
+        $("#btnSearch").click(function(){
+            debugger;
+         $('#viewAll').load("/Report/Register/LoadAll?rt=ins&f="+$("#from").val()+"&to="+$("#to").val());
+        });
+    </script>
+}

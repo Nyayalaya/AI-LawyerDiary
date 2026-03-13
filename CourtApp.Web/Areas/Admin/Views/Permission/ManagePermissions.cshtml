@@ -1,0 +1,73 @@
+﻿@model CourtApp.Web.Areas.Admin.Models.OperatorPermissionsViewModel
+<div class="card">
+    <div id="viewAll" class="card-body table-responsive">
+        <form asp-controller="Permission" method="post" asp-action="ManagePermissions" class="d-inline">
+            <input asp-for="@Model.OperatorId" type="hidden" />
+            <table class="table table-striped" id="tblOperatorPermission">
+                <thead>
+                    @* <tr>
+                        <th>
+                            @localizer["Type"]
+                        </th>
+                        <th>
+                            @localizer["Permission"]
+                        </th>
+                        <th>
+                            @localizer["Status"]
+                        </th>
+                    </tr> *@
+                    <tr>
+                        <th>Feature</th>
+                        <th>Allow</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var permission in Model.AvailablePermissions)
+                    {
+                        <tr>
+                            <td>@permission</td>
+                            <td>
+                                <input type="checkbox" name="AssignedPermissions" value="@permission"
+                                @(Model.AssignedPermissions.Contains(permission) ? "checked" : "") />
+                            </td>
+                        </tr>
+                    }
+
+                   @*  @for (int i = 0; i < Model.RoleClaims.Count(); i++)
+                    {
+                        <tr>
+                            <td>
+                                <input asp-for="@Model.RoleClaims[i].Type" type="hidden" />
+                                @Model.RoleClaims[i].Type
+                            </td>
+                            <td>
+                                <input asp-for="@Model.RoleClaims[i].Value" type="hidden" />
+                                @Model.RoleClaims[i].Value
+                            </td>
+                            <td>
+                                <div class="form-check m-1">
+                                    <input asp-for="@Model.RoleClaims[i].Selected" class="form-check-input" />
+                                </div>
+                            </td>
+                        </tr>
+                    } *@
+                </tbody>
+            </table>
+
+            <div class="col-sm-12" style="padding: 20px 20px 0px 0px">
+                <button type="submit" id="save" class="btn bg-success">
+                    <i class="fa fa-check"></i>
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+@section Scripts
+{
+    <script>
+        $(document).ready(function () {
+            $("#tblOperatorPermission").DataTable();
+        });
+    </script>
+}

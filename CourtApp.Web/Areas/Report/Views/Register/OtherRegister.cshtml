@@ -1,0 +1,28 @@
+﻿@{
+    ViewData["Title"] = localizer["Compliance Done Register"];
+}
+
+<div class="card">
+    <div id="viewAll" class="card-body table-responsive">
+    </div>
+</div>
+@section Scripts
+{
+    <script src="~/js/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            loadData();
+            $("#tblRegister").DataTable(
+                {
+                    "language": {
+                        "emptyTable": "Record is not there!"
+                    }
+                }
+            );
+        });
+
+        loadData = function (s) {
+            $('#viewAll').load('/Report/Register/LoadOtherData');
+        }
+    </script>
+}

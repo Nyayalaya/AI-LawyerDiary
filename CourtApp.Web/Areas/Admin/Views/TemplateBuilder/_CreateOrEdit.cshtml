@@ -1,0 +1,74 @@
+﻿@{
+    ViewData["Title"] = localizer["Manage Template"];
+    ViewData["Caption"] = localizer["Dynamically"];
+}
+
+<style>
+    .main-container {
+        width: 100%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .ck-editor__editable {
+        min-height: 300px;
+        max-height: 300px;
+    }
+
+</style>
+@model TemplateViewModel
+<form id="frmTemplateBuilder" method="post" asp-controller="TemplateBuilder"
+      asp-action="OnPostCreateOrEdit"
+      asp-route-Id="@Model.Id">
+    <input type="hidden" id="hdnId" asp-for="@Model.Id" value="@Model.Id" />
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-2 col-form-label">@localizer["Form Name"]</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="FormId" asp-items="@Model.Forms">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="FormId" class="text-danger"></span>
+                </div>
+
+                <label class="col-md-2 col-form-label">@localizer["Template Name"]</label>
+                <div class="col-md-4">
+                    <div class="input-group">
+                        <input type="text" placeholder="Please enter template name" asp-for="TemplateName" class="form-control" />
+                    </div>
+                    <span asp-validation-for="TemplateName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row ">
+                <label class="col-md-3 col-form-label">@localizer["TEMPLATE BODY DETAIL"]</label>
+                <a href="/admin/templatebuilder/ViewTag" id="viewTagsBtn" target="_blank" class="col-md-2 btn bg-success">
+                    <i class="fa fa-eye"></i> View Tags
+                </a>
+            </div>
+            <div class="form-group row">
+                <div class="main-container">
+                    <textarea asp-for="TemplateBody" id="TemplateBody" name="TemplateBody"></textarea>
+                    <span asp-validation-for="TemplateBody" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">@ViewBag.BtText</button>
+        <input type="button" value="Cancel" class="btn btn-default btn-cancel" data-url="/admin/templatebuilder" />
+    </div>
+</form>
+@section Scripts
+{
+    <script src="~/lib/tinymce/tinymce.min.js"></script>
+    <script src="~/js/App/TemplateGenerateForm.js"></script>    
+}

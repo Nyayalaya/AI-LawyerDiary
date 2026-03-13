@@ -1,0 +1,58 @@
+﻿@model FmpNoticeOfStayApplicationViewModel
+
+<div id="printableArea">
+    @foreach (var d in Model.NoticeStayApps)
+    {
+        <div style="page-break-after: always;" class="a4-size">
+            <center>
+                <span style="font-size:26px;">
+                    <strong>
+                        IN THE HIGH COURT OF JUDICATURE FOR<br />
+                        RAJASTHAN BENCH AT - JAIPUR
+                    </strong>
+                </span>
+            </center>
+            CIVIL SIDE                                                               ORDINARY ORIGINAL JURISDICTION<br />
+            In the matters of  S.B./D.B., Civil Writ Case No &ensp;&ensp; @d.CaseNoYear <br />
+            Petitioner :                                                                                                                  Non - Petitioner :-<br />
+            State of Rajasthan<br />
+            <center>
+                @d.Petitioner  Versus. @d.Respondent>
+            </center>
+
+            <br />
+            To,<br />
+            <div style="float:right; border:1px solid black; height:30px; width:30px; text-align:center;"></div>
+            @d.FirstTitle, @d.FAddress
+            <br />
+            <br />
+            <div style="width:100%; line-height:40px; font-size:16px; text-align:justify">
+                Whereas the counsel for the above name applicant  has made an application supported by an
+                affidavit praying there in that pending the decision of the petition.
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                You are here by requied to appear in this Court in person or through a pleader duly instructed on
+                the                                           to show  cause against said application failing where in the application
+                will be heard and determined ex-party.
+
+                Given under my hand and the seal of this the                         day of            20   .
+
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                <br />
+                Encl. One of application                                                    BY ORDER OF THE  HON'BLE COURT<br />
+                With affidavit dated
+            </div>
+        </div>
+    }
+</div>

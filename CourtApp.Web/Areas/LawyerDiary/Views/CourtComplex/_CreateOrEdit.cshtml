@@ -1,0 +1,130 @@
+﻿@{
+    ViewData["Note"] = localizer["All (*) marked fields are mandatory!"];
+}
+@model CourtComplexViewModel
+<form id="create-form" method="post" asp-controller="CourtComplex" asp-action="OnPostCreateOrEdit" asp-route-id="@Model.Id" onsubmit="return jQueryModalPost(this);" enctype="multipart/form-data">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["State"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select class="form-control select2bs4" asp-for="StateId" asp-items="@Model.States">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="StateId" class="text-danger"></span>
+                </div>
+            </div>
+            @* <div class="form-group row">
+            <label class="col-md-3 col-form-label">@localizer["District"]</label>
+            <div class="col-md-9">
+            <div class="input-group">
+            <select class="form-control select2bs4" asp-for="DistrictId"
+            asp-items="@Model.Districts">
+            <option></option>
+            </select>
+            </div>
+            <span asp-validation-for="DistrictId" class="text-danger"></span>
+            </div>
+            </div> *@
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Court District"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <select name="CourtDistrictId" class="form-control select2bs4" id="CourtDistrictId" asp-for="CourtDistrictId" asp-items="@Model.CourtDistricts">
+                            <option></option>
+                        </select>
+                    </div>
+                    <span asp-validation-for="CourtDistrictId" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Name (En)"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" placeholder="Please enter name (En)" asp-for="Name_En" name="Name_En" id="Name_En" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Name_En" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Name (Hn)"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" placeholder="Please enter name (Hn)" asp-for="Name_Hn" name="Name_Hn" id="Name_Hn" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Name_Hn" class="text-danger"></span>
+                </div>
+            </div>
+            @* <div class="form-group row">
+                <label class="col-md-3 col-form-label">@localizer["Abbreviation"]</label>
+                <div class="col-md-9">
+                    <div class="input-group">
+                        <input type="text" placeholder="Please enter Abbreviation" asp-for="Abbreviation" maxlength="4" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Abbreviation" class="text-danger"></span>
+                </div>
+            </div> *@
+            <div class="form-group row">
+                <div class="col-md-3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-group justify-content-between" style="margin-bottom: 0px !important">
+        <button type="submit" class="btn btn-success">Update</button>
+        <button type="submit" class="btn btn-default close-button" data-dismiss="modal">Cancel</button>
+    </div>
+</form>
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+    $("#StateId").select2({
+        placeholder: "Select a state",
+        theme: "bootstrap4",
+        escapeMarkup: function (m) {
+            return m;
+        }
+    });
+    // $("#DistrictId").select2({
+    //     placeholder: "Select a district",
+    //     theme: "bootstrap4",
+    //     escapeMarkup: function (m) {
+    //         return m;
+    //     }
+    // });
+    $("#CourtDistrictId").select2({
+        placeholder: "Select a court district",
+        theme: "bootstrap4",
+        escapeMarkup: function (m) {
+            return m;
+        }
+    });
+    $("#StateId").on("change", function () {
+        $("#CourtDistrictId").empty();
+        $.getJSON("/LawyerDiary/CourtComplex/LoadCourtDistrictByState?StateId=" + $("#StateId").val(), function (data) {
+            $.each(data.Data, function (i, item) {
+                $("#CourtDistrictId").append(`<option /><option value="${item.Id}">${item.Name_En}</option>`);
+            });
+        });
+    });
+    // $("#StateId").on("change", function () {
+    //     $("#DistrictId").empty();
+    //     $.getJSON("/LawyerDiary/CourtDistrict/LoadDistricts?StateCode=" + $("#StateId").val(), function (data) {
+    //         $.each(data.Data, function (i, item) {
+    //             $("#DistrictId").append(`<option /><option value="${item.Code}">${item.Name_En}</option>`);
+    //         });
+    //     });
+    // });
+    // $("#DistrictId").on("change", function () {
+    //     $("#CourtDistrictId").empty();
+
+    //     $.getJSON("/LawyerDiary/CourtComplex/LoadCourtDistrict?DistrictId=" + $("#DistrictId").val(), function (data) {
+    //         $.each(data.Data, function (i, item) {
+    //             $("#CourtDistrictId").append(`<option /><option value="${item.Id}">${item.Name_En}</option>`);
+    //         });
+    //     });
+    // });
+</script>

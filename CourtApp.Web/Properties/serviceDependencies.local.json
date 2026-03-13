@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "IdentityContextConnection"
+    },
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "mssql2": {
+      "secretStore": "LocalSecretsFile",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/lawyerdiary/databases/lawyerdiary",
+      "type": "mssql.azure",
+      "connectionId": "ConnectionStrings:ApplicationConnection",
+      "dynamicId": null
+    }
+  }
+}

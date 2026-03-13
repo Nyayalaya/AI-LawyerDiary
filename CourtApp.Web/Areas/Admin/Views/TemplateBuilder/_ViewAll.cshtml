@@ -1,0 +1,48 @@
+﻿@model IEnumerable<TemplateDlViewModel>
+<table id="tblTemplateInfo" class="table table-striped" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Sr.</th>
+            <th>Template</th>
+            @*  <th>Doc</th> *@
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+        }
+        @foreach (var bt in Model)
+        {
+            <tr>
+                <td>
+                    @(++count)
+                </td>
+                <td>
+                    @bt.TemplateName
+                </td>
+                <td text-right">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Action
+                        </button>
+                        <div class="dropdown-menu shadow animated--grow-in">
+                            <a asp-area="admin" asp-controller="TemplateBuilder" title="Edit the template" asp-action="OnGetCreateOrEdit" asp-route-id="@bt.Id" class="dropdown-item" title="View Case Detail">
+                                <i class="fas fa-pencil-alt text-warning"></i> @localizer["Edit"]
+                            </a>
+                            
+                            <form id="form_delete_@bt.Id" asp-area="admin" asp-controller="templatebuilder" method="post" asp-action="OnPostDelete" asp-route-id="@bt.Id" onsubmit="return jQueryModalDelete(this)" class="d-inline">
+                                <a href="javascript:$('#form_delete_@bt.Id').submit();" class="dropdown-item"><i class="fas fa-trash-alt"></i> @localizer["Delete"]</a>
+                            </form>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        $("#tblTemplateInfo").DataTable();
+    });
+</script>

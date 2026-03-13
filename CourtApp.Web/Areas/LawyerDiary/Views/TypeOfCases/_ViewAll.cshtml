@@ -1,0 +1,73 @@
+﻿@model IEnumerable<TypeOfCasesViewModel>
+<table id="tblCaseTypes" class="table table-striped" width="100%" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Sno.</th>
+            <th>Court Type</th>            
+            <th>Case Category</th>
+            <th>Case Type</th>
+            <th>Case Type (Hn)</th>
+            <th>Abbreviation</th>
+            @if ((AuthorizationService.AuthorizeAsync(User, Permissions.TypeOfCase.Delete)).Result.Succeeded
+            || (AuthorizationService.AuthorizeAsync(User, Permissions.TypeOfCase.Edit)).Result.Succeeded)
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int count = 0;
+        }
+        @foreach (var bt in Model)
+        {
+            <tr>
+                <td>@(count = count + 1)</td>
+                <td>
+                    @bt.CourtTypeName
+                </td>              
+                <td>
+                    @bt.CaseNature
+                </td>
+                <td>
+                    @bt.Name_En
+                </td>
+                <td>
+                    @bt.Name_Hn
+                </td>
+                <td>
+                    @bt.Abbreviation
+                </td>
+                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.TypeOfCase.Delete)).Result.Succeeded || (AuthorizationService.AuthorizeAsync(User, Permissions.TypeOfCase.Edit)).Result.Succeeded)
+                {
+                    <td text-right">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Action
+                            </button>
+                            <div class="dropdown-menu shadow animated--grow-in">
+                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.TypeOfCase.Edit)).Result.Succeeded)
+                                {
+                                    <a onclick="jQueryModalGet('/LawyerDiary/TypeOfCases/OnGetCreateOrEdit?id=@bt.Id','Edit Type of case')" class="dropdown-item"><i class="fas fa-pencil-alt"></i>  Edit</a>
+
+                                }
+                                @if ((AuthorizationService.AuthorizeAsync(User, Permissions.TypeOfCase.Delete)).Result.Succeeded)
+
+                                {
+                                    <form id="form_delete_@bt.Id" asp-area="LawyerDiary" asp-controller="TypeOfCases" method="post" asp-action="OnPostDelete" asp-route-id="@bt.Id" onsubmit="return jQueryModalDelete(this)">
+                                        <a href="javascript:$('#form_delete_@bt.Id').submit();" class="dropdown-item"><i class="fas fa-trash-alt"></i>  Delete</a>
+                                    </form>
+                                }
+                            </div>
+                        </div>
+                    </td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<script>
+    $(document).ready(function () {
+        JqueryDataTable('tblCaseTypes','Case Types Data List','0,1,2,3,4,5');
+    });    
+</script>
