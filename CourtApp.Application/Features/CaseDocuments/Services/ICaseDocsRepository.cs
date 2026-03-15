@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CourtApp.Application.Interfaces.Repositories
+namespace CourtApp.Application.Features.CaseDocuments.Services
 {
     public interface ICaseDocsRepository
     {

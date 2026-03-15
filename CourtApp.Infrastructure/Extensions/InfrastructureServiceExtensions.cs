@@ -17,26 +17,34 @@ namespace CourtApp.Infrastructure.Extensions
         {
             if (configuration.GetValue<bool>("UseInMemoryDatabase"))
             {
-                services.AddDbContext<IdentityContext>(options => options.UseInMemoryDatabase("IdentityDb"), ServiceLifetime.Transient);
-                services.AddDbContext<ApplicationDbContext>(options => options.UseInMemoryDatabase("ApplicationDb"));
+                services.AddDbContext<IdentityContext>(
+                    options => options.UseInMemoryDatabase("IdentityDb"),
+                    ServiceLifetime.Transient);
+
+                services.AddDbContext<ApplicationDbContext>(
+                    options => options.UseInMemoryDatabase("ApplicationDb"));
             }
             else
             {
-                services.AddDbContext<IdentityContext>(options => options.UseNpgsql(configuration.GetConnectionString("Postgres")), ServiceLifetime.Transient);
-                services.AddDbContext<ApplicationDbContext>(options => options.UseNpgsql(configuration.GetConnectionString("Postgres")));
+                services.AddDbContext<IdentityContext>(
+                    options => options.UseNpgsql(configuration.GetConnectionString("Postgres")),
+                    ServiceLifetime.Transient);
+
+                services.AddDbContext<ApplicationDbContext>(options =>
+                    options.UseNpgsql(
+                        configuration.GetConnectionString("Postgres"),
+                        o => o.UseVector()   // ✅ IMPORTANT
+                    ));
             }
 
-            // Register Identity
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.SignIn.RequireConfirmedEmail = true;
                 options.Password.RequireNonAlphanumeric = false;
             })
-            .AddEntityFrameworkStores<IdentityContext>()
-            .AddDefaultTokenProviders();
+           .AddEntityFrameworkStores<IdentityContext>()
+           .AddDefaultTokenProviders();
 
-            // Register your IdentityService for DI
-           
             services.AddTransient<IIdentityService, IdentityService>();
         }
 

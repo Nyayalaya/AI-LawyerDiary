@@ -1,5 +1,6 @@
 ﻿using CourtApp.Application.Features.Auth.Services;
 using CourtApp.Application.Features.CaseCategory.Services;
+using CourtApp.Application.Features.CaseDocuments.Services;
 using CourtApp.Application.Features.CaseType.Services;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Interfaces.CacheRepositories;

@@ -1,4 +1,5 @@
 ﻿using CourtApp.Domain.Entities.Account;
+using CourtApp.Domain.Entities.AI;
 using CourtApp.Domain.Entities.CaseDetails;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.FormBuilder;
@@ -54,6 +55,11 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<LanguageEntity> LanguageEntities { get; set; }
         DbSet<CourtFormTypeEntity> CourtFormTypeEntities { get; set; }
         DbSet<BillingDetailEntity> BillingDetails { get; set; }
+
+        public DbSet<AIConversation> AIConversations { get; set; }
+        public DbSet<DocumentChunk> DocumentChunks { get; set; }
+        public DbSet<LegalCitationEntity> LegalCitations { get; set; }
+        public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get; set; }
 
     }
 }

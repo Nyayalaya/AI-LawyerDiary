@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
+using Pgvector;
 
 #nullable disable
 
@@ -20,6 +21,7 @@ namespace CourtApp.Infrastructure.Migrations.App
                 .HasAnnotation("ProductVersion", "9.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
+            NpgsqlModelBuilderExtensions.HasPostgresExtension(modelBuilder, "vector");
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("AuditTrail.Models.Audit", b =>
@@ -59,6 +61,189 @@ namespace CourtApp.Infrastructure.Migrations.App
                     b.HasKey("Id");
 
                     b.ToTable("AuditLogs");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.AIConversation", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("CaseId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("ai_conversion_history", "ai");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.DocumentChunk", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ActName")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ChunkIndex")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Citation")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Content")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CourtName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Guid>("DocumentId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("JudgeName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Language")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("MetadataJson")
+                        .HasColumnType("text");
+
+                    b.Property<int>("PageNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("SectionName")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SourceType")
+                        .HasColumnType("text");
+
+                    b.Property<int>("TokenCount")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentId", "PageNumber");
+
+                    b.ToTable("document_chunk", "ai");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.DocumentChunkEmbedding", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("ChunkId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<Vector>("Embedding")
+                        .HasColumnType("vector(1536)");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChunkId")
+                        .IsUnique();
+
+                    b.HasIndex("Embedding");
+
+                    NpgsqlIndexBuilderExtensions.HasMethod(b.HasIndex("Embedding"), "hnsw");
+                    NpgsqlIndexBuilderExtensions.HasOperators(b.HasIndex("Embedding"), new[] { "vector_cosine_ops" });
+
+                    b.ToTable("document_embedding", "ai");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.LegalCitationEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("ActName")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ChunkId")
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CitationContent")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CitationType")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("NormalizedCitation")
+                        .HasColumnType("text");
+
+                    b.Property<int?>("PageNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Section")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChunkId");
+
+                    b.ToTable("chunk_citation", "ai");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Account.BillingDetailEntity", b =>
@@ -289,10 +474,13 @@ namespace CourtApp.Infrastructure.Migrations.App
                         .HasColumnType("uuid");
 
                     b.Property<string>("ActCategory")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ActName")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<int>("ActNumber")
                         .HasColumnType("integer");
@@ -322,8 +510,8 @@ namespace CourtApp.Infrastructure.Migrations.App
                     b.Property<DateTime?>("GazetteDate")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<int>("GazetteId")
-                        .HasColumnType("integer");
+                    b.Property<Guid>("GazetteTypeId")
+                        .HasColumnType("uuid");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
@@ -332,7 +520,9 @@ namespace CourtApp.Infrastructure.Migrations.App
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Nature")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<int?>("PageNo")
                         .HasColumnType("integer");
@@ -340,7 +530,7 @@ namespace CourtApp.Infrastructure.Migrations.App
                     b.Property<Guid>("PartId")
                         .HasColumnType("uuid");
 
-                    b.Property<DateTime?>("PublishedGazeteDate")
+                    b.Property<DateTime?>("PublishedGazetteDate")
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<int>("SubActNumber")
@@ -352,6 +542,8 @@ namespace CourtApp.Infrastructure.Migrations.App
                     b.HasKey("Id");
 
                     b.HasIndex("ActTypeId");
+
+                    b.HasIndex("GazetteTypeId");
 
                     b.HasIndex("PartId");
 
@@ -1293,6 +1485,15 @@ namespace CourtApp.Infrastructure.Migrations.App
                     b.Property<DateTime>("DocDate")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<string>("FileName")
+                        .HasColumnType("text");
+
+                    b.Property<long>("FileSize")
+                        .HasColumnType("bigint");
+
+                    b.Property<bool>("IsProcessed")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
@@ -1303,6 +1504,8 @@ namespace CourtApp.Infrastructure.Migrations.App
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CaseId");
 
                     b.HasIndex("DOId");
 
@@ -2172,6 +2375,39 @@ namespace CourtApp.Infrastructure.Migrations.App
                     b.ToTable("m_state");
                 });
 
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.DocumentChunk", b =>
+                {
+                    b.HasOne("CourtApp.Domain.Entities.LawyerDiary.CaseDocsEntity", "Document")
+                        .WithMany("Chunks")
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.DocumentChunkEmbedding", b =>
+                {
+                    b.HasOne("CourtApp.Domain.Entities.AI.DocumentChunk", "Chunk")
+                        .WithOne("Embedding")
+                        .HasForeignKey("CourtApp.Domain.Entities.AI.DocumentChunkEmbedding", "ChunkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chunk");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.LegalCitationEntity", b =>
+                {
+                    b.HasOne("CourtApp.Domain.Entities.AI.DocumentChunk", "Chunk")
+                        .WithMany()
+                        .HasForeignKey("ChunkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Chunk");
+                });
+
             modelBuilder.Entity("CourtApp.Domain.Entities.Account.CourtFeeEntity", b =>
                 {
                     b.HasOne("CourtApp.Domain.Entities.Account.CourtFeeTypeEntity", "FeeType")
@@ -2220,6 +2456,12 @@ namespace CourtApp.Infrastructure.Migrations.App
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("CourtApp.Domain.Entities.Advocate.GazetteTypeEntity", "GazetteType")
+                        .WithMany()
+                        .HasForeignKey("GazetteTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CourtApp.Domain.Entities.Advocate.PartEntity", "Part")
                         .WithMany()
                         .HasForeignKey("PartId")
@@ -2233,6 +2475,8 @@ namespace CourtApp.Infrastructure.Migrations.App
                         .IsRequired();
 
                     b.Navigation("ActType");
+
+                    b.Navigation("GazetteType");
 
                     b.Navigation("Part");
 
@@ -2916,11 +3160,19 @@ namespace CourtApp.Infrastructure.Migrations.App
 
             modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.CaseDocsEntity", b =>
                 {
+                    b.HasOne("CourtApp.Domain.Entities.CaseDetails.CaseDetailEntity", "Case")
+                        .WithMany()
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("CourtApp.Domain.Entities.LawyerDiary.DOTypeEntity", "DO")
                         .WithMany()
                         .HasForeignKey("DOId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Case");
 
                     b.Navigation("DO");
                 });
@@ -3131,6 +3383,11 @@ namespace CourtApp.Infrastructure.Migrations.App
                     b.Navigation("State");
                 });
 
+            modelBuilder.Entity("CourtApp.Domain.Entities.AI.DocumentChunk", b =>
+                {
+                    b.Navigation("Embedding");
+                });
+
             modelBuilder.Entity("CourtApp.Domain.Entities.Advocate.ActEntity", b =>
                 {
                     b.Navigation("ActBooks");
@@ -3169,6 +3426,11 @@ namespace CourtApp.Infrastructure.Migrations.App
             modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.BookTypeEntity", b =>
                 {
                     b.Navigation("lDBookEntities");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.CaseDocsEntity", b =>
+                {
+                    b.Navigation("Chunks");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.CourtMasterEntity", b =>
