@@ -2,6 +2,7 @@
 using CourtApp.Application.Interfaces.Contexts;
 using CourtApp.Application.Interfaces.Shared;
 using CourtApp.Domain.Entities.Account;
+using CourtApp.Domain.Entities.AI;
 using CourtApp.Domain.Entities.CaseDetails;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.FormBuilder;
@@ -14,9 +15,9 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
+
 namespace CourtApp.Infrastructure.DbContexts
 {
     public class ApplicationDbContext : AuditableContext, IApplicationDbContext
@@ -31,6 +32,7 @@ namespace CourtApp.Infrastructure.DbContexts
             _dateTime = dateTime;
             _authenticatedUser = authenticatedUser;
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
+            ChangeTracker.AutoDetectChangesEnabled = false;
         }
 
         public IDbConnection Connection => Database.GetDbConnection();
@@ -80,8 +82,15 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<BillingDetailEntity> BillingDetails { get; set; }
         public DbSet<MultiLangDictEntity> MultiLangDictEntities { get; set; }
 
+        public DbSet<AIConversation> AIConversations { get; set; }
+        public DbSet<DocumentChunk> DocumentChunks { get; set; }
+        public DbSet<LegalCitationEntity> LegalCitations { get; set; }
+        public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get ; set; }
+
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
+            ChangeTracker.DetectChanges();
+
             foreach (var entry in ChangeTracker.Entries<AuditableEntity>().ToList())
             {
                 switch (entry.State)
@@ -92,22 +101,16 @@ namespace CourtApp.Infrastructure.DbContexts
                         break;
 
                     case EntityState.Modified:
-                        entry.Entity.LastModifiedOn = entry.Entity.LastModifiedOn != null ? entry.Entity.LastModifiedOn : _dateTime.NowUtc;
+                        entry.Entity.LastModifiedOn ??= _dateTime.NowUtc;
                         entry.Entity.LastModifiedBy = _authenticatedUser.UserId;
                         break;
-
-
                 }
             }
+
             if (_authenticatedUser.UserId == null)
-            {
                 return await base.SaveChangesAsync(cancellationToken);
-            }
-            else
-            {
-                int id = await base.SaveChangesAsync(_authenticatedUser.UserId);
-                return id;
-            }
+
+            return await base.SaveChangesAsync(_authenticatedUser.UserId);
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -122,33 +125,23 @@ namespace CourtApp.Infrastructure.DbContexts
             base.OnModelCreating(builder);
 
             builder.Entity<CourtMasterEntity>()
-            .HasOne(e => e.CourtComplex)
-            .WithMany()
-            .HasForeignKey(e => e.CourtComplexId)
-            .IsRequired(false); // Make the foreign key optional
+                    .HasOne(e => e.CourtComplex)
+                    .WithMany()
+                    .HasForeignKey(e => e.CourtComplexId)
+                    .IsRequired(false); 
 
             builder.Entity<CourtMasterEntity>()
                 .HasOne(e => e.CourtDistrict)
                 .WithMany()
                 .HasForeignKey(e => e.CourtDistrictId)
-                .IsRequired(false); // Make the foreign key optional
-            //builder.Entity<CourtMasterEntity>().Property(p => p.UId).HasDefaultValueSql("uuid_generate_v4()");
-            //builder.Entity<ClientEntity>().Property(p => p.UId).HasDefaultValueSql("uuid_generate_v4()");
-            //builder.Entity<CaseEntity>().Property(p => p.Id).HasDefaultValueSql("uuid_generate_v4()");
-            //builder.Entity<CourtFeeStructureEntity>().Property(p => p.UId).HasDefaultValueSql("uuid_generate_v4()");
-            //builder.Entity<ProceedingHeadEntity>().Property(p => p.Id).HasDefaultValueSql("uuid_generate_v4()");
+                .IsRequired(false); 
+
             var converter = new ValueConverter<List<string>, string>(
             v => JsonConvert.SerializeObject(v),
             v => JsonConvert.DeserializeObject<List<string>>(v));
 
-            #region Filter Data by Logged In User
-            //builder.Entity<ClientEntity>().HasQueryFilter(u => u.CreatedBy == _authenticatedUser.UserId);
-            //builder.Entity<CaseDetailEntity>().HasQueryFilter(u => u.CreatedBy == _authenticatedUser.UserId);
-            //builder.Entity<LawyerMasterEntity>().HasQueryFilter(u => u.CreatedBy == _authenticatedUser.UserId);
-            #endregion
-
             #region Converting Dynamic Form Builder Entity Fields in json format
-            builder.Entity<FieldSizeEntity>().HasNoKey();
+           
             builder.Ignore<FieldSizeEntity>();
             builder.Entity<FormBuilderEntity>().OwnsOne(
                 f => f.FieldsDetails, d =>
@@ -211,7 +204,19 @@ namespace CourtApp.Infrastructure.DbContexts
                );
             #endregion
 
+            builder.HasPostgresExtension("vector");
 
+            builder.Entity<DocumentChunkEmbedding>()
+                .Property(x => x.Embedding)
+                .HasColumnType("vector(1536)");
+
+            builder.Entity<DocumentChunkEmbedding>()
+                .HasIndex(x => x.Embedding)
+                .HasMethod("hnsw")
+                .HasOperators("vector_cosine_ops");
+
+            builder.Entity<DocumentChunk>()
+                .HasIndex(x => new { x.DocumentId, x.PageNumber });
         }
     }
 }

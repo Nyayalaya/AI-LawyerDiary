@@ -1,6 +1,6 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.CaseDetails;
-using CourtApp.Application.Interfaces.Repositories;
+using CourtApp.Application.Features.CaseDocuments.Services;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;

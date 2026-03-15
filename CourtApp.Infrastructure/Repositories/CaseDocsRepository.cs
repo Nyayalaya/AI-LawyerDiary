@@ -1,4 +1,5 @@
-﻿using CourtApp.Application.Interfaces.Repositories;
+﻿using CourtApp.Application.Features.CaseDocuments.Services;
+using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.LawyerDiary;
 using System;
 using System.Collections.Generic;

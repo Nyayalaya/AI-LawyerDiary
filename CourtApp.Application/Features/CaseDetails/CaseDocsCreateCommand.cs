@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Application.Features.CaseDocuments.Services;
 
 namespace CourtApp.Application.Features.CaseDetails
 {
