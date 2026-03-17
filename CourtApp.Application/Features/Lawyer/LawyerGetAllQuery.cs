@@ -57,7 +57,7 @@ namespace CourtApp.Application.Features.Lawyer
                 .ToPaginatedListAsync(request.PageNumber, request.PageSize);
 
             // Set total count using the filtered query
-            paginatedList.TotalCount = await query.CountAsync();
+            //paginatedList.TotalCount = await query.CountAsync();
 
             return paginatedList;
 

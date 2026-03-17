@@ -57,7 +57,7 @@ namespace CourtApp.Application.Features.CourtDistrict
                     .Where(predicate)
                     .Select(expression)
                     .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-                paginatedList.TotalPages=repository.Entities.Count();
+                //paginatedList.TotalPages=repository.Entities.Count();
                 return paginatedList;
             }
             catch (Exception ex)

@@ -1,97 +1,112 @@
+using CourtApp.Application.Common;
+using CourtApp.Application.Features.Auth.Commands;
+using CourtApp.Application.Features.Auth.Dto;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using CourtApp.Application.Features.Auth.Commands;
 
 namespace CourtApp.Api.Controllers
 {
-    public class AuthController : BaseController
+    public sealed class AuthController : BaseController
     {
-        public AuthController(
-            IMediator mediator,
-            IHttpContextAccessor httpContextAccessor)
-            : base(mediator, httpContextAccessor)
-        {
-        }
+        // No constructor needed — Mediator resolved lazily from base
 
         /// <summary>
         /// Register a new user account
         /// </summary>
-        /// <param name="registerCommand">Registration details including user type, email, password, and user-specific info</param>
-        /// <returns>Returns user ID if registration is successful</returns>
         [HttpPost("register")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand registerCommand)
+        [ProducesResponseType(typeof(ApiResponse<string>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> RegisterAsync([FromBody] RegisterCommand command)
         {
-            
-            var result = await Mediator.Send(registerCommand, RequestAborted);
-            return FromResult(result);
+            Result<string> result = await Mediator.Send(command, RequestAborted);
+            return FromResult(result, successCode: 201);
         }
 
         /// <summary>
         /// Authenticate user and get JWT token
         /// </summary>
-        /// <param name="command">Login credentials (email and password)</param>
-        /// <returns>Returns JWT token if authentication is successful</returns>
         [HttpPost("login")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<TokenResponse>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> LoginAsync([FromBody] LoginCommand command)
         {
-            command.IpAddress = GetClientIpAddress();
-            var result = await Mediator.Send(command, RequestAborted);
+            command.IpAddress = CurrentUser.IpAddress;  // from base via CurrentUserService
+            Result<TokenResponse> result = await Mediator.Send(command, RequestAborted);
             return FromResult(result);
         }
 
         /// <summary>
         /// Confirm user email address
         /// </summary>
-        /// <param name="command">User ID and confirmation code</param>
-        /// <returns>Returns success message if email is confirmed</returns>
         [HttpPost("confirm-email")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ConfirmEmailAsync([FromBody] ConfirmEmailCommand command)
         {
-            var result = await Mediator.Send(command, RequestAborted);
+            Result result = await Mediator.Send(command, RequestAborted);
             return FromResult(result);
         }
 
         /// <summary>
         /// Request password reset email
         /// </summary>
-        /// <param name="command">Email address for password reset</param>
-        /// <returns>Returns success message</returns>
         [HttpPost("forgot-password")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ForgotPasswordAsync([FromBody] ForgotPasswordCommand command)
         {
-            command.Origin = $"{Request.Scheme}://{Request.Host}";
-            var result = await Mediator.Send(command, RequestAborted);
+            command.Origin = RequestOrigin;  // helper property on base (see below)
+            Result result = await Mediator.Send(command, RequestAborted);
             return FromResult(result);
         }
 
         /// <summary>
         /// Reset user password
         /// </summary>
-        /// <param name="command">Email, new password, and reset token</param>
-        /// <returns>Returns success message if password is reset</returns>
         [HttpPost("reset-password")]
         [AllowAnonymous]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
         public async Task<IActionResult> ResetPasswordAsync([FromBody] ResetPasswordCommand command)
         {
-            var result = await Mediator.Send(command, RequestAborted);
+            Result result = await Mediator.Send(command, RequestAborted);
             return FromResult(result);
         }
 
-        
+        /// <summary>
+        /// Refresh JWT token using refresh token
+        /// </summary>
+        //[HttpPost("refresh-token")]
+        //[AllowAnonymous]
+        //[ProducesResponseType(typeof(ApiResponse<TokenResponse>), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
+        //[ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
+        //public async Task<IActionResult> RefreshTokenAsync([FromBody] RefreshTokenCommand command)
+        //{
+        //    command.IpAddress = CurrentUser.IpAddress;
+        //    Result<TokenResponse> result = await Mediator.Send(command, RequestAborted);
+        //    return FromResult(result);
+        //}
+
+        /// <summary>
+        /// Logout and revoke refresh token
+        /// </summary>
+        //[HttpPost("logout")]
+        //[ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.OK)]
+        //[ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
+        //public async Task<IActionResult> LogoutAsync([FromBody] LogoutCommand command)
+        //{
+        //    command.UserId = UserId;        // from base
+        //    command.IpAddress = CurrentUser.IpAddress;
+        //    Result result = await Mediator.Send(command, RequestAborted);
+        //    return FromResult(result);
+        //}
     }
 }

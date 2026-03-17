@@ -1,194 +1,92 @@
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using CourtApp.Api.Models;
-using Microsoft.AspNetCore.Authorization;
+
 using CourtApp.Application.Common;
+using CourtApp.Application.Interfaces.Shared;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
 
 namespace CourtApp.Api.Controllers
 {
     [ApiController]
+    [Authorize]
     [Produces("application/json")]
     [Route("api/v1/[controller]")]
-    [Authorize]
     public abstract class BaseController : ControllerBase
     {
-        private readonly IMediator _mediator;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        // ── Lazy service resolution — no constructor needed in subclasses
+        private IMediator? _mediator;
+        private ICurrentUserService? _currentUserService;
 
-        private UserContextInfo _currentUser;
+        protected IMediator Mediator
+            => _mediator ??= HttpContext.RequestServices.GetRequiredService<IMediator>();
 
-        protected BaseController(
-            IMediator mediator,
-            IHttpContextAccessor httpContextAccessor)
+        private ICurrentUserService CurrentUserService
+            => _currentUserService ??= HttpContext.RequestServices
+                .GetRequiredService<ICurrentUserService>();
+
+        protected string RequestOrigin
+    => $"{HttpContext.Request.Scheme}://{HttpContext.Request.Host}";
+
+        // ── Request ───────────────────────────────────────────────────
+        protected CancellationToken RequestAborted => HttpContext.RequestAborted;
+        protected string CorrelationId => HttpContext.TraceIdentifier;
+
+        // ── User ──────────────────────────────────────────────────────
+        protected UserContextInfo CurrentUser => CurrentUserService.GetCurrentUser();
+        protected string? UserId => CurrentUser.UserId;
+        protected string? UserEmail => CurrentUser.Email;
+        protected string? UserName => CurrentUser.UserName;
+        protected List<string> Roles => CurrentUser.Roles;
+
+        protected bool HasRole(string role) => CurrentUserService.HasRole(role);
+        protected bool HasAnyRole(params string[] r) => CurrentUserService.HasAnyRole(r);
+
+        // ── Result-based responses ────────────────────────────────────
+        protected IActionResult FromResult<T>(Result<T> result, int successCode = 200)
         {
-            _mediator = mediator;
-            _httpContextAccessor = httpContextAccessor;
+            var response = ApiResponse<T>.FromResult(result, successCode);
+            return StatusCode(response.StatusCode, response);
         }
 
-        protected IMediator Mediator => _mediator;
-
-        protected CancellationToken RequestAborted =>
-            _httpContextAccessor?.HttpContext?.RequestAborted ?? CancellationToken.None;
-
-        /// <summary>
-        /// Current User Context
-        /// </summary>
-        protected UserContextInfo CurrentUser =>
-            _currentUser ??= ExtractUserContext();
-
-        protected string UserId => CurrentUser?.UserId;
-
-        protected string UserEmail => CurrentUser?.Email;
-
-        protected string UserName => CurrentUser?.UserName;
-
-        protected List<string> Roles => CurrentUser?.Roles ?? new();
-
-        /// <summary>
-        /// Extract User Information from Claims
-        /// </summary>
-        private UserContextInfo ExtractUserContext()
+        protected IActionResult FromResult(Result result, int successCode = 200)
         {
-            var httpContext = _httpContextAccessor?.HttpContext;
-
-            if (httpContext == null)
-                return new UserContextInfo();
-
-            var user = httpContext.User;
-
-            var context = new UserContextInfo
-            {
-                IsAuthenticated = user?.Identity?.IsAuthenticated ?? false,
-                IpAddress = GetClientIpAddress(),
-                CorrelationId = httpContext.TraceIdentifier
-            };
-
-            if (!context.IsAuthenticated)
-                return context;
-
-            context.UserId =
-                user.FindFirst(ClaimTypes.NameIdentifier)?.Value ??
-                user.FindFirst("uid")?.Value;
-
-            context.UserName =
-                user.FindFirst(ClaimTypes.Name)?.Value ??
-                user.FindFirst("username")?.Value;
-
-            context.Email =
-                user.FindFirst(ClaimTypes.Email)?.Value;
-
-            context.FirstName =
-                user.FindFirst("first_name")?.Value ??
-                user.FindFirst(ClaimTypes.GivenName)?.Value;
-
-            context.LastName =
-                user.FindFirst("last_name")?.Value ??
-                user.FindFirst(ClaimTypes.Surname)?.Value;
-
-            context.FullName =
-                user.FindFirst("full_name")?.Value ??
-                $"{context.FirstName} {context.LastName}".Trim();
-
-            context.Mobile =
-                user.FindFirst("mobile")?.Value ??
-                user.FindFirst(ClaimTypes.MobilePhone)?.Value;
-
-            context.Roles = user
-                .FindAll("roles")
-                .Select(x => x.Value)
-                .ToList();
-
-            context.Claims = user.Claims.ToList();
-
-            return context;
+            var response = ApiResponse<object>.FromResult(result, successCode);
+            return StatusCode(response.StatusCode, response);
         }
 
-        /// <summary>
-        /// Role Checking
-        /// </summary>
-        protected bool HasRole(string role)
+        protected IActionResult FromPaginated<T>(PaginatedResult<T> result)
         {
-            return Roles.Contains(role);
+            var response = ApiResponse<List<T>>.FromPaginated(result);
+            return StatusCode(response.StatusCode, response);
         }
 
-        protected bool HasAnyRole(params string[] roles)
-        {
-            return Roles.Intersect(roles).Any();
-        }
-
-        /// <summary>
-        /// Detect Client IP (Proxy safe)
-        /// </summary>
-        protected string GetClientIpAddress()
-        {
-            var context = _httpContextAccessor?.HttpContext;
-
-            if (context == null)
-                return "Unknown";
-
-            if (context.Request.Headers.TryGetValue("X-Forwarded-For", out var forwarded))
-                return forwarded.FirstOrDefault()?.Split(',').FirstOrDefault();
-
-            if (context.Request.Headers.TryGetValue("X-Real-IP", out var realIp))
-                return realIp;
-
-            return context.Connection.RemoteIpAddress?.ToString();
-        }
-
-        // -------------------------------
-        // STANDARD API RESPONSES
-        // -------------------------------
-
+        // ── Direct response helpers ───────────────────────────────────
         protected IActionResult Success<T>(T data, string message = "Success")
-        {
-            return Ok(ApiResponse<T>.Success(data, message));
-        }
+            => Ok(ApiResponse<T>.Success(data, message));
 
-        protected IActionResult CreatedResponse<T>(T data, string message = "Created")
-        {
-            return StatusCode(201, ApiResponse<T>.Success(data, message, 201));
-        }
+        protected IActionResult Created<T>(T data, string message = "Created successfully")
+            => StatusCode(201, ApiResponse<T>.Success(data, message, 201));
 
-        protected IActionResult Failure(string message)
-        {
-            return BadRequest(ApiResponse<object>.Failure(message));
-        }
+        protected IActionResult Failure(string message, int statusCode = 400,
+            List<string>? errors = null)
+            => StatusCode(statusCode,
+                ApiResponse<object>.Failure(message, statusCode, errors));
 
-        protected IActionResult UnauthorizedResponse()
-        {
-            return Unauthorized(ApiResponse<object>.Failure("Unauthorized"));
-        }
+        protected IActionResult ValidationError(List<string> errors,
+            string message = "Validation failed")
+            => StatusCode(422, ApiResponse<object>.Failure(message, 422, errors));
 
-        protected IActionResult ForbiddenResponse()
-        {
-            return StatusCode(403, ApiResponse<object>.Failure("Forbidden"));
-        }
+        protected IActionResult NotFoundResponse(string message = "Resource not found")
+            => StatusCode(404, ApiResponse<object>.Failure(message, 404));
 
-        protected IActionResult NotFoundResponse(string message = "Not Found")
-        {
-            return NotFound(ApiResponse<object>.Failure(message));
-        }
+        protected IActionResult UnauthorizedResponse(string message = "Unauthorized")
+            => StatusCode(401, ApiResponse<object>.Failure(message, 401));
 
-        protected IActionResult ValidationError(List<string> errors)
-        {
-            return UnprocessableEntity(ApiResponse<object>.Failure("Validation Failed", 422, errors));
-        }
+        protected IActionResult ForbiddenResponse(string message = "Forbidden")
+            => StatusCode(403, ApiResponse<object>.Failure(message, 403));
 
-        protected IActionResult ServerError(string message = "Internal Server Error")
-        {
-            return StatusCode(500, ApiResponse<object>.Error(message));
-        }
-
-        /// <summary>
-        /// Convert AspNetCoreHero Result to ApiResponse
-        /// </summary>
-        protected IActionResult FromResult<T>(Result<T> result)
-        {
-            if (result.Succeeded)
-                return Success(result.Data, result.Message);
-
-            return Failure(result.Message);
-        }
+        protected IActionResult ServerError(string message = "An unexpected error occurred")
+            => StatusCode(500, ApiResponse<object>.ServerError(message));
     }
 }

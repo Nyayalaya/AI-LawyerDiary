@@ -45,7 +45,7 @@ namespace CourtApp.Application.Features.FormBuilder
                     .Include(c => c.Template)                    
                     .Select(expression)
                     .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-                paginatedList.TotalPages = _repository.Entities.Count();
+                //paginatedList.TotalPages = _repository.Entities.Count();
                 return paginatedList;
             }
             catch (Exception ex)

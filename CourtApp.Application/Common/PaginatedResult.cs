@@ -5,23 +5,34 @@ namespace CourtApp.Application.Common
 {
     public class PaginatedResult<T>
     {
-        public List<T> Data { get; set; } = new();
-        public int TotalCount { get; set; }
-        public int PageNumber { get; set; }
-        public int PageSize { get; set; }
-        public int TotalPages { get; set; }
-        public bool HasPreviousPage => PageNumber > 1;
-        public bool HasNextPage => PageNumber < TotalPages;
+        public bool Succeeded { get; private set; }
+        public string? Message { get; private set; }
+        public List<string> Errors { get; private set; } = new();
+        public List<T> Data { get; private set; } = new();
+        public PaginationMeta Pagination { get; private set; } = default!;
 
-        public PaginatedResult() { }
+        private PaginatedResult() { }
 
-        public PaginatedResult(List<T> data, int totalCount, int pageNumber, int pageSize)
-        {
-            Data = data;
-            TotalCount = totalCount;
-            PageNumber = pageNumber;
-            PageSize = pageSize;
-            TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
-        }
+        public static PaginatedResult<T> Success(
+            List<T> data,
+            int totalCount,
+            int pageNumber,
+            int pageSize,
+            string message = "Success")
+            => new()
+            {
+                Succeeded = true,
+                Message = message,
+                Data = data,
+                Pagination = PaginationMeta.Create(totalCount, pageNumber, pageSize)
+            };
+
+        public static PaginatedResult<T> Failure(string message, List<string>? errors = null)
+            => new()
+            {
+                Succeeded = false,
+                Message = message,
+                Errors = errors ?? new()
+            };
     }
 }

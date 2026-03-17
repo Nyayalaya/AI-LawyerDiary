@@ -1,24 +1,36 @@
-﻿using CourtApp.Application.Features.Auth.Commands;
+﻿// CourtApp.Application/Features/CourtType/Validators/CreateCourtTypeCommandValidator.cs
 using CourtApp.Application.Features.CourtType.Command;
 using FluentValidation;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace CourtApp.Application.Features.CourtType.Validator
+namespace CourtApp.Application.Features.CourtType.Validators
 {
-    public class CreateCourtTypeCommandValidator : AbstractValidator<CreateCourtTypeCommand>
+    public sealed class CreateCourtTypeCommandValidator
+        : AbstractValidator<CreateCourtTypeCommand>
     {
+        // Allows letters, numbers, spaces, hyphens, dots only — no special chars
+        private const string SafeTextPattern = @"^[a-zA-Z0-9\u0600-\u06FF\s\-\.]+$";
+
         public CreateCourtTypeCommandValidator()
         {
             RuleFor(x => x.CourtType)
-               .NotEmpty().WithMessage("Type of court is required");
+                .NotEmpty()
+                    .WithMessage("Court type name is required.")
+                .MinimumLength(2)
+                    .WithMessage("Court type name must be at least 2 characters.")
+                .MaximumLength(100)
+                    .WithMessage("Court type name must not exceed 100 characters.")
+                .Matches(SafeTextPattern)
+                    .WithMessage("Court type name must not contain special characters.");
 
             RuleFor(x => x.Abbreviation)
-               .NotEmpty().WithMessage("Type abbreviation is required");
-
+                .NotEmpty()
+                    .WithMessage("Abbreviation is required.")
+                .MinimumLength(1)
+                    .WithMessage("Abbreviation must be at least 1 character.")
+                .MaximumLength(10)
+                    .WithMessage("Abbreviation must not exceed 10 characters.")
+                .Matches(@"^[a-zA-Z0-9]+$")
+                    .WithMessage("Abbreviation must contain letters and numbers only — no spaces or special characters.");
         }
     }
 }

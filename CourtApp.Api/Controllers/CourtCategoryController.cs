@@ -1,106 +1,86 @@
-﻿using CourtApp.Application.Features.CaseCategory.Commands;
+﻿using CourtApp.Application.Common;
+using CourtApp.Application.Features.CaseCategory.Commands;
+using CourtApp.Application.Features.CaseCategory.Dto;
 using CourtApp.Application.Features.CaseCategory.Queries;
-using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace CourtApp.Api.Controllers
 {
 
-    public class CourtCategoryController : BaseController
+    public sealed class CourtCategoryController : BaseController
     {
-        public CourtCategoryController(IMediator mediator, 
-            IHttpContextAccessor httpContextAccessor) 
-            : base(mediator, httpContextAccessor)
-        {
-        }
+        // No constructor needed — Mediator resolved lazily from base
 
-        // <summary>
+        /// <summary>
         /// Create a new court category
         /// </summary>
-        /// <param name="command">Court category details with multilingual support</param>
-        /// <returns>Returns court category ID if creation is successful</returns>
-        [HttpPost("create")]
-        [Authorize]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse<Guid>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> CreateAsync([FromBody] CaseCategoryCreateCommand command)
         {
-            var result = await Mediator.Send(command, RequestAborted);
-            return FromResult(result);
+            Result<string> result = await Mediator.Send(command, RequestAborted);
+            return FromResult(result, successCode: 201);
         }
 
-
         /// <summary>
-        /// Get court type by ID
+        /// Get court category by ID
         /// </summary>
-        /// <param name="id">Court type ID</param>
-        /// <returns>Returns court type details</returns>
-        [HttpGet("{id}")]
-        [Authorize]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [HttpGet("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<CaseCategoryResponse>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetByIdAsync(Guid id)
         {
-            var query = new GetQueryByIdCaseCategory { Id = id };
-            var result = await Mediator.Send(query, RequestAborted);
+            //Result<CaseCategoryResponse> result = await Mediator.Send(
+            //    new GetQueryByIdCaseCategory { Id = id }, RequestAborted);
+            Result<CaseCategoryResponse> result=new();
             return FromResult(result);
         }
 
         /// <summary>
-        /// Get all court types with pagination
+        /// Get all court categories — paginated
         /// </summary>
-        /// <param name="pageNumber">Page number (default 1)</param>
-        /// <param name="pageSize">Page size (default 10)</param>
-        /// <returns>Returns paginated list of court types</returns>
         [HttpGet]
-        [Authorize]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetAllAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
+        [ProducesResponseType(typeof(ApiResponse<List<CaseCategoryResponse>>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetAllAsync([FromQuery] GetQueryCaseCategory query)
         {
-            var query = new GetQueryCaseCategory { PageNumber = pageNumber, PageSize = pageSize };
-            var result = await Mediator.Send(query, RequestAborted);
-            return FromResult(result);
+            PaginatedResult<CaseCategoryResponse> result = await Mediator.Send(query, RequestAborted);
+            return FromPaginated(result);
         }
 
         /// <summary>
-        /// Update existing court type
+        /// Update an existing court category
         /// </summary>
-        /// <param name="id">Court type ID</param>
-        /// <param name="command">Updated court type details</param>
-        /// <returns>Returns success message</returns>
-        [HttpPut("{id}")]
-        [Authorize]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> UpdateAsync(Guid id, [FromBody] CaseCategoryUpdateCommand command)
+        [HttpPut("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> UpdateAsync(
+            Guid id, [FromBody] CaseCategoryUpdateCommand command)
         {
             command.Id = id;
-            var result = await Mediator.Send(command, RequestAborted);
+            Result result = await Mediator.Send(command, RequestAborted);
             return FromResult(result);
         }
 
         /// <summary>
-        /// Delete court type
+        /// Delete a court category
         /// </summary>
-        /// <param name="id">Court type ID</param>
-        /// <returns>Returns success message</returns>
-        [HttpDelete("{id}")]
-        [Authorize]
-        [ProducesResponseType((int)HttpStatusCode.OK)]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
-        [ProducesResponseType((int)HttpStatusCode.Unauthorized)]
+        [HttpDelete("{id:guid}")]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> DeleteAsync(Guid id)
         {
-            var command = new CaseCategoryDeleteCommand(id);
-            var result = await Mediator.Send(command, RequestAborted);
+            Result result = await Mediator.Send(
+                new CaseCategoryDeleteCommand(id), RequestAborted);
             return FromResult(result);
         }
     }
 }
+

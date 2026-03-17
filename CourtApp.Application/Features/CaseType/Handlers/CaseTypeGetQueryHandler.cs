@@ -50,7 +50,7 @@ namespace CourtApp.Application.Features.CaseType.Handlers
                     .Select(expression)
                     .OrderBy(o => o.Name_En.ToUpper())
                     .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-                paginatedList.TotalCount = _repository.QryEntities.Count();
+                //paginatedList.TotalCount = _repository.QryEntities.Count();
                 return Result<PaginatedResult<GetAllTypeOfCasesResponse>>.Success(paginatedList);
         }
     }

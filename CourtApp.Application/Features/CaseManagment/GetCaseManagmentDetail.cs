@@ -8,7 +8,7 @@ using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.CaseDetails;
 using KT3Core.Areas.Global.Classes;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
+
 using System;
 using System.Linq;
 using System.Linq.Expressions;
