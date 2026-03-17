@@ -42,7 +42,7 @@ namespace CourtApp.Application.Features.DOType
             var paginatedList = await _repository.Entities
                 .Select(expression)
                 .ToPaginatedListAsync(request.PageNumber, request.PageSize);
-            paginatedList.TotalCount = _repository.Entities.Count();
+            //paginatedList.TotalCount = _repository.Entities.Count();
             return paginatedList;
         }
     }

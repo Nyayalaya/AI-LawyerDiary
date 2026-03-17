@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Application.Features.CourtType.Handlers
 {
-    public class GetAllCourtTypesQueryHandler : IRequestHandler<GetAllCourtTypesQuery, Result<PaginatedResult<GetCourtTypeResponse>>>
+    public class GetAllCourtTypesQueryHandler : IRequestHandler<GetAllCourtTypesQuery,PaginatedResult<GetCourtTypeResponse>>
     {
         private readonly ICourtTypeCacheRepository _cacheRepository;
         private readonly ILogger<GetAllCourtTypesQueryHandler> _logger;
@@ -22,18 +22,13 @@ namespace CourtApp.Application.Features.CourtType.Handlers
             _logger = logger;
         }
 
-        public async Task<Result<PaginatedResult<GetCourtTypeResponse>>> Handle(
+        public async Task<PaginatedResult<GetCourtTypeResponse>> Handle(
             GetAllCourtTypesQuery request,
             CancellationToken cancellationToken)
-        {
-            // 1️⃣ Get all court types from cache
+        {   
             var allCourtTypes = await _cacheRepository.GetCachedMappedListAsync(cancellationToken);
-
-            // 2️⃣ Apply in-memory pagination using extension method
-            var paginatedResult = allCourtTypes.ToPaginatedResult(request.PageNumber, request.PageSize);
-
-            // 3️⃣ Return success with paginated result
-            return Result<PaginatedResult<GetCourtTypeResponse>>.Success(paginatedResult);
+            var result = allCourtTypes.ToPaginatedResult(request.PageNumber, request.PageSize);
+            return result;
         }
     }
 }

@@ -1,104 +1,146 @@
-﻿using CourtApp.Application.Common;
+﻿// CourtApp.Application/Extensions/PaginationExtensions.cs
+using CourtApp.Application.Common;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace CourtApp.Application.Extensions
 {
     public static class PaginationExtensions
     {
-        #region Async Pagination for IQueryable (EF Core)
+        // ── Async Pagination — IQueryable (EF Core) ───────────────────
 
+        /// <summary>
+        /// Paginates an EF Core IQueryable asynchronously.
+        /// Always call after filtering/ordering, before materializing.
+        /// </summary>
         public static async Task<PaginatedResult<T>> ToPaginatedListAsync<T>(
             this IQueryable<T> source,
             int pageNumber,
-            int pageSize)
+            int pageSize,
+            CancellationToken cancellationToken = default)
         {
-            if (source == null)
+            if (source is null)
                 throw new ArgumentNullException(nameof(source));
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
 
-            var totalCount = await source.LongCountAsync();
-            var items = await source.Skip((pageNumber - 1) * pageSize)
-                                    .Take(pageSize)
-                                    .ToListAsync();
+            // Single round-trip: count + data in separate but sequential awaits
+            // (EF Core does not support both in one query without raw SQL)
+            var totalCount = await source.CountAsync(cancellationToken);
 
-            return new PaginatedResult<T>(items, (int)totalCount, pageNumber, pageSize);
+            if (totalCount == 0)
+                return PaginatedResult<T>.Success(
+                    new List<T>(), 0, pageNumber, pageSize);
+
+            var items = await source
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return PaginatedResult<T>.Success(items, totalCount, pageNumber, pageSize);
         }
 
-        #endregion
+        // ── Sync Pagination — IEnumerable (In-memory / Cache) ─────────
 
-        #region Sync Pagination for IEnumerable (In-memory Lists / Cache)
-
+        /// <summary>
+        /// Paginates an in-memory list or cached collection synchronously.
+        /// Materializes once to avoid double enumeration.
+        /// </summary>
         public static PaginatedResult<T> ToPaginatedResult<T>(
             this IEnumerable<T> source,
             int pageNumber,
             int pageSize)
         {
-            if (source == null)
+            if (source is null)
                 throw new ArgumentNullException(nameof(source));
 
             if (pageNumber <= 0) pageNumber = 1;
             if (pageSize <= 0) pageSize = 10;
 
-            var totalCount = source.Count();
-            var items = source.Skip((pageNumber - 1) * pageSize)
-                              .Take(pageSize)
-                              .ToList();
+            // Materialize once — avoids double enumeration on Count() + Skip/Take
+            var list = source as List<T> ?? source.ToList();
+            var totalCount = list.Count;
 
-            return new PaginatedResult<T>(items, totalCount, pageNumber, pageSize);
+            if (totalCount == 0)
+                return PaginatedResult<T>.Success(
+                    new List<T>(), 0, pageNumber, pageSize);
+
+            var items = list
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            return PaginatedResult<T>.Success(items, totalCount, pageNumber, pageSize);
         }
 
-        #endregion
+        // ── Dynamic Ordering — IQueryable ─────────────────────────────
 
-        #region Dynamic Ordering Extensions
+        // Expression cache — avoids reflection hit on every call
+        private static readonly ConcurrentDictionary<string, LambdaExpression>
+            _orderCache = new();
 
-        public static IQueryable<T> OrderByDynamic<T>(this IQueryable<T> source, string propertyName)
+        /// <summary>
+        /// Orders an IQueryable by a property name string ascending.
+        /// Property name is case-insensitive. Falls back to original if not found.
+        /// </summary>
+        public static IQueryable<T> OrderByDynamic<T>(
+            this IQueryable<T> source, string propertyName)
+            => ApplyOrder(source, propertyName, "OrderBy");
+
+        /// <summary>
+        /// Orders an IQueryable by a property name string descending.
+        /// Property name is case-insensitive. Falls back to original if not found.
+        /// </summary>
+        public static IQueryable<T> OrderByDescendingDynamic<T>(
+            this IQueryable<T> source, string propertyName)
+            => ApplyOrder(source, propertyName, "OrderByDescending");
+
+        private static IQueryable<T> ApplyOrder<T>(
+            IQueryable<T> source,
+            string propertyName,
+            string methodName)
         {
-            return ApplyOrder(source, propertyName, "OrderBy");
-        }
-
-        public static IQueryable<T> OrderByDescendingDynamic<T>(this IQueryable<T> source, string propertyName)
-        {
-            return ApplyOrder(source, propertyName, "OrderByDescending");
-        }
-
-        private static IQueryable<T> ApplyOrder<T>(IQueryable<T> source, string propertyName, string methodName)
-        {
-            if (source == null)
+            if (source is null)
                 throw new ArgumentNullException(nameof(source));
 
             if (string.IsNullOrWhiteSpace(propertyName))
                 return source;
 
-            Type entityType = typeof(T);
-            PropertyInfo property = entityType.GetProperty(propertyName,
-                BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+            var cacheKey = $"{typeof(T).FullName}.{propertyName}";
+            var entityType = typeof(T);
 
-            if (property == null)
-                return source; // fallback if property not found
+            var lambda = _orderCache.GetOrAdd(cacheKey, _ =>
+            {
+                var property = entityType.GetProperty(
+                    propertyName,
+                    BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
 
-            var parameter = Expression.Parameter(entityType, "x");
-            var propertyAccess = Expression.Property(parameter, property);
-            var orderByExpression = Expression.Lambda(propertyAccess, parameter);
+                if (property is null) return null!;
+
+                var parameter = Expression.Parameter(entityType, "x");
+                var propertyAccess = Expression.Property(parameter, property);
+                return Expression.Lambda(propertyAccess, parameter);
+            });
+
+            // Property not found — return source unchanged
+            if (lambda is null) return source;
 
             var resultExp = Expression.Call(
                 typeof(Queryable),
                 methodName,
-                new Type[] { entityType, property.PropertyType },
+                new[] { entityType, lambda.Body.Type },
                 source.Expression,
-                Expression.Quote(orderByExpression)
-            );
+                Expression.Quote(lambda));
 
             return source.Provider.CreateQuery<T>(resultExp);
         }
-
-        #endregion
     }
 }

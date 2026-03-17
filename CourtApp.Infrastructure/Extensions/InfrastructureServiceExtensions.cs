@@ -3,6 +3,7 @@ using CourtApp.Application.Interfaces.Shared;
 using CourtApp.Infrastructure.DbContexts;
 using CourtApp.Infrastructure.Identity.Models;
 using CourtApp.Infrastructure.Identity.Services;
+using CourtApp.Infrastructure.Services;
 using CourtApp.Infrastructure.Shared.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -56,7 +57,7 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddScoped<IDateTimeService, SystemDateTimeService>();
             services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
             services.AddScoped<IMailService, SMTPMailService>();
-
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddDistributedMemoryCache();
             return services;
         }

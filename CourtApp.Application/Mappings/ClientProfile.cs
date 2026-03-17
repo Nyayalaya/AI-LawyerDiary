@@ -12,7 +12,7 @@ namespace CourtApp.Application.Mappings
     {
         public ClientProfile()
         {
-            CreateMap<CreateClientCommand, ClientEntity>();
+            CreateMap<ClientCreateCommand, ClientEntity>();
             CreateMap<ClientEntity, GetClientByIdResponse>();
             CreateMap<GetAllClientCachedResponse, ClientEntity>().ReverseMap();
             CreateMap<CaseFeeEntity, ClientFeeDto>();

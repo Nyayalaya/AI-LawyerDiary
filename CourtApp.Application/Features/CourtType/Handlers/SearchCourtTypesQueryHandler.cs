@@ -53,16 +53,16 @@ namespace CourtApp.Application.Features.CourtType.Handlers
 
                 var dtos = _mapper.Map<System.Collections.Generic.List<GetCourtTypeResponse>>(courtTypes);
 
-                var paginatedResult = new PaginatedResult<GetCourtTypeResponse>
-                {
-                    Data = dtos,
-                    TotalCount = totalCount,
-                    PageNumber = request.PageNumber,
-                    PageSize = request.PageSize,
-                    TotalPages = (int)System.Math.Ceiling(totalCount / (double)request.PageSize)
-                };
+                //var paginatedResult = new PaginatedResult<GetCourtTypeResponse>
+                //{
+                //    Data = dtos,
+                //    TotalCount = totalCount,
+                //    PageNumber = request.PageNumber,
+                //    PageSize = request.PageSize,
+                //    TotalPages = (int)System.Math.Ceiling(totalCount / (double)request.PageSize)
+                //};
 
-                return Result<PaginatedResult<GetCourtTypeResponse>>.Success(paginatedResult);
+                return Result<PaginatedResult<GetCourtTypeResponse>>.Success();
             }
             catch (Exception ex)
             {
