@@ -2,7 +2,6 @@
 using AutoMapper;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.LawyerDiary;
 using MediatR;
 using System;
@@ -11,6 +10,8 @@ using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities;
+using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Application.Features.CourtDistrict
 {
@@ -110,7 +111,7 @@ namespace CourtApp.Application.Features.CourtDistrict
 
             if (keywords.Any())
             {
-                await _multiRepo.BulkInsertAsync(keywords);
+                //await _multiRepo.BulkInsertAsync(keywords);
                 await _unitOfWork.Commit(cancellationToken);
             }
 

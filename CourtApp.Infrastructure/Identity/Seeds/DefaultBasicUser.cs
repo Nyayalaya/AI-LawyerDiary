@@ -1,4 +1,4 @@
-﻿using CourtApp.Application.Enums;
+﻿using CourtApp.Domain.Enums;
 using CourtApp.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using System.Linq;
@@ -27,7 +27,7 @@ namespace CourtApp.Infrastructure.Identity.Seeds
                 if (user == null)
                 {
                     await userManager.CreateAsync(defaultUser, "123Pa$$word!");
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Clerk.ToString());
+                    await userManager.AddToRoleAsync(defaultUser, RegisterType.CLERK.ToString());
                 }
             }
         }

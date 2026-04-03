@@ -1,6 +1,7 @@
 ﻿using CourtApp.Application.CacheKeys;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Interfaces.Repositories;
+using CourtApp.Domain.Entities;
 using CourtApp.Domain.Entities.LawyerDiary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -41,15 +42,11 @@ namespace CourtApp.Infrastructure.Repositories
             return await _repository
                 .Entities
                 .AsNoTracking()
-                .Include(ct => ct.Languages)
                 .Select(ct => new CourtTypeEntity
                 {
                     Id=ct.Id,
                     CourtType = ct.CourtType,
                     Abbreviation = ct.Abbreviation,
-                    Languages = ct.Languages
-                                .Where(l => l.Code == "hi")
-                                .ToList()
                 })
                 .ToListAsync();
 

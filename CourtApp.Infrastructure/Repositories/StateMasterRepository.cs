@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CourtApp.Application.Features.State.Services;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
 using CourtApp.Entities.Common;
@@ -22,6 +23,7 @@ namespace CourtApp.Infrastructure.Repositories
 
         public IQueryable<StateEntity> Entities => _repository.Entities;
 
+        
         public StateEntity GetStateById(int Id)
         {
             return _repository.GetByIdAsync(Id).Result;
@@ -31,5 +33,9 @@ namespace CourtApp.Infrastructure.Repositories
         {
             return await _repository.Entities.ToListAsync();
         }
+
+        
+
+        
     }
 }

@@ -88,8 +88,8 @@ namespace CourtApp.Application.Features.FormPrint
                             ? $"{x.CisYear}"
                             : $"{x.CisNumber}/{x.CisYear}",
 
-                        State = await T(x.State?.Name_En, lang),
-                        CourtType = await T(x.CourtType?.CourtType, lang),
+                        State = await T(x.State?.Name, lang),
+                        CourtType = await T(x.CourtType?.Abbreviation, lang),
                         CaseCategory = await T(x.CaseCategory?.Name_En, lang),
                         CaseType = await T(x.CaseType?.Name_En, lang),
                         CourtDistrict = await T(x.CourtDistrict?.Name_En, lang),
@@ -128,7 +128,7 @@ namespace CourtApp.Application.Features.FormPrint
                         AgainstCourtDetail = x.CaseAgainstEntities.Select(s => new AgainstCaseDetail
                         {
                             ImpugedOrder = s.ImpugedOrderDate.ToString("dd/MM/yyyy"),
-                            State = lang == "Hi" ? GetCompleteWordAsync(s.State?.Name_En, lang).Result : s.State?.Name_En,
+                            State = lang == "Hi" ? GetCompleteWordAsync(s.State?.Name, lang).Result : s.State?.Name,
                             CourtBench = lang == "Hi" ? GetCompleteWordAsync(s.CourtBench?.CourtBench_En, lang).Result : s.CourtBench?.CourtBench_En,
                             CaseType = lang == "Hi" ? GetCompleteWordAsync(s.CaseType?.Name_En, lang).Result : s.CaseType?.Name_En,
                             CaseNo = s.CaseNo ?? "",

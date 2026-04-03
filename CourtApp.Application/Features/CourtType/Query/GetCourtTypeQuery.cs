@@ -34,8 +34,8 @@ namespace CourtApp.Application.Features.CourtType.Query
                 CourtType = ct.CourtType.ToUpper(),
                 Abbreviation = ct.Abbreviation,
                 // 👉 Get first language record safely
-                CourtType_Hn = ct.Languages?
-                                 .FirstOrDefault()?.Name
+                //CourtType_Hn = ct.Languages?
+                //                 .FirstOrDefault()?.Name
             })
             .OrderBy(o => o.CourtType)
             .ToList();

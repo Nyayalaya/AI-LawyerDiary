@@ -9,7 +9,7 @@ namespace CourtApp.Api.Controllers
     {
         /// <summary>Create a new court type</summary>
         [HttpPost]
-        [ProducesResponseType(typeof(ApiResponse<Guid>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ApiResponse<string>), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> CreateAsync([FromBody] CreateCourtTypeCommand command)

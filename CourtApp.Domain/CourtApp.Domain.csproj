@@ -23,4 +23,7 @@
     <PackageReference Include="audit-trail" Version="1.1.6" />
     <PackageReference Include="Pgvector" Version="0.3.2" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Entities\Common\" />
+  </ItemGroup>
 </Project>

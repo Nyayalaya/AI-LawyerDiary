@@ -40,7 +40,7 @@ namespace CourtApp.Application.Features.CaseDetails
                                               SecondTitle = _us.SecondTitle,
                                               Year = _us.CaseYear,
                                               No = _us.CaseNo,
-                                              CourtType = _us.CourtType.CourtType,
+                                              CourtType = _us.CourtType.Abbreviation,
                                               CourtName = _us.CourtBench.CourtBench_En,
                                               CaseType = _us.CaseType.Name_En,
                                               CaseStage = _us.CaseStage.CaseStage,

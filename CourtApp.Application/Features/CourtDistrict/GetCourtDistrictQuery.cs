@@ -37,7 +37,7 @@ namespace CourtApp.Application.Features.CourtDistrict
                 //DistrictName = e.District.Name_En,
                 Name_En = e.Name_En,
                 Name_Hn = e.Name_Hn,
-                StateName = e.State.Name_En
+                StateName = e.State.Name
             };
             var predicate = PredicateBuilder.True<CourtDistrictEntity>();
             if (predicate != null)

@@ -43,7 +43,7 @@ namespace CourtApp.Application.Features.CaseKinds.Commands
         public async Task<Result<Guid>> Handle(CreateCaseKindCommand request, CancellationToken cancellationToken)
         {
             var mappeddata = mapper.Map<CaseKindEntity>(request);
-            mappeddata.CourtType = _CourtTypeRepo.GetByIdAsync(request.CourtTypeId).Result;
+            //mappeddata.CourtType = _CourtTypeRepo.GetByIdAsync(request.CourtTypeId).Result;
             await repository.InsertAsync(mappeddata);
             await _unitOfWork.Commit(cancellationToken);
             return Result<Guid>.Success(mappeddata.Id);

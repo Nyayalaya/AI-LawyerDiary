@@ -114,7 +114,7 @@ namespace CourtApp.Infrastructure.CacheRepositories
                     _logger.LogInformation($"Court type list cached successfully ({courtTypes.Count} items)");
                 }
 
-                return courtTypes;
+                return null;
             }
             catch (Exception ex)
             {
@@ -162,7 +162,7 @@ namespace CourtApp.Infrastructure.CacheRepositories
                 // If not in cache, fetch from database
                 var courtTypes = await _repository.CourtTypeEntities
                     .AsNoTracking()
-                    .OrderBy(x => x.CourtType)
+                    //.OrderBy(x => x.Courts)
                     .Select(x => new Dropdown
                     {
                         Id = x.Id,
@@ -231,5 +231,9 @@ namespace CourtApp.Infrastructure.CacheRepositories
                 throw;
             }
         }
+
+        
+
+        
     }
 }

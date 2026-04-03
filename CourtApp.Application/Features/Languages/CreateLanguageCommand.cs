@@ -7,9 +7,10 @@ using CourtApp.Application.Common;
 using AutoMapper;
 using CourtApp.Application.DTOs.Common;
 using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using CourtApp.Domain.Entities;
+using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Application.Features.Languages
 {
@@ -49,7 +50,7 @@ namespace CourtApp.Application.Features.Languages
                     .FailAsync("Provide the language combination for state is already exist!, please edit more");
 
             var mappedEntity = mapper.Map<LanguageEntity>(request);
-            await repository.InsertAsync(mappedEntity);
+            //await repository.InsertAsync(mappedEntity);
             await unitOfWork.Commit(cancellationToken);
             return await Result<string>
                     .SuccessAsync("State language model is updated!");

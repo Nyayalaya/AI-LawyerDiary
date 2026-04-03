@@ -3,6 +3,7 @@ using CourtApp.Application.Features.CaseCategory.Services;
 using CourtApp.Application.Features.CaseDocuments.Services;
 using CourtApp.Application.Features.CaseType.Services;
 using CourtApp.Application.Features.CourtType.Services;
+using CourtApp.Application.Features.State.Services;
 using CourtApp.Application.Interfaces.CacheRepositories;
 using CourtApp.Application.Interfaces.CacheRepositories.Common;
 using CourtApp.Application.Interfaces.CacheRepositories.FormBuilder;
@@ -78,7 +79,7 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddTransient<ICourtMasterCacheRepository, CourtMasterCacheRepository>();
             services.AddTransient<ICourtMasterRepository, CourtMasterRepository>();
 
-            services.AddTransient<IStateMasterCacheRepository, StateMasterCacheRepository>();
+            services.AddTransient<IStateCacheRepository, StateMasterCacheRepository>();
             services.AddTransient<IStateMasterRepository, StateMasterRepository>();
 
             services.AddTransient<IDsitrictMasterCacheRepository, DistrictMasterCacheRepository>();

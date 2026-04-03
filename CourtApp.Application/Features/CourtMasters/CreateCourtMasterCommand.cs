@@ -3,7 +3,6 @@ using AutoMapper;
 using CourtApp.Application.DTOs.CourtMaster;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.LawyerDiary;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -13,6 +12,9 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CourtApp.Application.Features.CourtType.Services;
+using CourtApp.Application.Features.State.Services;
+using CourtApp.Domain.Entities;
+using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Application.Features.CourtMasters.Command
 {
@@ -56,10 +58,10 @@ namespace CourtApp.Application.Features.CourtMasters.Command
                 return Result<Guid>.Fail("Court benches are not supplied!");
 
             var courtExists = await repository.Entities.AnyAsync(w =>
-    w.StateId == request.StateCode && // Mandatory field
+    //w.StateId == request.StateCode && // Mandatory field
     w.CourtTypeId == request.CourtTypeId && // Mandatory field
-    (request.CourtDistrictId == Guid.Empty || w.CourtDistrictId == request.CourtDistrictId) && // Optional field
-    (request.CourtComplexId == Guid.Empty || w.CourtComplexId == request.CourtComplexId), // Optional field
+    (request.CourtDistrictId == Guid.Empty /*|| w.CourtDistrictId == request.CourtDistrictId*/) && // Optional field
+    (request.CourtComplexId == Guid.Empty /*|| w.CourtComplexId == request.CourtComplexId*/), // Optional field
     cancellationToken);
 
             if (courtExists)
@@ -68,13 +70,13 @@ namespace CourtApp.Application.Features.CourtMasters.Command
             // Save CourtMasterEntity (parent)
             var courtMaster = new CourtMasterEntity
             {
-                StateId = request.StateCode,
-                CourtDistrictId = request.CourtDistrictId,
-                CourtComplexId = request.CourtComplexId,
+                //StateId = request.StateCode,
+                //CourtDistrictId = request.CourtDistrictId,
+                //CourtComplexId = request.CourtComplexId,
                 CourtTypeId = request.CourtTypeId
             };
 
-            await repository.InsertAsync(courtMaster);
+            //await repository.InsertAsync(courtMaster);
             await _unitOfWork.Commit(cancellationToken); // Ensure parent ID is generated
 
             // Save each CourtBenchEntity (child)
@@ -120,7 +122,7 @@ namespace CourtApp.Application.Features.CourtMasters.Command
 
             if (keywords.Any())
             {
-                await _multiRepo.BulkInsertAsync(keywords);
+                //await _multiRepo.BulkInsertAsync(keywords);
                 await _unitOfWork.Commit(cancellationToken);
             }
             return Result<Guid>.Success(courtMaster.Id);

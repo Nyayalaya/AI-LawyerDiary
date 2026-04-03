@@ -1,5 +1,4 @@
 ﻿using CourtApp.Application.Constants;
-using CourtApp.Application.Enums;
 using CourtApp.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -162,10 +161,10 @@ namespace CourtApp.Infrastructure.Identity.Seeds
                 {
                     await userManager.CreateAsync(defaultUser, "123Pa$$word!");
 
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Clerk.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Lawyer.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.Associate.ToString());
-                    await userManager.AddToRoleAsync(defaultUser, Roles.SuperAdmin.ToString());
+                    //await userManager.AddToRoleAsync(defaultUser, Roles.Clerk.ToString());
+                    //await userManager.AddToRoleAsync(defaultUser, Roles.Lawyer.ToString());
+                    //await userManager.AddToRoleAsync(defaultUser, Roles.Associate.ToString());
+                    //await userManager.AddToRoleAsync(defaultUser, Roles.SuperAdmin.ToString());
                 }
 
                 await roleManager.SeedClaimsForSuperAdmin();

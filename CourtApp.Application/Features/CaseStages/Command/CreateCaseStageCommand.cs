@@ -2,13 +2,14 @@
 using AutoMapper;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Domain.Entities.Common;
+using CourtApp.Domain.Entities;
 using CourtApp.Domain.Entities.LawyerDiary;
 using MediatR;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Application.Features.CaseStages.Command
 {
@@ -68,7 +69,7 @@ namespace CourtApp.Application.Features.CaseStages.Command
 
             if (keywords.Count > 0)
             {
-                await _multiRepo.BulkInsertAsync(keywords);
+                //await _multiRepo.BulkInsertAsync(keywords);
                 await _unitOfWork.Commit(cancellationToken);
             }
 

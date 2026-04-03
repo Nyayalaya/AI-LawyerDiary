@@ -13,6 +13,8 @@ namespace CourtApp.Domain.Enums
     {
         LAWYER = 1,
         CORPORATE = 2,
-        CLIENT=3
+        CLIENT=3,
+        CLERK=4,
+        ASSOCIATE=5
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using CourtApp.Application.Features.Queries.States;
+using CourtApp.Application.Features.State.Query;
 using CourtApp.Entities.Common;
 
 namespace CourtApp.Application.Mappings

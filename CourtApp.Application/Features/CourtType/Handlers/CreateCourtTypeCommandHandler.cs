@@ -1,10 +1,10 @@
-﻿
-using AutoMapper;
+﻿using AutoMapper;
 using CourtApp.Application.Common;
 using CourtApp.Application.Features.CourtType.Command;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
+using CourtApp.Domain.Entities;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.LawyerDiary;
 using MediatR;
@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-
 namespace CourtApp.Application.Features.CourtType.Handlers
 {
     public class CreateCourtTypeCommandHandler : IRequestHandler<CreateCourtTypeCommand, Result<string>>
@@ -47,13 +46,12 @@ namespace CourtApp.Application.Features.CourtType.Handlers
                 // Normalize once
                 var abbreviation = request.Abbreviation?.Trim();
                 var courtType = request.CourtType?.Trim();
-
                 // Duplicate CourtType check
                 var isExists = await _repository.CourtTypeEntities
                     .AsNoTracking()
                     .AnyAsync(x =>
                         (abbreviation == null || x.Abbreviation == abbreviation) &&
-                        (courtType == null || x.CourtType == courtType),
+                        (courtType == null ),
                         cancellationToken);
 
                 if (isExists)
@@ -64,7 +62,7 @@ namespace CourtApp.Application.Features.CourtType.Handlers
 
                 // Insert CourtType
                 var entity = _mapper.Map<CourtTypeEntity>(request);
-                entity.Languages = _mapper.Map<List<LangEntity>>(request.Language);
+                //entity.Languages = _mapper.Map<List<LangEntity>>(request.Language);
 
                 await _repository.InsertAsync(entity);
                 await _unitOfWork.Commit(cancellationToken);
@@ -80,7 +78,7 @@ namespace CourtApp.Application.Features.CourtType.Handlers
 
                 if (keywords.Count > 0)
                 {
-                    await _multiRepo.BulkInsertAsync(keywords);
+                    //await _multiRepo.BulkInsertAsync(keywords);
                     await _unitOfWork.Commit(cancellationToken);
                 }
 

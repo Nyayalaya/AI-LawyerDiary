@@ -49,7 +49,7 @@ namespace CourtApp.Application.Features.CaseDetails
             {
                 Id = request.CaseId,
                 InstitutionDate = detail.InstitutionDate.ToString("dd/MM/yyyy"),
-                State = detail.State?.Name_En ?? "",
+                State = detail.State?.Name ?? "",
                 CourtType = detail.CourtType?.CourtType ?? "",
                 CourtBench = detail.CourtBench?.CourtBench_En ?? "",
                 CaseNo = detail.CaseNo,
@@ -75,7 +75,7 @@ namespace CourtApp.Application.Features.CaseDetails
                 ct.AgainstCases = detail.CaseAgainstEntities.Select(item => new AgainstCaseDetail
                 {
                     ImpugedOrder = item.ImpugedOrderDate.ToString("dd/MM/yyyy"),
-                    State = item.State?.Name_En ?? "",
+                    State = item.State?.Name ?? "",
                     CourtBench = item.CourtBench?.CourtBench_En ?? "",
                     CourtType = item.CourtType?.CourtType ?? "",
                     CaseNo = item.CaseNo ?? "",
@@ -99,7 +99,7 @@ namespace CourtApp.Application.Features.CaseDetails
                 ct.LinkCaseInfo = new LinkCaseInfo
                 {
                     InstitutionDate = lncd.InstitutionDate.ToString("dd/MM/yyyy"),
-                    State = lncd.State?.Name_En ?? "",
+                    State = lncd.State?.Name ?? "",
                     CourtType = lncd.CourtType?.CourtType ?? "",
                     CourtBench = lncd.CourtBench?.CourtBench_En ?? "",
                     CaseNo = lncd.CaseNo,

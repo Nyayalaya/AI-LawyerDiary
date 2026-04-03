@@ -196,6 +196,12 @@ namespace CourtApp.Infrastructure.DbContexts
                    k.ToJson();
                }
                );
+            builder.Entity<StateEntity>().OwnsMany(
+              j => j.Languages, k =>
+              {
+                  k.ToJson();
+              }
+              );
             builder.Entity<MultiLangDictEntity>().OwnsMany(
                j => j.MultiLangs, k =>
                {

@@ -64,16 +64,18 @@ namespace CourtApp.Application.Features.CourtMasters
             if (CourtTypeAbb != null && CourtTypeAbb.Equals("DICT"))
             {
                 CourtMasterId = _CourtMasterRepo.Entities
-                .Where(w => w.StateId == request.StateId
-                        && w.CourtDistrictId == request.CourtDistrictId
-                        && w.CourtComplexId.Equals(request.CourtId)).Select(s => s.Id)
+                //.Where(w => w.StateId == request.StateId
+                //        && w.CourtDistrictId == request.CourtDistrictId
+                //        && w.CourtComplexId.Equals(request.CourtId)
+                //        )
+                .Select(s => s.Id)
                 .FirstOrDefault();
             }
             else
             {
                 CourtMasterId = _CourtMasterRepo.Entities
-                .Where(w => w.StateId == request.StateId
-                        && w.CourtTypeId.Equals(request.CourtTypeId)).Select(s => s.Id)
+                .Where(w => /*w.StateId == request.StateId && */
+                        w.CourtTypeId.Equals(request.CourtTypeId)).Select(s => s.Id)
                 .FirstOrDefault();
             }
             if (request.CourtTypeId != Guid.Empty)

@@ -108,7 +108,7 @@ namespace CourtApp.Application.Features.Dashboard
                 .Select(g => new MonthlyCaseStatusDto
                 {
                     Year = g.Key.Year,
-                    Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"), // Jan, Feb, etc.
+                    //Month = new DateTime(g.Key.Year, g.Key.Month).ToString("MMM"), // Jan, Feb, etc.
                     Filed = g.Count(),
                     Disposed = 0
                 }).ToList();
@@ -124,7 +124,7 @@ namespace CourtApp.Application.Features.Dashboard
                 .Select(g => new MonthlyCaseStatusDto
                 {
                     Year = g.Key.Year,
-                    Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"),
+                    //Month = new DateTime(g.Key.Year, g.Key.Month).ToString("MMM"),
                     Filed = 0,
                     Disposed = g.Count()
                 }).ToList();

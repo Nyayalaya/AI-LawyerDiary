@@ -59,7 +59,7 @@ namespace CourtApp.Application.Features.CourtForm
                             CourtType = form.CourtType != null ? form.CourtType.CourtType : null,
                             Language = langItem != null ? langItem.Name : "", 
                             FormName = form.FormName,
-                            StateName = form.State != null ? form.State.Name_En : null,
+                            StateName = form.State != null ? form.State.Name : null,
                             CaseType= ctf.Name_En
                         }
                     ).ToListAsync(cancellationToken);

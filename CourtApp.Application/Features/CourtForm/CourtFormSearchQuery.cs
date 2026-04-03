@@ -59,7 +59,7 @@ namespace CourtApp.Application.Features.CourtForm
                     Id = s.Id,
                     CaseCategory = s.CaseCategory.Name_En,
                     FormName = s.FormName,
-                    StateName = s.State.Name_En,
+                    StateName = s.State.Name,
                     FormTemplate = s.FormTemplate,
                 }).OrderBy(o=>o.FormName).ToListAsync(cancellationToken);
 

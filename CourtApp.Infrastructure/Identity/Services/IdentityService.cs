@@ -68,9 +68,12 @@ namespace CourtApp.Infrastructure.Identity.Services
 
                 ValidateUserForLogin(user);
 
-                var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-                Throw.Exception.IfFalse(result.Succeeded, $"Invalid Credentials for '{request.Email}'.");
+                //var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
+                var valid = await _userManager.CheckPasswordAsync(user, request.Password);
 
+                if (!valid)
+                    throw new Exception("Invalid credentials");
+                
                 JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
                 var response = BuildTokenResponse(user, jwtSecurityToken);
                 var refreshToken = GenerateRefreshToken(ipAddress);
@@ -93,7 +96,7 @@ namespace CourtApp.Infrastructure.Identity.Services
                 ValidateRegistrationRequest(request);
 
                 var userExists = await _userManager.FindByEmailAsync(request.Email);
-                Throw.Exception.IfNotNull(userExists,$"Email '{request.Email}' is already registered.");
+                Throw.Exception.IfNotNull(userExists, $"Email '{request.Email}' is already registered.");
 
                 var user = CreateApplicationUser(request);
                 var result = await _userManager.CreateAsync(user, request.Password);
@@ -152,7 +155,7 @@ namespace CourtApp.Infrastructure.Identity.Services
         {
             try
             {
-                
+
                 var account = await _userManager.FindByEmailAsync(model.Email);
 
                 if (account == null)
@@ -190,7 +193,7 @@ namespace CourtApp.Infrastructure.Identity.Services
             try
             {
                 Throw.Exception.IfNull(model, nameof(model), "Reset password request cannot be null.");
-                
+
                 var account = await _userManager.FindByEmailAsync(model.Email);
                 Throw.Exception.IfNull(account, nameof(account), $"No account found for {model.Email}.");
 
@@ -270,7 +273,7 @@ namespace CourtApp.Infrastructure.Identity.Services
         private void ValidateRegistrationRequest(RegisterRequest request)
         {
             Throw.Exception.IfNull(request, nameof(request), "Registration request cannot be null.");
-            
+
             if (request.UserType == RegisterType.LAWYER || request.UserType == RegisterType.CLIENT)
             {
                 Throw.Exception.IfNull(request.IndividualInfoDto, nameof(request.IndividualInfoDto), "Individual information is required for this user type.");
@@ -294,10 +297,10 @@ namespace CourtApp.Infrastructure.Identity.Services
                 Email = request.Email,
                 FirstName = individualInfo?.FirstName?.Trim().ToUpper() ?? string.Empty,
                 LastName = individualInfo?.LastName?.Trim().ToUpper() ?? string.Empty,
-                
+
                 Mobile = request.Contact,
                 IsActive = true
-                
+
             };
 
             // Add professional info for lawyers
@@ -403,26 +406,40 @@ namespace CourtApp.Infrastructure.Identity.Services
         {
             try
             {
-                var userClaims = await _userManager.GetClaimsAsync(user);
                 var roles = await _userManager.GetRolesAsync(user);
-                var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
 
                 var claims = new List<Claim>
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim("uid", user.Id),
-                    new Claim("first_name", user.FirstName ?? string.Empty),
-                    new Claim("last_name", user.LastName ?? string.Empty),
-                    new Claim("full_name", $"{user.FirstName} {user.LastName}".Trim()),
-                    new Claim("ip", ipAddress ?? "Unknown")
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName)
                 };
 
-                claims.AddRange(userClaims);
-                claims.AddRange(roleClaims);
+                // ✅ Only add roles (small + important)
+                claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
                 return GenerateJwtToken(claims);
+                //var userClaims = await _userManager.GetClaimsAsync(user);
+                //var roles = await _userManager.GetRolesAsync(user);
+                //var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
+
+                //var claims = new List<Claim>
+                //{
+                //    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
+                //    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                //    new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                //    new Claim("uid", user.Id),
+                //    new Claim("first_name", user.FirstName ?? string.Empty),
+                //    new Claim("last_name", user.LastName ?? string.Empty),
+                //    new Claim("full_name", $"{user.FirstName} {user.LastName}".Trim()),
+                //    new Claim("ip", ipAddress ?? "Unknown")
+                //};
+
+                //claims.AddRange(userClaims);
+                //claims.AddRange(roleClaims);
+
+                //return GenerateJwtToken(claims);
             }
             catch (Exception ex)
             {

@@ -35,8 +35,8 @@ namespace CourtApp.Application.Features.CourtMasters
                         Id = s.Id,
                         CourtTypeId = s.CourtTypeId,
                         CourtAbbreviation = s.CourtType.Abbreviation,
-                        CourtComplexId = s.CourtComplexId.HasValue ? s.CourtComplexId.Value : Guid.Empty,
-                        CourtDistrictId = s.CourtDistrictId.HasValue ? s.CourtDistrictId.Value : Guid.Empty,
+                        //CourtComplexId = s.CourtComplexId.HasValue ? s.CourtComplexId.Value : Guid.Empty,
+                        //CourtDistrictId = s.CourtDistrictId.HasValue ? s.CourtDistrictId.Value : Guid.Empty,
                         CourtId = cMstId.Id
                     })
                     .FirstOrDefaultAsync();
