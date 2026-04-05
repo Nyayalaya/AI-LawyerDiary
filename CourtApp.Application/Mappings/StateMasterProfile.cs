@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using CourtApp.Application.Features.State.Query;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Mappings
 {

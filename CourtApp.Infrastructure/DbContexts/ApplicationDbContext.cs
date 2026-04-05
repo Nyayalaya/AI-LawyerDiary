@@ -7,7 +7,7 @@ using CourtApp.Domain.Entities.CaseDetails;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.FormBuilder;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Newtonsoft.Json;
@@ -41,7 +41,7 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<DistrictEntity> Districts { get; set; }
         public DbSet<CityEntity> CityEntities { get; set; }
         public DbSet<BookTypeEntity> BookTypes { get; set; }
-        public DbSet<NatureEntity> NatureEntities { get; set; }
+        public DbSet<CaseCategoryEntity> CaseCategories { get; set; }
         public DbSet<LDBookEntity> LDBooks { get; set; }
         public DbSet<PublisherEntity> Publishers { get; set; }
         public DbSet<SubjectEntity> PracticeSubjects { get; set; }
@@ -54,7 +54,7 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CourtMasterEntity> CourtMasters { get; set; }
         public DbSet<CourtFeeStructureEntity> CourtFeeStructures { get; set; }
         public DbSet<ClientEntity> Clients { get; set; }
-        public DbSet<CourtTypeEntity> CourtType { get; set; }
+        public DbSet<CourtTypeEntity> CourtTypes { get; set; }
         public DbSet<CaseDetailEntity> Cases { get; set; }
         public DbSet<CaseDetailAgainstEntity> AgainstCaseDetails { get; set; }
         public DbSet<LawyerMasterEntity> Laywers { get; set; }
@@ -81,35 +81,43 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CourtFormTypeEntity> CourtFormTypeEntities { get; set; }
         public DbSet<BillingDetailEntity> BillingDetails { get; set; }
         public DbSet<MultiLangDictEntity> MultiLangDictEntities { get; set; }
+        public DbSet<CourtLevelEntity> courtLevelEntities { get; set; }
 
         public DbSet<AIConversation> AIConversations { get; set; }
         public DbSet<DocumentChunk> DocumentChunks { get; set; }
         public DbSet<LegalCitationEntity> LegalCitations { get; set; }
-        public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get ; set; }
+        public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get; set; }
+        public bool SkipAudit { get; set; } = false;
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
             ChangeTracker.DetectChanges();
 
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>().ToList())
+            if (!SkipAudit)
             {
-                switch (entry.State)
+                var userId = _authenticatedUser?.UserId ?? Guid.Empty.ToString();
+                foreach (var entry in ChangeTracker.Entries<AuditableEntity>().ToList())
                 {
-                    case EntityState.Added:
-                        entry.Entity.CreatedOn = _dateTime.NowUtc;
-                        entry.Entity.CreatedBy = _authenticatedUser.UserId;
-                        break;
+                    switch (entry.State)
+                    {
+                        case EntityState.Added:
+                            entry.Entity.CreatedOn = _dateTime.NowUtc;
+                            entry.Entity.CreatedBy = userId;
+                            break;
 
-                    case EntityState.Modified:
-                        entry.Entity.LastModifiedOn ??= _dateTime.NowUtc;
-                        entry.Entity.LastModifiedBy = _authenticatedUser.UserId;
-                        break;
+                        case EntityState.Modified:
+                            entry.Entity.LastModifiedOn ??= _dateTime.NowUtc;
+                            entry.Entity.LastModifiedBy = _authenticatedUser.UserId;
+                            break;
+                    }
                 }
             }
 
-            if (_authenticatedUser.UserId == null)
+            // If UserId is null or auditing skipped, call base without user
+            if (_authenticatedUser.UserId == null || SkipAudit)
                 return await base.SaveChangesAsync(cancellationToken);
 
+            // Otherwise, pass UserId to base SaveChangesAsync (your current logic)
             return await base.SaveChangesAsync(_authenticatedUser.UserId);
         }
 
@@ -124,24 +132,25 @@ namespace CourtApp.Infrastructure.DbContexts
 
             base.OnModelCreating(builder);
 
+
             builder.Entity<CourtMasterEntity>()
                     .HasOne(e => e.CourtComplex)
                     .WithMany()
                     .HasForeignKey(e => e.CourtComplexId)
-                    .IsRequired(false); 
+                    .IsRequired(false);
 
             builder.Entity<CourtMasterEntity>()
                 .HasOne(e => e.CourtDistrict)
                 .WithMany()
                 .HasForeignKey(e => e.CourtDistrictId)
-                .IsRequired(false); 
+                .IsRequired(false);
 
             var converter = new ValueConverter<List<string>, string>(
             v => JsonConvert.SerializeObject(v),
             v => JsonConvert.DeserializeObject<List<string>>(v));
 
             #region Converting Dynamic Form Builder Entity Fields in json format
-           
+
             builder.Ignore<FieldSizeEntity>();
             builder.Entity<FormBuilderEntity>().OwnsOne(
                 f => f.FieldsDetails, d =>
@@ -197,6 +206,18 @@ namespace CourtApp.Infrastructure.DbContexts
                }
                );
             builder.Entity<StateEntity>().OwnsMany(
+              j => j.Languages, k =>
+              {
+                  k.ToJson();
+              }
+              );
+            builder.Entity<CaseCategoryEntity>().OwnsMany(
+              j => j.Languages, k =>
+              {
+                  k.ToJson();
+              }
+              );
+            builder.Entity<CaseStageEntity>().OwnsMany(
               j => j.Languages, k =>
               {
                   k.ToJson();

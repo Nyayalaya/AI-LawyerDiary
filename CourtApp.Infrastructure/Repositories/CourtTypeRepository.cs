@@ -2,7 +2,7 @@
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
@@ -45,8 +45,8 @@ namespace CourtApp.Infrastructure.Repositories
                 .Select(ct => new CourtTypeEntity
                 {
                     Id=ct.Id,
-                    CourtType = ct.CourtType,
-                    Abbreviation = ct.Abbreviation,
+                    Name = ct.Name,
+                    Code = ct.Code,
                 })
                 .ToListAsync();
 

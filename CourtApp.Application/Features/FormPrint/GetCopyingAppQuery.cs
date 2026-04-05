@@ -53,7 +53,7 @@ namespace CourtApp.Application.Features.FormPrint
                            SecondTitle = cd.SecondTitle,
                            NoYear = cd.CaseNo + "/" + cd.CaseYear,
                            CaseType = cd.CaseType.Name_En,
-                           CourtType = cd.CourtType.Abbreviation,
+                           CourtType = cd.CourtType.Code,
                            Court = cd.CourtBench.CourtBench_En,
                            Appearence = "",
                            NextDate = cd.NextDate.HasValue && cd.CaseProcEntities.Any()

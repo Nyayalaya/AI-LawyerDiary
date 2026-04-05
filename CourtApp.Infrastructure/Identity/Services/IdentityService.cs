@@ -107,7 +107,7 @@ namespace CourtApp.Infrastructure.Identity.Services
                 await _userManager.AddToRoleAsync(user, request.UserType.ToString());
 
                 // Add corporate user if needed
-                if (request.UserType == RegisterType.CORPORATE)
+                if (request.UserType == RegisterType.Corporate)
                 {
                     await AddCorporateUser(user, request.CompanyInfoDto);
                 }
@@ -274,12 +274,12 @@ namespace CourtApp.Infrastructure.Identity.Services
         {
             Throw.Exception.IfNull(request, nameof(request), "Registration request cannot be null.");
 
-            if (request.UserType == RegisterType.LAWYER || request.UserType == RegisterType.CLIENT)
+            if (request.UserType == RegisterType.Lawyer || request.UserType == RegisterType.Client)
             {
                 Throw.Exception.IfNull(request.IndividualInfoDto, nameof(request.IndividualInfoDto), "Individual information is required for this user type.");
             }
 
-            if (request.UserType == RegisterType.CORPORATE)
+            if (request.UserType == RegisterType.Corporate)
             {
                 Throw.Exception.IfNull(request.CompanyInfoDto, nameof(request.CompanyInfoDto), "Company information is required for corporate registration.");
             }
@@ -304,7 +304,7 @@ namespace CourtApp.Infrastructure.Identity.Services
             };
 
             // Add professional info for lawyers
-            if (request.UserType == RegisterType.LAWYER && individualInfo != null)
+            if (request.UserType == RegisterType.Lawyer && individualInfo != null)
             {
                 user.ProfessionalInfo = new ProfessionalInfo
                 {

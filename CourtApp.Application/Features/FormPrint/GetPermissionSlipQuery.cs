@@ -38,7 +38,7 @@ namespace CourtApp.Application.Features.FormPrint
                             CaseType = cd.CaseType.Name_En,
                             Title = cd.FirstTitle + " Vs " + cd.SecondTitle,
                             DoP = cd.InstitutionDate.ToString("dd/MM/yyyy"),
-                            MatterGo = cd.CaseStage != null ? cd.CaseStage.CaseStage : "",
+                            MatterGo = cd.CaseStage != null ? cd.CaseStage.Name : "",
                             DoI = cd.CaseAgainstEntities != null && cd.CaseAgainstEntities.Any() ? cd.CaseAgainstEntities.FirstOrDefault().ImpugedOrderDate.ToString("dd/MM/yyyy") : "",
                             NextDate = cd.NextDate.HasValue && cd.CaseProcEntities.Any()
                                         ? cd.CaseProcEntities.Max(p => p.NextDate.HasValue ? p.NextDate.Value : DateTime.MinValue) > cd.NextDate.Value

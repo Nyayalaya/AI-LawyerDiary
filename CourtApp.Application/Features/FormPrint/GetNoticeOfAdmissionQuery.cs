@@ -35,7 +35,7 @@ namespace CourtApp.Application.Features.FormPrint
                               Applent = c.FirstTitle,
                               Respondent = c.SecondTitle,
                               NoYear = c.CaseNo + "/" + c.CaseYear,
-                              CaseCategory = c.CaseCategory.Name_En,
+                              CaseCategory = c.CaseCategory.Name,
                               CaseType = c.CaseType.Name_En,
                               CivilNoYear = c.CaseNo,
                               AgainstCourt = "",

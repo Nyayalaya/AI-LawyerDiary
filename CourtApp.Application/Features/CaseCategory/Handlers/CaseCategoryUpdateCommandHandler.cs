@@ -25,13 +25,14 @@ namespace CourtApp.Application.Features.CaseCategory.Handlers
             if (entity == null) return Result<string>.Fail("No record found");
 
             var duplicateRecord = await repository.CaseNatures
-                .Where(e => e.Id != request.Id && e.CourtTypeId.Equals(request.CourtTypeId) && e.Name_En.ToLower() == request.Name_En.ToLower().Trim())
+                .Where(e => e.Id != request.Id && e.CourtTypeId.Equals(request.CourtTypeId)
+                && e.Name.ToLower() == request.Name_En.ToLower().Trim())
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (duplicateRecord != null) return Result<string>.Fail("Duplicate record found");
 
-            entity.Name_En = request.Name_En;
-            entity.Name_Hn = request.Name_Hn;
+            entity.Name = request.Name_En;
+            
             entity.CourtTypeId = request.CourtTypeId;
 
             await repository.UpdateAsync(entity);

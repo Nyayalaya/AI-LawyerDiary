@@ -50,7 +50,7 @@ namespace CourtApp.Application.Features.CaseDetails
                 chr.Id = request.CaseId;
                 chr.CaseNoYear = detail.CaseNo + "/" + detail.CaseYear;
                 chr.Title = (detail.FirstTitle + " Vs " + detail.SecondTitle).ToUpper();
-                chr.CourtType = detail.CourtType != null ? detail.CourtType.CourtType.ToUpper() : "";
+                chr.CourtType = detail.CourtType != null ? detail.CourtType.Name.ToUpper() : "";
                 chr.Court = detail.CourtBench != null ? detail.CourtBench.CourtBench_En.ToUpper() : "";
                 var cprocs = await _ProceedingRepo.GetProceedingByCaseIdAsync(request.CaseId);
                 var PWorks = cprocs.GroupBy(pd => pd.ProceedingDate)
@@ -108,7 +108,7 @@ namespace CourtApp.Application.Features.CaseDetails
                     .Select(s => new CaseHistoryData
                     {
                         NextDate = s.NextDate?.ToString("dd/MM/yyyy") ?? "",
-                        Stage = s.StageId != null ? s.Stage.CaseStage : "",
+                        Stage = s.StageId != null ? s.Stage.Name : "",
                         Activity = s.SubHead.Name_En,
                         Type = s.Head.Name_En,
                         Date = (s.ProceedingDate ?? s.CreatedOn),

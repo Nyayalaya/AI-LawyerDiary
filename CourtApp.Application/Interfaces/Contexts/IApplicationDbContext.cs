@@ -4,7 +4,7 @@ using CourtApp.Domain.Entities.CaseDetails;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.FormBuilder;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data;
@@ -27,7 +27,7 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<LDBookEntity> LDBooks { get; set; }
         DbSet<PublisherEntity> Publishers { get; set; }
         DbSet<ClientEntity> Clients { get; set; }
-        DbSet<CourtTypeEntity> CourtType { get; set; }
+        DbSet<CourtTypeEntity> CourtTypes { get; set; }
         DbSet<TypeOfCasesEntity> Typeofcases { get; set; }
         DbSet<CaseKindEntity> CaseKinds { get; set; }
         DbSet<CaseDetailEntity> Cases { get; set; }

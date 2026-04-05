@@ -1,7 +1,7 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.Features.State.Query;
 using CourtApp.Domain.Entities;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;

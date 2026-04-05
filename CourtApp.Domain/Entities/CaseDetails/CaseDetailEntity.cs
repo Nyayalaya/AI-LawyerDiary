@@ -1,6 +1,6 @@
 ﻿using AuditTrail.Abstrations;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -70,7 +70,7 @@ namespace CourtApp.Domain.Entities.CaseDetails
         public virtual FSTitleEntity FTitle { get; set; }
         public virtual CourtBenchEntity CourtBench { get; set; }
         public virtual TypeOfCasesEntity CaseType { get; set; }
-        public virtual NatureEntity CaseCategory { get; set; }
+        public virtual CaseCategoryEntity CaseCategory { get; set; }
         public virtual CourtComplexEntity Complex { get; set; }
         public virtual CaseStageEntity CaseStage { get; set; }
         public virtual CaseDetailEntity LinkedCase { get; set; }

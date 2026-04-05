@@ -3,12 +3,12 @@ using CourtApp.Application.Features.Typeofcasess.Commands;
 using CourtApp.Application.Features.Typeofcasess.Query;
 using CourtApp.Application.Features.CourtType.Command;
 using CourtApp.Application.Features.CourtType.Query;
-using CourtApp.Domain.Entities.LawyerDiary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Mappings
 {

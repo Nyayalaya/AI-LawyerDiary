@@ -57,7 +57,7 @@ namespace CourtApp.Application.Features.CourtForm
                 .Where(predicate).Select(s => new CourtFormDto
                 {
                     Id = s.Id,
-                    CaseCategory = s.CaseCategory.Name_En,
+                    CaseCategory = s.CaseCategory.Name,
                     FormName = s.FormName,
                     StateName = s.State.Name,
                     FormTemplate = s.FormTemplate,

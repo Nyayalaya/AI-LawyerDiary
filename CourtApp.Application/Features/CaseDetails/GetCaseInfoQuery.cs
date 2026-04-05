@@ -66,7 +66,7 @@ namespace CourtApp.Application.Features.CaseDetails
                     c.CaseNo.ToLower().Contains(search) ||
                     c.FirstTitle.ToLower().Contains(search) ||
                     c.SecondTitle.ToLower().Contains(search) ||
-                    c.CaseStage.CaseStage.ToLower().Contains(search) ||
+                    c.CaseStage.Name.ToLower().Contains(search) ||
                     (isYearSearch && c.CaseYear == parsedYear) ||
                     (isDateSearch && c.NextDate.HasValue && c.NextDate.Value.Date == parsedDate.Date) ||
                     c.CaseType.Name_En.ToLower().Contains(search));
@@ -100,10 +100,10 @@ namespace CourtApp.Application.Features.CaseDetails
                                  LawyerId = AssignedLawyerId,
                                  No = c.CaseNo,
                                  Year = c.CaseYear.ToString(),
-                                 CourtType = c.CourtType.CourtType.ToString(),
+                                 CourtType = c.CourtType.Name.ToString(),
                                  CaseType = c.CaseType.Name_En,
                                  Court = c.CourtBench.CourtBench_En.ToUpper(),
-                                 CaseStage = c.CaseStage.CaseStage.ToUpper(),
+                                 CaseStage = c.CaseStage.Name.ToUpper(),
                                  DisposalDate = c.DisposalDate,
                                  CaseDetail = (c.FirstTitle + " V/S " + c.SecondTitle).ToUpper(),
                                  NextDate = caseLatestNextDate

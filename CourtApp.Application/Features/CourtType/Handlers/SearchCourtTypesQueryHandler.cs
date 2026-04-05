@@ -40,13 +40,13 @@ namespace CourtApp.Application.Features.CourtType.Handlers
 
                 var query = _repository.CourtTypeEntities
                     .AsNoTracking()
-                    .Where(x => x.CourtType.ToLower().Contains(keyword) || 
-                                x.Abbreviation.ToLower().Contains(keyword));
+                    .Where(x => x.Name.ToLower().Contains(keyword) || 
+                                x.Code.ToLower().Contains(keyword));
 
                 var totalCount = await query.CountAsync(cancellationToken);
 
                 var courtTypes = await query
-                    .OrderBy(x => x.CourtType)
+                    .OrderBy(x => x.Name)
                     .Skip((request.PageNumber - 1) * request.PageSize)
                     .Take(request.PageSize)
                     .ToListAsync(cancellationToken);

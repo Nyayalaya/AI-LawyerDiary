@@ -38,14 +38,14 @@ namespace CourtApp.Application.Features.CaseStages.Command
 
             // Check for name conflict with other records (excluding the current record)
             var duplicateRecord = await repository.QryEntities
-                .Where(e => e.Id != request.Id && e.CaseStage.ToLower() == request.CaseStage.ToLower().Trim())
+                .Where(e => e.Id != request.Id && e.Name.ToLower() == request.CaseStage.ToLower().Trim())
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (duplicateRecord != null)
                 return Result<Guid>.Fail("Another record with the same name already exists.");
 
             // Update the entity fields
-            existingRecord.CaseStage = request.CaseStage;
+            existingRecord.Name = request.CaseStage;
 
 
             await repository.UpdateAsync(existingRecord);

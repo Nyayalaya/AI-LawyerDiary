@@ -6,7 +6,7 @@ using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
 using CourtApp.Domain.Entities;
 using CourtApp.Domain.Entities.Common;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -50,7 +50,7 @@ namespace CourtApp.Application.Features.CourtType.Handlers
                 var isExists = await _repository.CourtTypeEntities
                     .AsNoTracking()
                     .AnyAsync(x =>
-                        (abbreviation == null || x.Abbreviation == abbreviation) &&
+                        (abbreviation == null || x.Code == abbreviation) &&
                         (courtType == null ),
                         cancellationToken);
 

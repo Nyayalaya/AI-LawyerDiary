@@ -49,10 +49,10 @@ namespace CourtApp.Application.Features.Dashboard
                                  LawyerId = AssignedLawyerId,
                                  No = c.CaseNo,
                                  Year = c.CaseYear.ToString(),
-                                 CourtType = c.CourtType.CourtType.ToString(),
+                                 CourtType = c.CourtType.Name.ToString(),
                                  CaseType = c.CaseType.Name_En,
                                  Court = c.CourtBench.CourtBench_En.ToUpper(),
-                                 CaseStage = c.CaseStage.CaseStage.ToUpper(),
+                                 CaseStage = c.CaseStage.Name.ToUpper(),
                                  DisposalDate = c.DisposalDate,
                                  CaseDetail = (c.FirstTitle + " V/S " + c.SecondTitle).ToUpper(),
                                  NextDate = c.CaseProcEntities

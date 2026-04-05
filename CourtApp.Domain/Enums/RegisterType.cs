@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace CourtApp.Domain.Enums
 {
     /// <summary>
@@ -11,10 +6,11 @@ namespace CourtApp.Domain.Enums
     /// </summary>
     public enum RegisterType
     {
-        LAWYER = 1,
-        CORPORATE = 2,
-        CLIENT=3,
-        CLERK=4,
-        ASSOCIATE=5
+        SuperAdmin = 0,
+        Lawyer = 1,
+        Corporate = 2,
+        Client = 3,
+        Clerk = 4,
+        Associate = 5
     }
 }

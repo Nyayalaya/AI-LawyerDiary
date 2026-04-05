@@ -55,8 +55,8 @@ namespace CourtApp.Application.Features.CourtForm
                         select new CourtFormDto
                         {
                             Id = form.Id,
-                            CaseCategory = form.CaseCategory != null ? form.CaseCategory.Name_En : "All",
-                            CourtType = form.CourtType != null ? form.CourtType.CourtType : null,
+                            CaseCategory = form.CaseCategory != null ? form.CaseCategory.Name : "All",
+                            CourtType = form.CourtType != null ? form.CourtType.Name : null,
                             Language = langItem != null ? langItem.Name : "", 
                             FormName = form.FormName,
                             StateName = form.State != null ? form.State.Name : null,

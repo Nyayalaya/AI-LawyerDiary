@@ -4,7 +4,7 @@ using CourtApp.Application.CacheKeys;
 using CourtApp.Application.Common;
 using CourtApp.Application.Features.CourtType.Query;
 using CourtApp.Application.Features.CourtType.Services;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;
@@ -103,7 +103,7 @@ namespace CourtApp.Infrastructure.CacheRepositories
                 // If not in cache, fetch from database
                 var courtTypes = await _repository.CourtTypeEntities
                     .AsNoTracking()
-                    .OrderBy(x => x.CourtType)
+                    .OrderBy(x => x.Name)
                     .ToListAsync(cancellationToken);
 
                 if (courtTypes.Count > 0)
@@ -166,8 +166,8 @@ namespace CourtApp.Infrastructure.CacheRepositories
                     .Select(x => new Dropdown
                     {
                         Id = x.Id,
-                        Name = x.CourtType,
-                        Code = x.Abbreviation
+                        Name = x.Name,
+                        Code = x.Code
                     })
                     .ToListAsync(cancellationToken);
 

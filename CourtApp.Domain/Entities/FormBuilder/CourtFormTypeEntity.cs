@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using AuditTrail.Abstrations;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Domain.Entities.FormBuilder
 {
@@ -19,6 +19,6 @@ namespace CourtApp.Domain.Entities.FormBuilder
         public virtual TypeOfCasesEntity CaseType { get; set; }
         public virtual StateEntity State { get; set; }
         public virtual CourtTypeEntity CourtType { get; set; }
-        public virtual NatureEntity CaseCategory { get; set; }
+        public virtual CaseCategoryEntity CaseCategory { get; set; }
     }
 }

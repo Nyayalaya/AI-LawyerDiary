@@ -1,6 +1,6 @@
 ﻿using AuditTrail.Abstrations;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -55,7 +55,7 @@ namespace CourtApp.Domain.Entities.CaseDetails
         public virtual CourtComplexEntity Complex { get; set; }
         public virtual CaseDetailEntity Case { get; set; }
         public virtual CourtTypeEntity CourtType { get; set; }
-        public virtual NatureEntity CaseCategory { get; set; }
+        public virtual CaseCategoryEntity CaseCategory { get; set; }
         public virtual TypeOfCasesEntity CaseType { get; set; }
         public virtual CadreMasterEntity Cadre { get; set; }
         #endregion

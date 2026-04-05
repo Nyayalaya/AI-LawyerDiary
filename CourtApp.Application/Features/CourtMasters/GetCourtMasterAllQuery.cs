@@ -50,7 +50,7 @@ namespace CourtApp.Application.Features.CourtMasters
             var dtlist = await query.Select(e => new GetCourtMasterDataAllResponse
             {
                 Id = e.Id,
-                CourtType = e.CourtType.CourtType,
+                CourtType = e.CourtType.Name,
                 //CourtName = e.Name_En,
                 //CourtFullName = e.Name_En,
                 //State = e.State.Name_En,

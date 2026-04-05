@@ -45,10 +45,10 @@ namespace CourtApp.Application.Features.CaseDetails
                         Id = c.Id,
                         No = c.CaseNo,
                         Year = c.CaseYear.ToString(),
-                        CourtType = c.CourtType.CourtType.ToString(),
+                        CourtType = c.CourtType.Name.ToString(),
                         CaseType = c.CaseType.Name_En,
                         Court = c.CourtBench.CourtBench_En,
-                        CaseStage = c.CaseStage.CaseStage,
+                        CaseStage = c.CaseStage.Name,
                         DisposalDate = c.DisposalDate,
                         CaseDetail = (c.FirstTitle + " V/S " + c.SecondTitle + " [" +
                                             (string.IsNullOrEmpty(c.CaseNo) ? c.CaseYear.ToString() : c.CaseNo + "/" + c.CaseYear.ToString()) +

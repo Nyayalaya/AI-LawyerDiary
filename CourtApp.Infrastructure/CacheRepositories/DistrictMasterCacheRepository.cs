@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AspNetCoreHero.Extensions.Caching;
-using CourtApp.Entities.Common;
 using CourtApp.Application.CacheKeys;
 using Microsoft.Extensions.Caching.Distributed;
 using CourtApp.Application.Interfaces.CacheRepositories.Common;
 using CourtApp.Application.Interfaces.Repositories.Common;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Infrastructure.CacheRepositories
 {

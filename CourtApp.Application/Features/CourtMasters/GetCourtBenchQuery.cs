@@ -59,7 +59,7 @@ namespace CourtApp.Application.Features.CourtMasters
             var CourtTypeAbb = _CourtTypeRepo
                 .CourtTypeEntities
                 .Where(w => w.Id.Equals(request.CourtTypeId))
-                .Select(s => s.Abbreviation)
+                .Select(s => s.Code)
                 .FirstOrDefault();
             if (CourtTypeAbb != null && CourtTypeAbb.Equals("DICT"))
             {

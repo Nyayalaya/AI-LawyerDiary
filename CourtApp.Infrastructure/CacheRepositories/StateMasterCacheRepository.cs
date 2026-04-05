@@ -5,7 +5,7 @@ using CourtApp.Application.Constants;
 using CourtApp.Application.Features.State.Query;
 using CourtApp.Application.Features.State.Services;
 using CourtApp.Domain.Entities;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Logging;

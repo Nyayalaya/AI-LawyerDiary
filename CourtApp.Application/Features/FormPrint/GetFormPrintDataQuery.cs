@@ -89,13 +89,13 @@ namespace CourtApp.Application.Features.FormPrint
                             : $"{x.CisNumber}/{x.CisYear}",
 
                         State = await T(x.State?.Name, lang),
-                        CourtType = await T(x.CourtType?.Abbreviation, lang),
-                        CaseCategory = await T(x.CaseCategory?.Name_En, lang),
+                        CourtType = await T(x.CourtType?.Code, lang),
+                        CaseCategory = await T(x.CaseCategory?.Name, lang),
                         CaseType = await T(x.CaseType?.Name_En, lang),
                         CourtDistrict = await T(x.CourtDistrict?.Name_En, lang),
                         CourtComplex = await T(x.Complex?.Name_En, lang),
                         Court = await T(x.CourtBench?.CourtBench_En, lang),
-                        CaseStage = await T(x.CaseStage?.CaseStage, lang),
+                        CaseStage = await T(x.CaseStage?.Name, lang),
 
                         Strength = x.StrengthId == 1 ? "S.B." : "D.B.",
 

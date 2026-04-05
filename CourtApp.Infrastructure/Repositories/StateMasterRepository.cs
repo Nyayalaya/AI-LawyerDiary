@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using CourtApp.Application.Features.State.Services;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 

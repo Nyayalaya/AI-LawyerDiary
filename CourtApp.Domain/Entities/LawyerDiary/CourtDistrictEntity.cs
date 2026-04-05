@@ -1,5 +1,5 @@
 ﻿using AuditTrail.Abstrations;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;

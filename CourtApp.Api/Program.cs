@@ -1,9 +1,14 @@
 using CourtApp.Api.Extensions;
 using CourtApp.Application.DTOs.Settings;
 using CourtApp.Application.Extensions;
+using CourtApp.Infrastructure.DataSeeder;
+using CourtApp.Infrastructure.DbContexts;
 using CourtApp.Infrastructure.Extensions;
+using CourtApp.Infrastructure.Identity.Models;
+using CourtApp.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using System.Text;
@@ -108,6 +113,13 @@ builder.Services.AddControllers();
 
 // ---------------- BUILD APP ----------------
 var app = builder.Build();
+
+// -------------------- SEED DATA --------------------
+using (var scope = app.Services.CreateScope())
+{  
+    await IdentitySeeder.SeedAsync(scope.ServiceProvider);
+    await AppMasterSeeder.SeedAsync(scope.ServiceProvider);
+}
 
 Console.WriteLine($"Environment: {app.Environment.EnvironmentName}");
 

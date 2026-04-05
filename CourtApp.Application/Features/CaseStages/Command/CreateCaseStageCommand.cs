@@ -3,13 +3,13 @@ using AutoMapper;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
 using CourtApp.Domain.Entities;
-using CourtApp.Domain.Entities.LawyerDiary;
 using MediatR;
 using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using CourtApp.Domain.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Features.CaseStages.Command
 {
@@ -42,7 +42,7 @@ namespace CourtApp.Application.Features.CaseStages.Command
         {
             // Check if a record with the same name already exists (case-insensitive)
             var existingCadre = repository.QryEntities
-                .Where(e => e.CaseStage.ToLower().Trim().Contains(request.CaseStage.ToLower().Trim()))
+                .Where(e => e.Name.ToLower().Trim().Contains(request.CaseStage.ToLower().Trim()))
                 .FirstOrDefault();
 
             if (existingCadre != null)

@@ -1,9 +1,5 @@
-﻿using CourtApp.Entities.Common;
-using System;
-using System.ComponentModel.DataAnnotations.Schema;
-using Microsoft.EntityFrameworkCore;
-using AuditTrail.Abstrations;
-using System.Collections.Generic;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Domain.Entities.Common
 {

@@ -65,7 +65,7 @@ namespace CourtApp.Application.Features.UserCase
                 mappedData.NextDate = caseLatestNextDate;
             }
 
-            bool isHighCourt = detail.CourtType?.Abbreviation == "HICT";
+            bool isHighCourt = detail.CourtType?.Code == "HICT";
             mappedData.IsHighCourt = isHighCourt;
 
             if (isHighCourt)
@@ -81,9 +81,9 @@ namespace CourtApp.Application.Features.UserCase
                     ImpugedOrderDate = item.ImpugedOrderDate,
                     StateId = item.StateId,
                     CourtTypeId = item.CourtTypeId,
-                    IsAgHighCourt = item.CourtType?.Abbreviation == "HICT",
-                    BenchId = item.CourtType?.Abbreviation == "HICT" ? item.CourtBenchId : Guid.Empty,
-                    CourtId = item.CourtType?.Abbreviation != "HICT" ? item.CourtBenchId : Guid.Empty,
+                    IsAgHighCourt = item.CourtType?.Code == "HICT",
+                    BenchId = item.CourtType?.Code == "HICT" ? item.CourtBenchId : Guid.Empty,
+                    CourtId = item.CourtType?.Code != "HICT" ? item.CourtBenchId : Guid.Empty,
                     CourtDistrictId = item.CourtDistrictId ?? Guid.Empty,
                     ComplexId = item.ComplexId ?? Guid.Empty,
                     CadreId = item.CadreId,

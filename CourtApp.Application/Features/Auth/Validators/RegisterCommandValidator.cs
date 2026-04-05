@@ -36,7 +36,7 @@ namespace CourtApp.Application.Features.Auth.Validators
             // Individual Info validation
             RuleFor(x => x.IndividualInfoDto)
                 .NotNull().WithMessage("Individual information is required")
-                .When(x => x.UserType == RegisterType.LAWYER || x.UserType == RegisterType.CLIENT);
+                .When(x => x.UserType == RegisterType.Lawyer || x.UserType == RegisterType.Client);
 
             RuleFor(x => x.IndividualInfoDto.FirstName)
                 .NotEmpty().WithMessage("First Name is required")
@@ -59,12 +59,12 @@ namespace CourtApp.Application.Features.Auth.Validators
 
             RuleFor(x => x.IndividualInfoDto.EnrollmentNumber)
                 .NotEmpty().WithMessage("Enrollment Number is required")
-                .When(x => x.UserType == RegisterType.LAWYER && x.IndividualInfoDto != null);
+                .When(x => x.UserType == RegisterType.Lawyer && x.IndividualInfoDto != null);
 
             // Company Info validation
             RuleFor(x => x.CompanyInfoDto)
                 .NotNull().WithMessage("Company information is required")
-                .When(x => x.UserType == RegisterType.CORPORATE);
+                .When(x => x.UserType == RegisterType.Corporate);
 
             RuleFor(x => x.CompanyInfoDto.CompanyName)
                 .NotEmpty().WithMessage("Company Name is required")

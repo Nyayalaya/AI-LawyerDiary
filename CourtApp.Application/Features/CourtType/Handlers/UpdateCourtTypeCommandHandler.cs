@@ -60,8 +60,8 @@ namespace CourtApp.Application.Features.CourtType.Handlers
                 var isDuplicate = await _repository.CourtTypeEntities
                     .AsNoTracking()
                     .AnyAsync(x => x.Id != request.Id &&
-                        ((abbreviation != null && x.Abbreviation == abbreviation) ||
-                         (courtType != null && x.CourtType == courtType)),
+                        ((abbreviation != null && x.Code == abbreviation) ||
+                         (courtType != null && x.Name == courtType)),
                         cancellationToken);
 
                 if (isDuplicate)
@@ -70,8 +70,8 @@ namespace CourtApp.Application.Features.CourtType.Handlers
                     return Result<string>.Fail($"{courtType} already exists.");
                 }
 
-                entity.CourtType = courtType;
-                entity.Abbreviation = abbreviation;
+                entity.Name = courtType;
+                entity.Code = abbreviation;
                 //entity.Languages = _mapper.Map<List<LangEntity>>(request.Language);
 
                 await _repository.UpdateAsync(entity);
