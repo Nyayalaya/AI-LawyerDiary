@@ -44,8 +44,8 @@ namespace CourtApp.Application.Features.CourtType.Handlers
             try
             {
                 // Normalize once
-                var abbreviation = request.Abbreviation?.Trim();
-                var courtType = request.CourtType?.Trim();
+                var abbreviation = request.Code?.Trim();
+                var courtType = request.Name?.Trim();
                 // Duplicate CourtType check
                 var isExists = await _repository.CourtTypeEntities
                     .AsNoTracking()

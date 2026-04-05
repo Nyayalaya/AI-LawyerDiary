@@ -93,8 +93,7 @@ namespace CourtApp.Infrastructure.DbContexts
         {
             ChangeTracker.DetectChanges();
 
-            if (!SkipAudit)
-            {
+           
                 var userId = _authenticatedUser?.UserId ?? Guid.Empty.ToString();
                 foreach (var entry in ChangeTracker.Entries<AuditableEntity>().ToList())
                 {
@@ -111,10 +110,10 @@ namespace CourtApp.Infrastructure.DbContexts
                             break;
                     }
                 }
-            }
+            
 
             // If UserId is null or auditing skipped, call base without user
-            if (_authenticatedUser.UserId == null || SkipAudit)
+            if (_authenticatedUser.UserId == null)
                 return await base.SaveChangesAsync(cancellationToken);
 
             // Otherwise, pass UserId to base SaveChangesAsync (your current logic)

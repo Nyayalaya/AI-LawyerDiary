@@ -53,8 +53,8 @@ namespace CourtApp.Application.Features.CourtType.Handlers
                     return Result<string>.Fail("Court type not found.");
                 }
 
-                var abbreviation = request.Abbreviation?.Trim();
-                var courtType = request.CourtType?.Trim();
+                var abbreviation = request.Code?.Trim();
+                var courtType = request.Name?.Trim();
 
                 // Check for duplicates (excluding current entity)
                 var isDuplicate = await _repository.CourtTypeEntities

@@ -5,9 +5,9 @@ using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using CourtApp.Domain.Entities.Masters;
+using CourtApp.Application.Features.CaseStage.Services;
 
 namespace CourtApp.Infrastructure.Repositories
 {
@@ -20,7 +20,7 @@ namespace CourtApp.Infrastructure.Repositories
             this._repository = _repository;
             this._distributedCache = _distributedCache;
         }
-        public IQueryable<CaseStageEntity> QryEntities => _repository.Entities;
+        public IQueryable<CaseStageEntity> Entities => _repository.Entities;
 
         public async Task DeleteAsync(CaseStageEntity objEntity)
         {

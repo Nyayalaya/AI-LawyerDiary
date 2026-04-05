@@ -55,9 +55,6 @@
     <Folder Include="DTOs\APIRes\" />
     <Folder Include="DTOs\CaseCategory\" />
     <Folder Include="DTOs\Work\" />
-    <Folder Include="Features\CaseStages\Handlers\" />
-    <Folder Include="Features\CaseStages\Validators\" />
-    <Folder Include="Features\CaseStages\Services\" />
     <Folder Include="Features\CaseType\Validators\" />
     <Folder Include="Features\Clients\Validators\" />
     <Folder Include="Features\Clients\Services\" />

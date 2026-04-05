@@ -1,27 +1,18 @@
-﻿using CourtApp.Application.Common;
-using AutoMapper;
-using CourtApp.Application.Interfaces.CacheRepositories;
+﻿using AutoMapper;
+using CourtApp.Application.Common;
+using CourtApp.Application.Features.CaseStage.Services;
+using CourtApp.Application.Features.CaseStages.Query;
 using MediatR;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace CourtApp.Application.Features.CaseStages.Query
+namespace CourtApp.Application.Features.CaseStage.Handlers
 {
-    public class CaseStageByIdQuery : IRequest<Result<CaseStageQueryByIdResponse>>
-    {
-        public Guid Id { get; set; }
-        public CaseStageByIdQuery()
-        {
-
-        }
-    }
-
     public class CaseStageByIdQueryHandler : IRequestHandler<CaseStageByIdQuery, Result<CaseStageQueryByIdResponse>>
     {
-        private readonly ICaseStageCacheRepository _repository;
+        private readonly ICaseStageRepository _repository;
         private readonly IMapper mapper;
-        public CaseStageByIdQueryHandler(ICaseStageCacheRepository _repository, IMapper mapper)
+        public CaseStageByIdQueryHandler(ICaseStageRepository _repository, IMapper mapper)
         {
             this._repository = _repository;
             this.mapper = mapper;

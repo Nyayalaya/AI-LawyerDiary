@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace CourtApp.Application.Interfaces.Repositories
+namespace CourtApp.Application.Features.CaseStage.Services
 {
     public interface ICaseStageRepository
     {
-        IQueryable<CaseStageEntity> QryEntities { get; }
+        IQueryable<CaseStageEntity> Entities { get; }
 
         Task<List<CaseStageEntity>> GetListAsync();
 
