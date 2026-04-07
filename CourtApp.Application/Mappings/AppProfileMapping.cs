@@ -1,0 +1,92 @@
+﻿using AutoMapper;
+using CourtApp.Application.DTOs.Cadre;
+using CourtApp.Application.DTOs.Location;
+using CourtApp.Application.DTOs.WorkSub;
+using CourtApp.Application.Features.Cadre.Commands;
+using CourtApp.Application.Features.Cadre.Dtos;
+using CourtApp.Application.Features.Court;
+using CourtApp.Application.Features.Court.DTOs;
+using CourtApp.Application.Features.CourtHall.Commands;
+using CourtApp.Application.Features.CourtHall.DTOs;
+using CourtApp.Application.Features.CourtLevel.Query;
+using CourtApp.Application.Features.CourtType.Command;
+using CourtApp.Application.Features.CourtType.Query;
+using CourtApp.Application.Features.Location;
+using CourtApp.Application.Features.State.Query;
+using CourtApp.Application.Features.WorkMasterSub.Commands;
+using CourtApp.Domain.Entities.Masters;
+
+namespace CourtApp.Application.Mappings
+{
+    public class AppProfileMapping : Profile
+    {
+        public AppProfileMapping()
+        {
+            #region State Profile Mapping
+            CreateMap<StateEntity,GetStateMasterResponse>();
+            #endregion
+
+            #region Court Type profile Mapping
+            CreateMap<GetCourtTypeResponse, CourtTypeEntity>().ReverseMap();
+            CreateMap<CreateCourtTypeCommand, CourtTypeEntity>().ReverseMap();
+            CreateMap<UpdateCourtTypeCommand, CourtTypeEntity>().ReverseMap();
+            CreateMap<DeleteCourtTypeCommand, CourtTypeEntity>().ReverseMap();
+            #endregion
+
+            #region Court Level Profile Mapping
+            CreateMap<CourtLevelEntity, GetCourtLevelResponse>();
+            #endregion
+
+            #region Work & Work Sub Master Profile Mapping
+            CreateMap<WorksEntity, WorkSubMasterResponse>()
+               .ForMember(dest => dest.WorkId, opt => opt.MapFrom(src => src.WorkId))
+               .ForMember(dest => dest.CourtTypeId, opt => opt.MapFrom(src => src.CourtTypeId))
+               .ForMember(dest => dest.CourtType, opt => opt.MapFrom(src => src.CourtType.Name))
+               .ForMember(dest => dest.WorkName, opt => opt.MapFrom(src => src.Work.Name));
+            CreateMap<WorksEntity, WorkSubMasterByIdResponse>()
+                .ForMember(dest => dest.CourtType, opt => opt.MapFrom(src => src.CourtType.Name))
+                .ForMember(dest => dest.WorkName, opt => opt.MapFrom(src => src.Work.Name));
+            CreateMap<CreateWorkSubMasterCommand, WorksEntity>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Works));
+            #endregion
+
+            #region Cadre Profile Mapping
+            // Map from entity to DTOs
+            CreateMap<CadreMasterEntity, CadreResponse>();
+            CreateMap<CadreMasterEntity, CadreByIdResponse>();
+
+            // Backward compatibility with old DTOs
+            CreateMap<CadreMasterEntity, GetCadreResponseById>();
+            CreateMap<CadreMasterEntity, GetCadreResponse>();
+
+            // Map from commands to entity
+            CreateMap<CreateCadreCommand, CadreMasterEntity>();
+            CreateMap<UpdateCadreCommand, CadreMasterEntity>();
+            #endregion
+
+            #region Court Profile Mapping
+            CreateMap<CourtEntity, CourtResponse>();
+            CreateMap<CourtEntity, CourtByIdResponse>()
+                .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location.Name))
+                .ForMember(dest => dest.CourtTypeName, opt => opt.MapFrom(src => src.CourtType.Name))
+                .ForMember(dest => dest.CourtLevelName, opt => opt.MapFrom(src => src.CourtLevel.Name));
+            CreateMap<CreateCourtCommand, CourtEntity>();
+            CreateMap<UpdateCourtCommand, CourtEntity>();
+            #endregion
+
+            #region Court Hall Profile Mapping
+            CreateMap<CreateCourtHallCommand, CourtHallEntity>();
+            CreateMap<CourtHallEntity, CourtHallResponse>();
+            CreateMap<CourtHallEntity, CourtHallByIdResponse>();
+            #endregion
+
+            #region Location Profile Mapping
+            CreateMap<CreateLocationCommand.LocationDetail, LocationEntity>();
+            CreateMap<LocationEntity, LocationResponse>();
+            CreateMap<LocationEntity, LocationByIdResponse>()
+                .ForMember(dest => dest.StateName, opt => opt.MapFrom(src => src.State.Name))
+                .ForMember(dest => dest.ParentLocationName, opt => opt.MapFrom(src => src.ParentLocation.Name));
+            #endregion
+        }
+    }
+}

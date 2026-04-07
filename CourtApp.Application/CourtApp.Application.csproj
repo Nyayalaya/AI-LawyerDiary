@@ -36,7 +36,6 @@
     <Compile Remove="Mappings\UserCaseEntryMappings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AspNetCoreHero.Results" Version="1.1.1" />
     <PackageReference Include="AutoMapper" Version="16.1.1" />
    
     <PackageReference Include="AspNetCoreHero.ThrowR" Version="1.0.0" />
@@ -59,6 +58,7 @@
     <Folder Include="Features\Clients\Validators\" />
     <Folder Include="Features\Clients\Services\" />
     <Folder Include="Features\State\Command\" />
+    <Folder Include="Features\WorkMasterSub\Dtos\" />
     <Folder Include="Interfaces\CacheRepositories\LawyerDiary\" />
     <Folder Include="Interfaces\CacheRepositories\Litigation\" />
     <Folder Include="Interfaces\CacheRepositories\Client\" />

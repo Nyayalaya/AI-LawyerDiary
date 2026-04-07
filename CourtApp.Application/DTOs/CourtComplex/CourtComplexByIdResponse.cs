@@ -1,19 +1,16 @@
-﻿using System;
+﻿using CourtApp.Domain.Entities.Common;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CourtApp.Application.DTOs.CourtComplex
 {
     public class CourtComplexByIdResponse
     {
-        public  Guid Id { get; set; }
-        public string Name_En { get; set; }
-        public string Name_Hn { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
         public int StateId { get; set; }
-        public int DistrictId { get; set; }
         public Guid CourtDistrictId { get; set; }
-        public string Abbreviation { get; set; }
+        public List<LangEntity> Languages { get; set; }
     }
 }

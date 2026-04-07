@@ -64,8 +64,8 @@ namespace CourtApp.Application.Features.CaseDetails
                 CisNo = detail.CisNumber ?? "",
                 CisYear = detail.CisYear.ToString(),
                 CnrNo = detail.CnrNumber ?? "",
-                DistrictCourt = detail.CourtDistrict?.Name_En ?? "",
-                CourtComplex = detail.Complex?.Name_En ?? "",
+                DistrictCourt = detail.CourtDistrict?.Name ?? "",
+                CourtComplex = detail.Complex?.Name ?? "",
                 NextDate = caseLatestNextDate,
                 IsCaseAgainstDecision = detail.CaseAgainstEntities?.Any() == true
             };
@@ -83,12 +83,12 @@ namespace CourtApp.Application.Features.CaseDetails
                     CisNo = item.CisNo ?? "",
                     CisYear = item.CisYear.ToString(),
                     CnrNo = item.CnrNo ?? "",
-                    Cadre = item.Cadre?.Name_En ?? "",
+                    Cadre = item.Cadre?.Name ?? "",
                     OfficerName = item.OfficerName ?? "",
                     CaseCategory = item.CaseCategory?.Name ?? "",
-                    CourtComplex = item.Complex?.Name_En ?? "",
+                    CourtComplex = item.Complex?.Name ?? "",
                     CaseType = item.CaseType?.Name_En ?? "",
-                    DistrictCourt = item.CourtDistrict?.Name_En ?? ""
+                    DistrictCourt = item.CourtDistrict?.Name ?? ""
                 }).ToList();
             }
 
@@ -131,13 +131,6 @@ namespace CourtApp.Application.Features.CaseDetails
             }
 
             return Result<CaseDetailInfoDto>.Success(ct);
-
-
-
-            //var detail = await _CaseRepo.GetDetailAsync(request.CaseId);
-
-            //// Get the latest proceeding with a next date
-            //var lastProc = detail.CaseProcEntities
             //    .OrderByDescending(d => d.ProceedingDate)
             //    .Select(d => new { d.ProceedingDate, d.NextDate })
             //    .FirstOrDefault();

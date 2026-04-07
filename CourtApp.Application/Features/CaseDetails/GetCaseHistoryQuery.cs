@@ -83,8 +83,8 @@ namespace CourtApp.Application.Features.CaseDetails
                         .Select(w => new
                         {
                             WorkID = w.Id,
-                            WorkName = w.Name_En,
-                            WorkType = w.Work.Work_En,
+                            WorkName = w.Name,
+                            WorkType = w.Work.Name,
                             WorkStatus = WDetails.ContainsKey(w.Id) ? WDetails[w.Id].Status : 0,
                             WorkDoneDate = WDetails.ContainsKey(w.Id)
                                 ? (WDetails[w.Id].Status == 1

@@ -1,5 +1,4 @@
 ﻿using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.LawyerDiary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
@@ -7,6 +6,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CourtApp.Application.CacheKeys;
+using CourtApp.Domain.Entities.Masters;
+using CourtApp.Application.Features.Cadre.Services;
 namespace CourtApp.Infrastructure.Repositories
 {
     public class CadreMasterRepository : ICadreMasterRepository

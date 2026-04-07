@@ -92,8 +92,8 @@ namespace CourtApp.Application.Features.FormPrint
                         CourtType = await T(x.CourtType?.Code, lang),
                         CaseCategory = await T(x.CaseCategory?.Name, lang),
                         CaseType = await T(x.CaseType?.Name_En, lang),
-                        CourtDistrict = await T(x.CourtDistrict?.Name_En, lang),
-                        CourtComplex = await T(x.Complex?.Name_En, lang),
+                        CourtDistrict = await T(x.CourtDistrict?.Name, lang),
+                        CourtComplex = await T(x.Complex?.Name, lang),
                         Court = await T(x.CourtBench?.CourtBench_En, lang),
                         CaseStage = await T(x.CaseStage?.Name, lang),
 
@@ -138,7 +138,7 @@ namespace CourtApp.Application.Features.FormPrint
                                 : $"{s.CisNo}/{s.CisYear}",
                             CnrNo = s.CnrNo ?? "",
                             OfficerName=s.OfficerName,
-                            Cadre=s.Cadre?.Name_En,
+                            Cadre=s.Cadre?.Name,
                         }).FirstOrDefault()
                     });
                 }                

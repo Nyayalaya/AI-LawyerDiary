@@ -55,7 +55,7 @@ namespace CourtApp.Application.Features.CaseWork
                             aw.Id = c.Id;
                             aw.WorkId = w.WorkId;
                             var swork = await _SWRepo.GetByIdAsync(w.WorkId);
-                            aw.WorkDetail = swork != null ? swork.Work.Work_En + " - " + swork.Name_En : "";
+                            aw.WorkDetail = swork != null ? swork.Work.Name + " - " + swork.Name : "";
                             a.AWorks.Add(aw);
                         }
                         awc.Add(a);

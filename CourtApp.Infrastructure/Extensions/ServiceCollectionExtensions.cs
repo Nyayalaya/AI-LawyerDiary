@@ -1,8 +1,10 @@
 ﻿using CourtApp.Application.Features.Auth.Services;
+using CourtApp.Application.Features.Cadre.Services;
 using CourtApp.Application.Features.CaseCategory.Services;
 using CourtApp.Application.Features.CaseDocuments.Services;
 using CourtApp.Application.Features.CaseStage.Services;
 using CourtApp.Application.Features.CaseType.Services;
+using CourtApp.Application.Features.CourtLevel.Services;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Features.State.Services;
 using CourtApp.Application.Interfaces.CacheRepositories;
@@ -83,6 +85,9 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddTransient<IStateCacheRepository, StateMasterCacheRepository>();
             services.AddTransient<IStateMasterRepository, StateMasterRepository>();
 
+            services.AddTransient<ICourtLevelCacheRepository, CourtLevelCacheRepository>();
+            services.AddTransient<ICourtLevelMasterRepository, CourtLevelMasterRepository>();
+
             services.AddTransient<IDsitrictMasterCacheRepository, DistrictMasterCacheRepository>();
             services.AddTransient<IDistrictMasterRepository, DistrictMasterRepository>();
 
@@ -122,6 +127,9 @@ namespace CourtApp.Infrastructure.Extensions
 
             services.AddTransient<ICadreMasterCacheRepository, CadreMasterCacheRepository>();
             services.AddTransient<ICadreMasterRepository, CadreMasterRepository>();
+
+            services.AddTransient<ICourtLevelCacheRepository, CourtLevelCacheRepository>();
+            services.AddTransient<ICourtLevelMasterRepository, CourtLevelMasterRepository>();
 
             #endregion Repositories
 

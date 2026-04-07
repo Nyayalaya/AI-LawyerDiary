@@ -1,4 +1,4 @@
-﻿using CourtApp.Domain.Entities.LawyerDiary;
+﻿using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace CourtApp.Application.Interfaces.Repositories
 {
     public interface IWorkMasterRepository
     {
-        IQueryable<WorkMasterEntity> Entities { get; }
-        Task<List<WorkMasterEntity>> GetListAsync();
-        Task<WorkMasterEntity> GetByIdAsync(Guid Id);
-        Task<Guid> InsertAsync(WorkMasterEntity workMasterEntity);
-        Task UpdateAsync(WorkMasterEntity workMasterEntity);
-        Task DeleteAsync(WorkMasterEntity workMasterEntity);
+        IQueryable<WorkTypeEntity> Entities { get; }
+        Task<List<WorkTypeEntity>> GetListAsync();
+        Task<WorkTypeEntity> GetByIdAsync(Guid Id);
+        Task<Guid> InsertAsync(WorkTypeEntity workMasterEntity);
+        Task UpdateAsync(WorkTypeEntity workMasterEntity);
+        Task DeleteAsync(WorkTypeEntity workMasterEntity);
     }
 }

@@ -60,10 +60,9 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<LawyerMasterEntity> Laywers { get; set; }
         public DbSet<ProceedingHeadEntity> ProceedingHeads { get; set; }
         public DbSet<ProceedingSubHeadEntity> ProceedingSubHeads { get; set; }
-        public DbSet<WorkMasterEntity> WorkMasters { get; set; }
-        public DbSet<WorkMasterSubEntity> WorkMasterSubs { get; set; }
-        public DbSet<CourtDistrictEntity> CDistricts { get; set; }
-        public DbSet<CourtComplexEntity> CourtComplex { get; set; }
+        public DbSet<WorkTypeEntity> WorkMasters { get; set; }
+        public DbSet<WorksEntity> WorkMasterSubs { get; set; }
+        public DbSet<CourtDistrictEntity> CourtDistricts { get; set; }
         public DbSet<CaseTitleEntity> CaseTitiles { get; set; }
         public DbSet<CourtBenchEntity> CourtBenchEntities { get; set; }
         public DbSet<CaseProcedingEntity> CaseProcedingEntities { get; set; }
@@ -87,7 +86,12 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<DocumentChunk> DocumentChunks { get; set; }
         public DbSet<LegalCitationEntity> LegalCitations { get; set; }
         public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get; set; }
-        public bool SkipAudit { get; set; } = false;
+        public DbSet<LocationEntity> Locations { get; set; }
+        public DbSet<CourtEntity> Courts { get; set; }
+        public DbSet<CourtLevelEntity> CourtLevels { get; set; }
+        public DbSet<JudgeEntity> Judges { get; set; }
+        public DbSet<CourtComplexEntity> CourtComplexes { get; set; }
+        public DbSet<CourtHallEntity> CourtHalls { get; set; }
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
         {
@@ -222,6 +226,19 @@ namespace CourtApp.Infrastructure.DbContexts
                   k.ToJson();
               }
               );
+            builder.Entity<CourtDistrictEntity>().OwnsMany(
+             j => j.Languages, k =>
+             {
+                 k.ToJson();
+             }
+             );
+            builder.Entity<CourtComplexEntity>().OwnsMany(
+             j => j.Languages, k =>
+             {
+                 k.ToJson();
+             }
+             );
+
             builder.Entity<MultiLangDictEntity>().OwnsMany(
                j => j.MultiLangs, k =>
                {

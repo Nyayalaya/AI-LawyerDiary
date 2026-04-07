@@ -12,7 +12,7 @@ namespace CourtApp.Api.Controllers
     public class CaseStageController : BaseController
     {
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<List<GetStateMasterResponse>>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<List<CaseStageResponse>>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
         public async Task<IActionResult> GetAllAsync([FromQuery] CaseStageQuery query)
         {

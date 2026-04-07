@@ -27,18 +27,16 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<LDBookEntity> LDBooks { get; set; }
         DbSet<PublisherEntity> Publishers { get; set; }
         DbSet<ClientEntity> Clients { get; set; }
-        DbSet<CourtTypeEntity> CourtTypes { get; set; }
+       
         DbSet<TypeOfCasesEntity> Typeofcases { get; set; }
         DbSet<CaseKindEntity> CaseKinds { get; set; }
         DbSet<CaseDetailEntity> Cases { get; set; }
         DbSet<LawyerMasterEntity> Laywers { get; set; }
         DbSet<ProceedingHeadEntity> ProceedingHeads { get; set; }
         DbSet<ProceedingSubHeadEntity> ProceedingSubHeads { get; set; }
-        DbSet<WorkMasterEntity> WorkMasters { get; set; }
-        DbSet<WorkMasterSubEntity> WorkMasterSubs { get; set; }
+        DbSet<WorkTypeEntity> WorkMasters { get; set; }
+        DbSet<WorksEntity> WorkMasterSubs { get; set; }
         DbSet<CaseDetailAgainstEntity> AgainstCaseDetails { get; set; }
-        DbSet<CourtDistrictEntity> CDistricts { get; set; }
-        DbSet<CourtComplexEntity> CourtComplex { get; set; }
         DbSet<CaseTitleEntity> CaseTitiles { get; set; }
         DbSet<CourtBenchEntity> CourtBenchEntities { get; set; }
         DbSet<CaseProcedingEntity> CaseProcedingEntities { get; set; }
@@ -55,11 +53,19 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<LanguageEntity> LanguageEntities { get; set; }
         DbSet<CourtFormTypeEntity> CourtFormTypeEntities { get; set; }
         DbSet<BillingDetailEntity> BillingDetails { get; set; }
-
         public DbSet<AIConversation> AIConversations { get; set; }
         public DbSet<DocumentChunk> DocumentChunks { get; set; }
         public DbSet<LegalCitationEntity> LegalCitations { get; set; }
         public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get; set; }
+
+        public DbSet<LocationEntity> Locations { get; set; }
+        public DbSet<CourtEntity> Courts { get; set; }
+        DbSet<CourtTypeEntity> CourtTypes { get; set; }
+        public DbSet<CourtLevelEntity> CourtLevels { get; set; }
+        public DbSet<JudgeEntity> Judges { get; set; }
+        public DbSet<CourtComplexEntity> CourtComplexes { get; set; }
+        public DbSet<CourtHallEntity> CourtHalls { get; set; }
+
 
     }
 }

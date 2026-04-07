@@ -1,13 +1,12 @@
 ﻿using AspNetCoreHero.Extensions.Caching;
 using AspNetCoreHero.ThrowR;
-using CourtApp.Application.Interfaces.CacheRepositories;
-using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.LawyerDiary;
 using CourtApp.Application.CacheKeys;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities.Masters;
+using CourtApp.Application.Features.Cadre.Services;
 
 namespace CourtApp.Infrastructure.CacheRepositories
 {

@@ -60,14 +60,14 @@ ICaseAssignedRepository assignedRepo)
                                        Works = (from w in proc.ProcWork.Works
                                                 join wm in _WorkRepo.Entities.AsNoTracking()
                                                     on w.WorkTypeId equals wm.Id
-                                                where wm.Abbreviation.ToUpper() == "COPY"
+                                                where wm.Code.ToUpper() == "COPY"
                                                 select new
                                                 {
                                                     w.WorkId,
                                                     w.Status,
                                                     AppliedOn = w.AppliedOn, // Raw DateTime here
                                                     ReceivedOn = w.ReceivedOn, // Raw DateTime here
-                                                    WorkTypeName = wm.Work_En
+                                                    WorkTypeName = wm.Name
                                                 }).ToList()
                                    }
                                }).ToList()

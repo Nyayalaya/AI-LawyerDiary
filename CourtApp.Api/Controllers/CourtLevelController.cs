@@ -1,20 +1,19 @@
 ﻿using CourtApp.Application.Common;
-using CourtApp.Application.Features.State.Query;
-using Microsoft.AspNetCore.Http;
+using CourtApp.Application.Features.CourtLevel.Query;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 
 namespace CourtApp.Api.Controllers
 {
-    
-    public class CourtLevelController : BaseController
+
+    public sealed class CourtLevelController : BaseController
     {
         [HttpGet]
-        [ProducesResponseType(typeof(ApiResponse<List<GetStateMasterResponse>>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<List<GetCourtLevelResponse>>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetAllAsync([FromQuery] GetStateMasterQuery query)
+        public async Task<IActionResult> GetAllAsync([FromQuery] GetCourtLevelQuery query)
         {
-            PaginatedResult<GetStateMasterResponse> result = await Mediator.Send(query, RequestAborted);
+            PaginatedResult<GetCourtLevelResponse> result = await Mediator.Send(query, RequestAborted);
             return FromPaginated(result);
         }
     }

@@ -55,7 +55,7 @@ namespace CourtApp.Application.Features.Registers
                                                 into caseAssignments
                         from ac in caseAssignments.DefaultIfEmpty()
                         from work in p.ProcWork.Works
-                        join w in _wRepo.Entities.Where(w => !w.Abbreviation.Equals("COPY"))
+                        join w in _wRepo.Entities.Where(w => !w.Code.Equals("COPY"))
                             on work.WorkTypeId equals w.Id
                         let c = p.Case
                         where c != null && (request.LinkedIds.Contains(c.CreatedBy) ||
@@ -71,7 +71,7 @@ namespace CourtApp.Application.Features.Registers
                             FirstTitle = c.FirstTitle,
                             SecondTitle = c.SecondTitle,
                             No = c.CaseNo,
-                            WorkDone = w.Work_En,
+                            WorkDone = w.Name,
                             WorkDate = w.LastModifiedOn.HasValue
                                 ? w.LastModifiedOn.Value.ToString("dd/MM/yyyy")
                                 : "-"

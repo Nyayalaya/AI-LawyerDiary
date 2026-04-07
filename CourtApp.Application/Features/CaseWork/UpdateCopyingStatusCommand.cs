@@ -57,7 +57,7 @@ namespace CourtApp.Application.Features.CaseWork
 
                 // Get the ID of the "copying" work type, case-insensitive match
                 var copyingWorkTypeId = _WorkMasterRepo.Entities
-                    .Where(w => appliedWorkTypeIds.Contains(w.Id) && w.Work_En.ToLower()== "coping")
+                    .Where(w => appliedWorkTypeIds.Contains(w.Id) && w.Name.ToLower()== "coping")
                     .Select(w => w.Id)
                     .FirstOrDefault();
 
