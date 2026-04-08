@@ -38,24 +38,20 @@ namespace CourtApp.Application.Features.CourtComplex.Handlers
             if (duplicateRecord != null)
                 return Result<Guid>.Fail("Another record with the same name already exists.");
 
-            // Check for code conflict if code is provided
-            if (!string.IsNullOrWhiteSpace(cmd.Code))
-            {
-                var codeExists = await repository.Entities
-                    .Where(e => e.Id != cmd.Id
-                                && e.StateId == cmd.StateId
-                                && e.Code.ToLower() == cmd.Code.ToLower().Trim())
-                    .FirstOrDefaultAsync(cancellationToken);
+            // Check for name conflict
+            var nameExists = await repository.Entities
+                .Where(e => e.Id != cmd.Id
+                            && e.StateId == cmd.StateId
+                            && e.Name.ToLower() == cmd.Name.ToLower().Trim())
+                .FirstOrDefaultAsync(cancellationToken);
 
-                if (codeExists != null)
-                    return Result<Guid>.Fail("Another record with the same code already exists.");
-            }
+            if (nameExists != null)
+                return Result<Guid>.Fail("Another record with the same name already exists.");
 
             // Update the entity fields
             existingRecord.StateId = cmd.StateId;
             existingRecord.CourtDistrictId = cmd.CourtDistrictId;
             existingRecord.Name = cmd.Name?.Trim();
-            existingRecord.Code = cmd.Code?.Trim();
 
             await repository.UpdateAsync(existingRecord);
             await _unitOfWork.Commit(cancellationToken);

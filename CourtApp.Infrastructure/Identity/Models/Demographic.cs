@@ -1,5 +1,5 @@
 ﻿using AuditTrail.Abstrations;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -17,7 +17,7 @@ namespace CourtApp.Infrastructure.Identity.Models
         /// <summary>
         /// Lawyer Address Information
         /// </summary>
-        public AddressInfo AddressInfo { get; set; }
+        public UserAddress AddressInfo { get; set; }
 
         /// <summary>
         /// Work location information of lawyer
@@ -74,6 +74,6 @@ namespace CourtApp.Infrastructure.Identity.Models
         /// <summary>
         /// Lawyer's all the specility in which they practiced.
         /// </summary>
-        public List<SpecializationEntity> Specializations { get; set; }
+        public List<Specialization> Specializations { get; set; }
     }
 }

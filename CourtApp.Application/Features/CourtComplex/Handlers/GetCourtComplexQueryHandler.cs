@@ -29,7 +29,6 @@ namespace CourtApp.Application.Features.CourtComplex.Handlers
             {
                 Id = e.Id,
                 Name = e.Name,
-                Code = e.Code,
                 StateName = e.State != null ? e.State.Name : string.Empty,
                 CDistrictName = e.CourtDistrict != null ? e.CourtDistrict.Name : string.Empty,
                 Languages = e.Languages

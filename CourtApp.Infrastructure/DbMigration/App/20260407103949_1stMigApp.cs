@@ -750,15 +750,15 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name = table.Column<string>(type: "text", nullable: true),
-                    Code = table.Column<string>(type: "text", nullable: true),
+                    Name = table.Column<string>(type: "text", nullable: false),
                     StateId = table.Column<int>(type: "integer", nullable: false),
                     Type = table.Column<int>(type: "integer", nullable: false),
                     ParentLocationId = table.Column<Guid>(type: "uuid", nullable: true),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Languages = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -957,14 +957,14 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Code = table.Column<string>(type: "text", nullable: true),
                     CourtLevelId = table.Column<Guid>(type: "uuid", nullable: false),
                     CourtTypeId = table.Column<Guid>(type: "uuid", nullable: false),
                     LocationId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Languages = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -1155,7 +1155,6 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
-                    Code = table.Column<string>(type: "text", nullable: true),
                     StateId = table.Column<int>(type: "integer", nullable: false),
                     CourtDistrictId = table.Column<Guid>(type: "uuid", nullable: false),
                     CourtId = table.Column<Guid>(type: "uuid", nullable: true),
@@ -1290,13 +1289,14 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: true),
                     Code = table.Column<string>(type: "text", nullable: true),
-                    CourtComplexId = table.Column<Guid>(type: "uuid", nullable: false),
                     JudgeName = table.Column<string>(type: "text", nullable: true),
                     RoomNumber = table.Column<string>(type: "text", nullable: true),
+                    CourtComplexId = table.Column<Guid>(type: "uuid", nullable: false),
                     CreatedBy = table.Column<string>(type: "text", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     LastModifiedBy = table.Column<string>(type: "text", nullable: true),
-                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true)
+                    LastModifiedOn = table.Column<DateTime>(type: "timestamp without time zone", nullable: true),
+                    Languages = table.Column<string>(type: "jsonb", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -2175,12 +2175,6 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 column: "DistrictId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_m_court_Code",
-                table: "m_court",
-                column: "Code",
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_m_court_CourtLevelId",
                 table: "m_court",
                 column: "CourtLevelId");
@@ -2194,6 +2188,12 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 name: "IX_m_court_LocationId",
                 table: "m_court",
                 column: "LocationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_m_court_Name_LocationId",
+                table: "m_court",
+                columns: new[] { "Name", "LocationId" },
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_m_court_CourtComplexId",
@@ -2240,12 +2240,6 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_m_court_complex_Code_StateId",
-                table: "m_court_complex",
-                columns: new[] { "Code", "StateId" },
-                unique: true);
-
-            migrationBuilder.CreateIndex(
                 name: "IX_m_court_complex_CourtDistrictId",
                 table: "m_court_complex",
                 column: "CourtDistrictId");
@@ -2289,9 +2283,9 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 column: "StateId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_m_court_hall_Code",
+                name: "IX_m_court_hall_Code_CourtComplexId",
                 table: "m_court_hall",
-                column: "Code",
+                columns: new[] { "Code", "CourtComplexId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -2332,9 +2326,9 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 column: "CourtHallId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_m_location_Code",
+                name: "IX_m_location_Name_StateId",
                 table: "m_location",
-                column: "Code",
+                columns: new[] { "Name", "StateId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(

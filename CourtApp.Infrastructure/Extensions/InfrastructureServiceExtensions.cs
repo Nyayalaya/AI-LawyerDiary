@@ -1,8 +1,11 @@
 ﻿using CourtApp.Application.Features.Auth.Services;
+using CourtApp.Application.Features.Permission.Services;
+using CourtApp.Application.Features.Profile.Services;
 using CourtApp.Application.Interfaces.Shared;
 using CourtApp.Infrastructure.DbContexts;
 using CourtApp.Infrastructure.Identity.Models;
 using CourtApp.Infrastructure.Identity.Services;
+using CourtApp.Infrastructure.Repositories;
 using CourtApp.Infrastructure.Services;
 using CourtApp.Infrastructure.Shared.Services;
 using Microsoft.AspNetCore.Identity;
@@ -47,6 +50,12 @@ namespace CourtApp.Infrastructure.Extensions
            .AddDefaultTokenProviders();
 
             services.AddTransient<IIdentityService, IdentityService>();
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IUserPermissionService, UserPermissionService>();
+            services.AddScoped<IRolePermissionService, RolePermissionService>();
+            services.AddScoped<IUserHierarchyService, UserHierarchyService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<IUserBillingInfoService, UserBillingInfoService>();
         }
 
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)

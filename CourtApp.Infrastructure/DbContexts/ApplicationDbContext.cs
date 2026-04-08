@@ -74,7 +74,7 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<DraftingDetailEntity> CaseTempMappings { get; set; }
         public DbSet<FormTemplateMappingEntity> TempFormMappings { get; set; }
         public DbSet<CadreMasterEntity> Cadres { get; set; }
-        public DbSet<SpecializationEntity> Specilities { get; set; }
+        public DbSet<Specialization> Specilities { get; set; }
         public DbSet<AssignCaseEntity> AssignedCases { get; set; }
         public DbSet<LanguageEntity> LanguageEntities { get; set; }
         public DbSet<CourtFormTypeEntity> CourtFormTypeEntities { get; set; }
@@ -233,6 +233,24 @@ namespace CourtApp.Infrastructure.DbContexts
              }
              );
             builder.Entity<CourtComplexEntity>().OwnsMany(
+             j => j.Languages, k =>
+             {
+                 k.ToJson();
+             }
+             );
+            builder.Entity<CourtEntity>().OwnsMany(
+             j => j.Languages, k =>
+             {
+                 k.ToJson();
+             }
+             );
+            builder.Entity<CourtHallEntity>().OwnsMany(
+             j => j.Languages, k =>
+             {
+                 k.ToJson();
+             }
+             );
+            builder.Entity<LocationEntity>().OwnsMany(
              j => j.Languages, k =>
              {
                  k.ToJson();

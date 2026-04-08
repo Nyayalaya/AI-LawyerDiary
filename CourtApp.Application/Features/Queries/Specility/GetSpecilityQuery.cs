@@ -24,7 +24,7 @@ namespace CourtApp.Application.Features.Queries.Specility
             var rs = dt.Select(s => new SpecilityDto
             {
                 Id = s.Id,
-                Name_En = s.Name_En,
+                Name_En = s.Name,
                 Name_Hn = s.Description
             }).ToList();
             return Result<List<SpecilityDto>>.Success(rs);

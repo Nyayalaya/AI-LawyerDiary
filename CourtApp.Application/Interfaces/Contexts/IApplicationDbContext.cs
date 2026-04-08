@@ -48,7 +48,7 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<DraftingDetailEntity> CaseTempMappings { get; set; }
         DbSet<FormTemplateMappingEntity> TempFormMappings { get; set; }
         DbSet<CadreMasterEntity> Cadres { get; set; }
-        DbSet<SpecializationEntity> Specilities { get; set; }
+        DbSet<Specialization> Specilities { get; set; }
         DbSet<AssignCaseEntity> AssignedCases { get; set; }
         DbSet<LanguageEntity> LanguageEntities { get; set; }
         DbSet<CourtFormTypeEntity> CourtFormTypeEntities { get; set; }

@@ -14,10 +14,6 @@ namespace CourtApp.Application.Features.Location.Validators
                 .NotEmpty().WithMessage("Location name is required")
                 .MaximumLength(255).WithMessage("Location name cannot exceed 255 characters");
 
-            RuleFor(x => x.Code)
-                .NotEmpty().WithMessage("Location code is required")
-                .MaximumLength(50).WithMessage("Location code cannot exceed 50 characters");
-
             RuleFor(x => x.Type)
                 .IsInEnum().WithMessage("Invalid location type");
         }

@@ -32,8 +32,7 @@ namespace CourtApp.Application.Features.CourtComplex.Handlers
             {
                 // Normalize the name to avoid null reference and trim/ToLower
                 var normalizedName = complex.Name?.Trim().ToLower();
-                var normalizedCode = complex.Code?.Trim().ToLower();
-
+                
                 var exists = await repository.Entities
                     .AnyAsync(w =>
                         w.Name.Trim().ToLower() == normalizedName &&
@@ -46,24 +45,9 @@ namespace CourtApp.Application.Features.CourtComplex.Handlers
                     return Result<Guid>.Fail($"Record already exists: {complex.Name}");
                 }
 
-                if (!string.IsNullOrWhiteSpace(normalizedCode))
-                {
-                    var codeExists = await repository.Entities
-                        .AnyAsync(w =>
-                            w.Code.Trim().ToLower() == normalizedCode &&
-                            w.StateId == request.StateId,
-                            cancellationToken);
-
-                    if (codeExists)
-                    {
-                        return Result<Guid>.Fail($"Code already exists: {complex.Code}");
-                    }
-                }
-
                 var newEntity = new CourtComplexEntity
                 {
                     Name = complex.Name?.Trim(),
-                    Code = complex.Code?.Trim(),
                     StateId = request.StateId,
                     CourtDistrictId = request.CourtDistrictId
                 };

@@ -14,7 +14,7 @@ namespace CourtApp.Infrastructure.Identity.Models
         public string Enrollment { get; set; }
         public ApplicationUser Lawyer { get; set; }
         public DateTime DateOfJoining { get; set; }
-        public AddressInfo AddressInfo { get; set; }
+        public UserAddress AddressInfo { get; set; }
 
     }
 }

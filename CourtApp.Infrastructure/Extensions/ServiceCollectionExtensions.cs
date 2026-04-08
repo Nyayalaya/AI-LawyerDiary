@@ -4,6 +4,7 @@ using CourtApp.Application.Features.CaseCategory.Services;
 using CourtApp.Application.Features.CaseDocuments.Services;
 using CourtApp.Application.Features.CaseStage.Services;
 using CourtApp.Application.Features.CaseType.Services;
+using CourtApp.Application.Features.CourtHall.Interfaces;
 using CourtApp.Application.Features.CourtLevel.Services;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Features.State.Services;
@@ -177,7 +178,14 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddTransient<IBillingDetailRepository, BillingDetailRepository>();
             #endregion
 
-
+            #region NewlyCreated Services
+            services.AddTransient<ICourtCacheRepository, CourtCacheRepository>();
+            services.AddTransient<ICourtRepository, CourtRepository>();
+            services.AddTransient<ILocationCacheRepository, LocationCacheRepository>();
+            services.AddTransient<ILocationRepository, LocationRepository>();
+            services.AddTransient<ICourtHallCacheRepository, CourtHallCacheRepository>();
+            services.AddTransient<ICourtHallRepository, CourtHallRepository>();
+            #endregion
 
 
         }

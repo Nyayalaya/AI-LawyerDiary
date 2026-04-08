@@ -56,6 +56,11 @@ namespace CourtApp.Infrastructure.Repositories
         }
 
         public async Task<int> GetCountByStateIdAsync(int stateId)
+        {
+            return await _repository.Entities
+                .Where(x => x.StateId == stateId)
+                .CountAsync();
+        }
 
         public async Task<LocationEntity> AddAsync(LocationEntity entity)
         {
@@ -69,6 +74,11 @@ namespace CourtApp.Infrastructure.Repositories
             {
                 dbSet.Update(entity);
             }
+        }
+
+        public Task DeleteAsync(LocationEntity entity)
+        {
+            throw new NotImplementedException();
         }
     }
 }

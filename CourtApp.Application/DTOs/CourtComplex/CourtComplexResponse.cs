@@ -8,7 +8,6 @@ namespace CourtApp.Application.DTOs.CourtComplex
     {
         public Guid Id { get; set; }
         public string Name { get; set; }
-        public string Code { get; set; }
         public string StateName { get; set; }
         public string DistrictName { get; set; }
         public string CDistrictName { get; set; }

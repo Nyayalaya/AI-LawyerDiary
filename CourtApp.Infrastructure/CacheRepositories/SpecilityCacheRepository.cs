@@ -2,7 +2,7 @@
 using CourtApp.Application.CacheKeys;
 using CourtApp.Application.Interfaces.CacheRepositories;
 using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
@@ -19,10 +19,10 @@ namespace CourtApp.Infrastructure.CacheRepositories
             this._repository = _repository;
             this._distributedCache = _distributedCache;
         }
-        public async Task<SpecializationEntity> GetByIdAsync(Guid Id)
+        public async Task<Specialization> GetByIdAsync(Guid Id)
         {
             string cacheKey = SpecilityCacheKeys.GetKey(Id);
-            var detail = await _distributedCache.GetAsync<SpecializationEntity>(cacheKey);
+            var detail = await _distributedCache.GetAsync<Specialization>(cacheKey);
             if (detail == null)
             {
                 detail = await _repository.GetByIdAsync(Id);
@@ -31,10 +31,10 @@ namespace CourtApp.Infrastructure.CacheRepositories
             return detail;
         }
 
-        public async Task<List<SpecializationEntity>> GetCachedListAsync()
+        public async Task<List<Specialization>> GetCachedListAsync()
         {
             string cacheKey = SpecilityCacheKeys.ListKey;
-            var dl = await _distributedCache.GetAsync<List<SpecializationEntity>>(cacheKey);
+            var dl = await _distributedCache.GetAsync<List<Specialization>>(cacheKey);
             if (dl == null)
             {
                 dl = await _repository.GetListAsync();

@@ -1,8 +1,25 @@
+using System;
+
 namespace CourtApp.Infrastructure.Email.Templates
 {
     public static class RegistrationEmailTemplate
     {
-        public static string GetTemplate(string userName, string firstName, string lastName, string verificationUrl)
+        public static string GetApprovalConfirmedTemplate(string name)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static string GetApprovalPendingTemplate(string fullName)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static string GetRejectionTemplate(string name, string reason)
+        {
+            throw new NotImplementedException();
+        }
+
+        public static string GetTemplate(string userName, string fullName, string verificationUrl)
         {
             return $@"
                 <!DOCTYPE html>
@@ -23,7 +40,7 @@ namespace CourtApp.Infrastructure.Email.Templates
                             <h1>Welcome to Court App!</h1>
                         </div>
                         <div class=""content"">
-                            <p>Dear {firstName} {lastName},</p>
+                            <p>Dear {fullName},</p>
                             <p>Thank you for registering with Court App. Your account has been created successfully.</p>
                             <p><strong>Username:</strong> {userName}</p>
                             <p>To complete your registration and activate your account, please click the button below:</p>

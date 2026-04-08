@@ -19,6 +19,5 @@ namespace CourtApp.Application.Features.CourtComplex
     public class DistrictComplex
     {
         public string Name { get; set; }
-        public string Code { get; set; }
     }
 }

@@ -1,17 +1,12 @@
-﻿
-using CourtApp.Application.Common;
+﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Mail;
 using CourtApp.Application.DTOs.Settings;
 using CourtApp.Application.Features.Auth.Dto;
 using CourtApp.Application.Features.Auth.Services;
 using CourtApp.Application.Interfaces.Shared;
-using CourtApp.Domain.Enums;
-using CourtApp.Infrastructure.DbContexts;
-using CourtApp.Infrastructure.Email.Templates;
 using CourtApp.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -19,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -34,7 +28,7 @@ namespace CourtApp.Infrastructure.Identity.Services
         private readonly ILogger<IdentityService> _logger;
         private readonly JWTSettings _jwtSettings;
         private readonly IMailService _mailService;
-        private readonly IdentityContext _identityDbContext;
+        
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
@@ -49,7 +43,7 @@ namespace CourtApp.Infrastructure.Identity.Services
             _signInManager = signInManager;
             _mailService = mailService;
             _logger = logger;
-            _identityDbContext = identityDbContext;
+           
         }
 
         public async Task<Result<TokenResponse>> GetTokenAsync(TokenRequest request, string ipAddress)
@@ -77,7 +71,6 @@ namespace CourtApp.Infrastructure.Identity.Services
                 var response = BuildTokenResponse(user, jwtToken);
                 var refreshToken = GenerateRefreshToken(ipAddress);
                 response.RefreshToken = refreshToken.Token;
-
                 _logger.LogInformation($"User {user.Email} logged in successfully");
                 return await Result<TokenResponse>.SuccessAsync(response, "Authenticated");
             }
@@ -85,49 +78,6 @@ namespace CourtApp.Infrastructure.Identity.Services
             {
                 _logger.LogError($"Error in GetTokenAsync: {ex.Message}");
                 return await Result<TokenResponse>.FailAsync(ex.Message);
-            }
-        }
-
-        public async Task<Result<string>> RegisterAsync(RegisterRequest request)
-        {
-            try
-            {
-                ValidateRegistrationRequest(request);
-
-                var userExists = await _userManager.FindByEmailAsync(request.Email);
-                if (userExists != null)
-                {
-                    _logger.LogWarning($"Registration attempt with existing email: {request.Email}");
-                    return await Result<string>.FailAsync($"Email '{request.Email}' is already registered.");
-                }
-
-                var user = CreateApplicationUser(request);
-                var result = await _userManager.CreateAsync(user, request.Password);
-
-                if (!result.Succeeded)
-                {
-                    var errors = FormatIdentityErrors(result);
-                    _logger.LogError($"User creation failed: {errors}");
-                    return await Result<string>.FailAsync(errors);
-                }
-
-                await _userManager.AddToRoleAsync(user, request.UserType.ToString());
-
-                if (request.UserType == RegisterType.Corporate)
-                {
-                    await AddCorporateUser(user, request.CompanyInfoDto);
-                }
-
-                var verificationUri = await GenerateVerificationUri(user, request.Origin);
-                await SendVerificationEmail(user, verificationUri);
-
-                _logger.LogInformation($"User {user.Email} registered successfully as {request.UserType}");
-                return Result<string>.Success(user.Id, $"User registered successfully. Confirmation email sent to {user.Email}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in RegisterAsync: {ex.Message}");
-                return await Result<string>.FailAsync(ex.Message);
             }
         }
 
@@ -237,57 +187,7 @@ namespace CourtApp.Infrastructure.Identity.Services
             }
         }
 
-        public async Task<bool> IsEmailExistAsync(string email)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(email))
-                    return false;
-
-                var user = await _userManager.FindByEmailAsync(email);
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in IsEmailExistAsync: {ex.Message}");
-                return false;
-            }
-        }
-
-        public async Task<bool> IsContactExistAsync(string contact)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(contact))
-                    return false;
-
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Mobile == contact);
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in IsContactExistAsync: {ex.Message}");
-                return false;
-            }
-        }
-
-        public async Task<bool> IsEnrollmentExistAsync(string enrollment)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(enrollment))
-                    return false;
-
-                var user = await _userManager.Users
-                    .FirstOrDefaultAsync(u => u.ProfessionalInfo != null && u.ProfessionalInfo.EnrollmentNo == enrollment);
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in IsEnrollmentExistAsync: {ex.Message}");
-                return false;
-            }
-        }
+        
 
         #region Private Methods
 
@@ -303,77 +203,6 @@ namespace CourtApp.Infrastructure.Identity.Services
                 throw new Exception($"Account for '{user.Email}' is inactive. Please contact support.");
             }
         }
-
-        private void ValidateRegistrationRequest(RegisterRequest request)
-        {
-            if (request == null)
-            {
-                throw new Exception("Registration request cannot be null.");
-            }
-
-            if ((request.UserType == RegisterType.Lawyer || request.UserType == RegisterType.Client) && request.IndividualInfoDto == null)
-            {
-                throw new Exception("Individual information is required for this user type.");
-            }
-
-            if (request.UserType == RegisterType.Corporate && request.CompanyInfoDto == null)
-            {
-                throw new Exception("Company information is required for corporate registration.");
-            }
-        }
-
-        private ApplicationUser CreateApplicationUser(RegisterRequest request)
-        {
-            var individualInfo = request.IndividualInfoDto;
-            var userName = new MailAddress(request.Email).User;
-
-            var user = new ApplicationUser
-            {
-                UserType = request.UserType.ToString(),
-                UserName = userName,
-                Email = request.Email,
-                FirstName = individualInfo?.FirstName?.Trim().ToUpper() ?? string.Empty,
-                LastName = individualInfo?.LastName?.Trim().ToUpper() ?? string.Empty,
-                Mobile = request.Contact,
-                IsActive = true
-            };
-
-            if (request.UserType == RegisterType.Lawyer && individualInfo != null)
-            {
-                user.ProfessionalInfo = new ProfessionalInfo
-                {
-                    EnrollmentNo = individualInfo.EnrollmentNumber ?? string.Empty,
-                    BarAssociationNumber = string.Empty,
-                    PracticeLicenseDate = default,
-                    PracticeSince = 0,
-                    Specializations = null
-                };
-            }
-
-            return user;
-        }
-
-        private async Task AddCorporateUser(ApplicationUser user, CompanyInfoDto companyInfo)
-        {
-            try
-            {
-                var corporateUser = new CorporateUser
-                {
-                    Id = user.Id,
-                    FirmName = companyInfo?.CompanyName ?? string.Empty,
-                    RegistrationNo = companyInfo?.RegistrationNumber ?? string.Empty
-                };
-
-                _identityDbContext.Corporates.Add(corporateUser);
-                await _identityDbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in AddCorporateUser: {ex.Message}");
-                throw;
-            }
-        }
-
         private async Task<string> GenerateVerificationUri(ApplicationUser user, string origin)
         {
             try
@@ -390,33 +219,7 @@ namespace CourtApp.Infrastructure.Identity.Services
             }
         }
 
-        private async Task SendVerificationEmail(ApplicationUser user, string verificationUri)
-        {
-            try
-            {
-                var emailBody = RegistrationEmailTemplate.GetTemplate(
-                    user.UserName,
-                    user.FirstName,
-                    user.LastName,
-                    verificationUri
-                );
-
-                var mailRequest = new MailRequest
-                {
-                    To = user.Email,
-                    Subject = "Confirm Your Email Address - Court App",
-                    Body = emailBody,
-                    IsHtml = true
-                };
-
-                await _mailService.SendAsync(mailRequest);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in SendVerificationEmail: {ex.Message}");
-                throw;
-            }
-        }
+        
 
         private TokenResponse BuildTokenResponse(ApplicationUser user, JwtSecurityToken jwtSecurityToken)
         {

@@ -27,43 +27,23 @@ namespace CourtApp.Application.Features.Auth.Handlers
         {
             try
             {
-                // Validate input
-                if (string.IsNullOrWhiteSpace(request.Email))
-                {
-                    _logger.LogWarning("Login attempt with empty email");
-                    return Result<TokenResponse>.Fail("Email is required.");
-                }
+                var email = request.Email?.Trim().ToLower();
+                var password = request.Password;
 
-                if (string.IsNullOrWhiteSpace(request.Password))
-                {
-                    _logger.LogWarning("Login attempt with empty password");
-                    return Result<TokenResponse>.Fail("Password is required.");
-                }
+                var ipAddress = string.IsNullOrWhiteSpace(request.IpAddress) ?
+                                    "Unknown"
+                                    : request.IpAddress;
+                _logger.LogInformation("Login attempt for Email: {Email}", email);
 
-                if (string.IsNullOrWhiteSpace(request.IpAddress))
-                    request.IpAddress = "Unknown";
-
-                _logger.LogInformation($"Login attempt for email: {request.Email}");
-
-                // Map to TokenRequest
                 var tokenRequest = new TokenRequest
                 {
                     Email = request.Email,
                     Password = request.Password
                 };
-
-                // Call identity service
                 var result = await _identityService.GetTokenAsync(tokenRequest, request.IpAddress);
 
-                if (result.Succeeded)
-                {
-                    _logger.LogInformation($"User {request.Email} logged in successfully");
-                }
-                else
-                {
+                if (!result.Succeeded)
                     _logger.LogWarning($"Failed login attempt for {request.Email}: {result.Message}");
-                }
-
                 return result;
             }
             catch (Exception ex)

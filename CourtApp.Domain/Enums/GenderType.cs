@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Enums
 {
-    public enum Gender
+    public enum GenderType
     {
         Male = 1,
         Female = 2,

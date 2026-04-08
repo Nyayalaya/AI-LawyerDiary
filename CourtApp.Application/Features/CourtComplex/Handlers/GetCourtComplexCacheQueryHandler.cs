@@ -41,7 +41,7 @@ namespace CourtApp.Application.Features.CourtComplex.Handlers
             {
                 Id = s.Id,
                 Name = s.Name.ToUpper(),
-                Code = s.Code,
+                
                 CDistrictName = s.CDistrictName,
                 StateName = s.StateName,
                 Languages = s.Languages
