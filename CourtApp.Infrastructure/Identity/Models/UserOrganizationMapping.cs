@@ -1,4 +1,5 @@
-﻿using CourtApp.Domain.Enums;
+﻿using AuditTrail.Abstrations;
+using CourtApp.Domain.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -8,12 +9,10 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Infrastructure.Identity.Models
 {
-    [Table("m_user_org_mapping", Schema = "Identity")]
-    public class UserOrganizationMapping
+    [Table("m_user_org_mapping")]
+    public class UserOrganizationMapping:AuditableEntity
     {
-        public Guid Id { get; set; }
-
-        public Guid UserId { get; set; }
+        public string UserId { get; set; }
         public ApplicationUser User { get; set; }
 
         public Guid OrganizationId { get; set; }

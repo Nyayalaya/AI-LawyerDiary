@@ -19,16 +19,15 @@ namespace CourtApp.Infrastructure.Identity.Models
         public string ProfileImageUrl { get; set; }
 
         // 🔹 Navigation
-        public ICollection<UserAddress> Addresses { get; set; }
-        public ICollection<UserContact> Contacts { get; set; }
+        public virtual ICollection<UserAddress> Addresses { get; set; }
+        public virtual ICollection<UserContact> Contacts { get; set; }
 
-        public ProfessionalInfoEntity ProfessionalInfo { get; set; }
+        public virtual ProfessionalInfoEntity ProfessionalInfo { get; set; }
 
-        public ICollection<UserCourtMapping> UserCourts { get; set; }
-
+        public virtual ICollection<UserCourtMapping> UserCourts { get; set; }       
         // 🔥 SELF-REFERENCE
-        public ICollection<UserHierarchy> Parents { get; set; }
-        public ICollection<UserHierarchy> Children { get; set; }
-        public ICollection<UserOrganizationMapping> Organizations { get; set; }
+        public virtual ICollection<UserHierarchy> Parents { get; set; }
+        public virtual ICollection<UserHierarchy> Children { get; set; }
+        public virtual ICollection<UserOrganizationMapping> Organizations { get; set; }
     }
 }

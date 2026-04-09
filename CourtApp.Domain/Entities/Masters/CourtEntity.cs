@@ -14,7 +14,7 @@ namespace CourtApp.Domain.Entities.Masters
         public required string Name { get; set; }    // Rajasthan High Court
 
         public Guid CourtLevelId { get; set; }
-        public CourtLevelEntity CourtLevel { get; set; }
+        public virtual CourtLevelEntity CourtLevel { get; set; }
 
         public Guid CourtTypeId { get; set; }
         public CourtTypeEntity CourtType { get; set; }

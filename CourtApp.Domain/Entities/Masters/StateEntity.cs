@@ -11,7 +11,6 @@ namespace CourtApp.Domain.Entities.Masters
     [Index(nameof(Code), IsUnique = true)]
     public class StateEntity:AuditableEntity
     {  
-
         public new int Id { get; set; }
         public string Name { get; set; }
         public string Code { get; set; }

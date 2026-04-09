@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Infrastructure.Identity.Models
 {
-    [Table("m_user_professional", Schema = "Identity")]
+    [Table("m_user_professional")]
     public class ProfessionalInfoEntity:AuditableEntity
     {
         public string UserId { get; set; }

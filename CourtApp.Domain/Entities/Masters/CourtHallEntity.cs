@@ -1,6 +1,5 @@
 ﻿using AuditTrail.Abstrations;
 using CourtApp.Domain.Entities.Common;
-using CourtApp.Domain.Entities.LawyerDiary;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,10 +15,8 @@ namespace CourtApp.Domain.Entities.Masters
         public string Code { get; set; }
         public string JudgeName { get; set; }
         public string RoomNumber { get; set; }
-
         public Guid CourtComplexId { get; set; }
         public virtual CourtComplexEntity CourtComplex { get; set; }
-
         public List<LangEntity> Languages { get; set; }
     }
 }

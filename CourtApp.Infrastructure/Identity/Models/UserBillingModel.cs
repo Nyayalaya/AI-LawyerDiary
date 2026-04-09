@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Infrastructure.Identity.Models
 {
-    [Table("m_user_billing_info", Schema = "Identity")]
+    [Table("m_user_billing_info")]
     public class UserBillingModel:AuditableEntity
     {
         public string UserId { get; set; }

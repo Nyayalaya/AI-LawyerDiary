@@ -35,7 +35,7 @@ var jwtSettings = builder.Configuration
 builder.Services.AddApiServices();
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructure(builder.Configuration);
-builder.Services.AddIdentityInfrastructure(builder.Configuration);
+
 
 // ---------------- CORS ----------------
 builder.Services.AddCors(options =>

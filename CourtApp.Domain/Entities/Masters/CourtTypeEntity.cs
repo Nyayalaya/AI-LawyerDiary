@@ -15,7 +15,7 @@ namespace CourtApp.Domain.Entities.Masters
         public string Name { get; set; }
         public string Code { get; set; }
         public Guid CourtLevelId { get; set; }
-        public CourtLevelEntity CourtLevel { get; set; }
+        public virtual CourtLevelEntity CourtLevel { get; set; }
         public List<LangEntity> Languages { get; set; }
     }
 }

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Infrastructure.Identity.Models
 {
-    [Table("m_user_adress",Schema = "Identity")]
+    [Table("m_user_adress")]
     public class UserAddress:AuditableEntity
     {
         public string UserId { get; set; }

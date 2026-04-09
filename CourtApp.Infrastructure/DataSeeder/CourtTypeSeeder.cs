@@ -19,7 +19,7 @@ namespace CourtApp.Infrastructure.DataSeeder
 
             var userId = superAdmin != null ? superAdmin.Id : "system";
 
-            var dbLevels = await context.courtLevelEntities.ToListAsync();
+            var dbLevels = await context.CourtLevels.ToListAsync();
 
             var existingTypeCodes = await context.CourtTypes
             .Select(t => t.Code)

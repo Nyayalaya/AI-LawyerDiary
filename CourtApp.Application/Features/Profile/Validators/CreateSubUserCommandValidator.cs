@@ -28,10 +28,10 @@ namespace CourtApp.Application.Features.Profile.Validators
                     .NotEmpty().WithMessage("Last name is required")
                     .MaximumLength(100).WithMessage("Last name must not exceed 100 characters");
 
-                RuleFor(x => x.SubUser.Role)
+                RuleFor(x => x.SubUser.RelationType)
                     .NotEmpty().WithMessage("Role is required")
-                    .Must(x => x.Equals("Clerk", System.StringComparison.OrdinalIgnoreCase) ||
-                               x.Equals("Associate", System.StringComparison.OrdinalIgnoreCase))
+                    .Must(x => x.ToString().Equals("Clerk", System.StringComparison.OrdinalIgnoreCase) ||
+                               x.ToString().Equals("Associate", System.StringComparison.OrdinalIgnoreCase))
                     .WithMessage("Role must be either 'Clerk' or 'Associate'");
 
                 RuleFor(x => x.SubUser.PhoneNumber)

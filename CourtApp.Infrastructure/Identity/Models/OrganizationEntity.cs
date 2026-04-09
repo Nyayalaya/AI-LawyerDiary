@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Infrastructure.Identity.Models
 {
-    [Table("m_organization", Schema = "Identity")]
+    [Table("m_organization")]
     public class OrganizationEntity
     {
         public Guid Id { get; set; }
-
         public string Name { get; set; }
         public string Code { get; set; }
         public string Type { get; set; } 

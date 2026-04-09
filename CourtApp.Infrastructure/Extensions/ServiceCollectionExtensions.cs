@@ -7,187 +7,279 @@ using CourtApp.Application.Features.CaseType.Services;
 using CourtApp.Application.Features.CourtHall.Interfaces;
 using CourtApp.Application.Features.CourtLevel.Services;
 using CourtApp.Application.Features.CourtType.Services;
+using CourtApp.Application.Features.Permission.Services;
+using CourtApp.Application.Features.Profile.Services;
 using CourtApp.Application.Features.State.Services;
+
 using CourtApp.Application.Interfaces.CacheRepositories;
 using CourtApp.Application.Interfaces.CacheRepositories.Common;
 using CourtApp.Application.Interfaces.CacheRepositories.FormBuilder;
+
 using CourtApp.Application.Interfaces.Contexts;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Accounting;
 using CourtApp.Application.Interfaces.Repositories.Common;
 using CourtApp.Application.Interfaces.Repositories.FormBuilder;
+
+using CourtApp.Application.Interfaces.Shared;
+
 using CourtApp.Infrastructure.CacheRepositories;
 using CourtApp.Infrastructure.DbContexts;
+using CourtApp.Infrastructure.Identity.Models;
 using CourtApp.Infrastructure.Identity.Services;
 using CourtApp.Infrastructure.Repositories;
+using CourtApp.Infrastructure.Services;
 using CourtApp.Infrastructure.Shared.Services;
+
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using System.Reflection;
 
 namespace CourtApp.Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
+        #region 🔹 DATABASE
 
-        public static void AddPersistenceContexts(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddDatabase(this IServiceCollection services, IConfiguration configuration)
         {
-            
+            var useInMemory = configuration.GetValue<bool>("UseInMemoryDatabase");
+
+            if (useInMemory)
+            {
+                services.AddDbContext<IdentityContext>(o => o.UseInMemoryDatabase("IdentityDb"));
+                services.AddDbContext<ApplicationDbContext>(o => o.UseInMemoryDatabase("ApplicationDb"));
+            }
+            else
+            {
+                var connection = configuration.GetConnectionString("Postgres");
+
+                services.AddDbContext<IdentityContext>(o => o.UseNpgsql(connection));
+
+                services.AddDbContext<ApplicationDbContext>(o =>
+                    o.UseNpgsql(connection, x => x.UseVector())); // ✅ pgvector
+            }
+
+            return services;
+        }
+
+        #endregion
+
+        #region 🔹 IDENTITY
+
+        public static IServiceCollection AddIdentityLayer(this IServiceCollection services)
+        {
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.SignIn.RequireConfirmedEmail = true;
+                options.Password.RequireNonAlphanumeric = false;
+            })
+            .AddEntityFrameworkStores<IdentityContext>()
+            .AddDefaultTokenProviders();
+
+            return services;
+        }
+
+        #endregion
+
+        #region 🔹 DOMAIN SERVICES
+
+        public static IServiceCollection AddDomainServices(this IServiceCollection services)
+        {
+            #region 🔐 AUTH
+
+            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddScoped<IRegistrationService, RegistrationService>();
+            services.AddScoped<IChangePasswordService, ChangePasswordService>();
+
+            #endregion
+
+            #region 🔐 PERMISSION
+
+            services.AddScoped<IPermissionService, PermissionService>();
+            services.AddScoped<IUserPermissionService, UserPermissionService>();
+            services.AddScoped<IRolePermissionService, RolePermissionService>();
+
+            #endregion
+
+            #region 👤 USER
+
+            services.AddScoped<IUserHierarchyService, UserHierarchyService>();
+            services.AddScoped<IUserProfileService, UserProfileService>();
+            services.AddScoped<IUserBillingInfoService, UserBillingInfoService>();
+            services.AddScoped<IUserBasicInfoService, UserBasicInfoService>();
+            services.AddScoped<IUserOrganizationService, UserOrganizationService>();
+            services.AddScoped<IUserApprovalService, UserApprovalService>();
+
+            #endregion
+
+            return services;
+        }
+
+        #endregion
+
+        #region 🔹 COMMON SERVICES
+
+        public static IServiceCollection AddCommonServices(this IServiceCollection services)
+        {
+            services.AddScoped<ICurrentRequestProvider, CurrentRequestProvider>();
+            services.AddScoped<IDateTimeService, SystemDateTimeService>();
+            services.AddScoped<IAuthenticatedUserService, AuthenticatedUserService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
+            services.AddScoped<IMailService, SMTPMailService>();
+
+            services.AddDistributedMemoryCache();
+
+            return services;
+        }
+
+        #endregion
+
+        #region 🔹 DB CONTEXT ABSTRACTION
+
+        public static IServiceCollection AddPersistenceContexts(this IServiceCollection services, IConfiguration configuration)
+        {
             services.AddAutoMapper(cfg => { }, Assembly.GetExecutingAssembly());
-            services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseNpgsql(configuration.GetConnectionString("Postgres")));
 
             services.AddScoped<IApplicationDbContext>(provider =>
                 provider.GetRequiredService<ApplicationDbContext>());
+
+            return services;
         }
 
-        public static void AddRepositories(this IServiceCollection services)
+        #endregion
+
+       
+
+        #region 🔹  REPOSITORIES
+
+        public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
-            #region Repositories
+            services.AddScoped(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ILogRepository, LogRepository>();
 
-            services.AddTransient(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
+            // 👉 KEEP ALL YOUR EXISTING REGISTRATIONS (NO CHANGE)
+            services.AddScoped<IBookTypeRepository, BookTypeRepository>();
+            services.AddScoped<IBookMasterRepository, BookMasterRepository>();
+            services.AddScoped<IPublicationRepository, PublisheRepository>();
 
-            services.AddTransient<ILogRepository, LogRepository>();
-            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ICaseKindRepository, CaseKindRepository>();
+            services.AddScoped<ICaseCategoryRepository, CaseNatureRepository>();
+            services.AddScoped<ISubjectRepository, SubjectRepository>();
+            services.AddScoped<ICaseStageRepository, CaseStageRepository>();
+            services.AddScoped<ICaseTypeRepository, TypeOfCasesRepository>();
 
-            services.AddTransient<IIdentityService, IdentityService>();
+            services.AddScoped<ICourtRepository, CourtRepository>();
+            services.AddScoped<ICourtMasterRepository, CourtMasterRepository>();
+            services.AddScoped<ICourtLevelMasterRepository, CourtLevelMasterRepository>();
+            services.AddScoped<ICourtTypeRepository, CourtTypeRepository>();
+            services.AddScoped<ICourtDistrictRepository, CourtDistrictRepository>();
+            services.AddScoped<ICourtComplexRepository, CourtComplexRepository>();
+            services.AddScoped<ICourtBenchRepository, CourtBenchRepository>();
+            services.AddScoped<ICourtHallRepository, CourtHallRepository>();
 
-            services.AddTransient<IBookTypeRepository, BookTypeRepository>();
-            services.AddTransient<IBookTypeCacheRepository, BookTypeCacheRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
 
-            services.AddTransient<IBookMasterRepository, BookMasterRepository>();
-            services.AddTransient<IBookMasterCacheRepository, BookMasterCacheRepository>();
+            services.AddScoped<IStateMasterRepository, StateMasterRepository>();
+            services.AddScoped<IDistrictMasterRepository, DistrictMasterRepository>();
 
-            services.AddTransient<IPublicationCacheRepository, PublisherCacheRepository>();
-            services.AddTransient<IPublicationRepository, PublisheRepository>();
-
-            services.AddTransient<ICaseKindCacheRepository, CaseKindCacheRepository>();
-            services.AddTransient<ICaseKindRepository, CaseKindRepository>();
-
-            services.AddTransient<ICaseCategoryCacheRepository, CaseNatureCacheRepository>();
-            services.AddTransient<ICaseCategoryRepository, CaseNatureRepository>();
-
-            services.AddTransient<ISubjectCacheRepository, SubjectCacheRepository>();
-            services.AddTransient<ISubjectRepository, SubjectRepository>();
-
-            services.AddTransient<ICaseKindRepository, CaseKindRepository>();
-            services.AddTransient<ICaseKindCacheRepository, CaseKindCacheRepository>();
-
-            services.AddTransient<ICaseStageRepository, CaseStageRepository>();
-            services.AddTransient<ICaseStageCacheRepository, CaseStageCacheRepository>();
-
-            services.AddTransient<ICaseTypeRepository, TypeOfCasesRepository>();
-            services.AddTransient<ICaseTypeCacheRepository, TypeOfCasesCacheRepository>();
-
-            services.AddTransient<ICourtMasterCacheRepository, CourtMasterCacheRepository>();
-            services.AddTransient<ICourtMasterRepository, CourtMasterRepository>();
-
-            services.AddTransient<IStateCacheRepository, StateMasterCacheRepository>();
-            services.AddTransient<IStateMasterRepository, StateMasterRepository>();
-
-            services.AddTransient<ICourtLevelCacheRepository, CourtLevelCacheRepository>();
-            services.AddTransient<ICourtLevelMasterRepository, CourtLevelMasterRepository>();
-
-            services.AddTransient<IDsitrictMasterCacheRepository, DistrictMasterCacheRepository>();
-            services.AddTransient<IDistrictMasterRepository, DistrictMasterRepository>();
-
-            services.AddTransient<ICourtFeeStructureCacheRepository, CourtFeeStructureCacheRepository>();
-            services.AddTransient<ICourtFeeStructureRepository, CourtFeeStructureRepository>();
-
-            services.AddTransient<IClientRepository, ClientRepository>();
-            services.AddTransient<IClientCacheRepository, ClientCacheRepository>();
-
-            services.AddTransient<ICourtTypeRepository, CourtTypeRepository>();
-            services.AddTransient<ICourtTypeCacheRepository, CourtTypeCacheRepository>();
-
-            services.AddTransient<IUserCaseRepository, UserCaseRepository>();
-            services.AddTransient<IUserCaseCacheRepository, UserCaseCacheRepository>();
-
-
-            services.AddTransient<IProceedingHeadRepository, ProceedingHeadRepository>();
-            services.AddTransient<IProceedingSubHeadRepository, ProceedingSubHeadRepository>();
-            services.AddTransient<IWorkMasterRepository, WorkMasterRepository>();
-            services.AddTransient<IWorkMasterSubRepository, WorkMasterSubRepository>();
-            services.AddTransient<ICaseManagmentRepository, CaseManagmentRepository>();
-            services.AddTransient<ICaseTitleRepository, CaseTitleRepository>();
-
-            services.AddTransient<ICourtDistrictRepository, CourtDistrictRepository>();
-            services.AddTransient<ICourtDistrictCacheRepository, CourtDistrictCacheRepository>();
-
-            services.AddTransient<ICourtComplexRepository, CourtComplexRepository>();
-            services.AddTransient<ICourtComplexCacheRepository, CourtComplexCacheRepository>();
-
-            services.AddTransient<ICourtBenchRepository, CourtBenchRepository>();
-            services.AddTransient<ICaseAgainstRepository, CaseAgainstRepository>();
+            services.AddScoped<ICaseManagmentRepository, CaseManagmentRepository>();
+            services.AddScoped<ICaseTitleRepository, CaseTitleRepository>();
+            services.AddScoped<ICaseDocsRepository, CaseDocsRepository>();
             services.AddScoped<ICaseProceedingRepository, CaseProceedingRepository>();
-            services.AddTransient<ICaseWorkRepository, CaseWorkRepository>();
-            services.AddTransient<IDOTypeCacheRepository, DOTypeCacheRepository>();
-            services.AddTransient<IDOTypeRepository, DOTypeRepository>();
-            services.AddTransient<ICaseDocsRepository, CaseDocsRepository>();
-
-            services.AddTransient<ICadreMasterCacheRepository, CadreMasterCacheRepository>();
-            services.AddTransient<ICadreMasterRepository, CadreMasterRepository>();
-
-            services.AddTransient<ICourtLevelCacheRepository, CourtLevelCacheRepository>();
-            services.AddTransient<ICourtLevelMasterRepository, CourtLevelMasterRepository>();
-
-            #endregion Repositories
-
-            #region First & Secound Title Services
-            services.AddTransient<IFSTitleCacheRepository, FSTitleCacheRepository>();
-            services.AddTransient<IFSTitleRepository, FSTitleRepository>();
-            #endregion
-
-            #region Lawyer Master Information
-            services.AddTransient<ILawyerCacheRepository, LawyerCacheRepository>();
-            services.AddTransient<ILawyerRepository, LawyerMasterRepository>();
-            #endregion
-
-            #region FormBuilder 
-            services.AddTransient<IFormBuilderCacheRepository, FormBuilderCacheRepository>();
-            services.AddTransient<IFormBuilderRepository, FormBuilderRepository>();
-
-            services.AddTransient<ITemplateInfoCacheRepository, TemplateInfoCacheRepository>();
-            services.AddTransient<ITemplateInfoRepository, TemplateInfoRepository>();
-
-            services.AddTransient<IFormTempMappingRepository, FormTempMappingRepository>();
-            #endregion
-
-            #region Specility 
-            services.AddTransient<ISpecilityCacheRepository, SpecilityCacheRepository>();
-            services.AddTransient<ISpecilityRepository, SpecilityRepository>();
-            #endregion
-
-            #region Case Related 
-            services.AddTransient<ICaseDraftingCacheRepository, CaseDraftingCacheRepository>();
-            services.AddTransient<ICaseDraftingRepository, CaseDraftingRepository>();
-
-            services.AddTransient<ICaseAssignedRepository, CaseAssignedRepository>();
+            services.AddScoped<ICaseWorkRepository, CaseWorkRepository>();
+            services.AddScoped<ICaseAgainstRepository, CaseAgainstRepository>();
+            services.AddScoped<ICaseAssignedRepository, CaseAssignedRepository>();
             services.AddScoped<ICaseHelperRepository, CaseHelperRepository>();
-            #endregion
 
-            #region Language & Court Form Print
-            services.AddTransient<ILanguageRepository, LanguageRepository>();
-            services.AddTransient<IMultiLangWordCacheRepository, MultiLangDictCacheRepository>();
-            services.AddTransient<IMultiLangWordRepository, MultiLangWordRepository>();
-            services.AddTransient<ICourtFormTypeRepository, CourtFormTypeRepository>();
-            #endregion
+            services.AddScoped<ICaseDraftingRepository, CaseDraftingRepository>();
 
-            #region Laywer Billing Detail
-            services.AddTransient<IBillingDetailRepository, BillingDetailRepository>();
-            #endregion
+            services.AddScoped<IProceedingHeadRepository, ProceedingHeadRepository>();
+            services.AddScoped<IProceedingSubHeadRepository, ProceedingSubHeadRepository>();
+            services.AddScoped<IWorkMasterRepository, WorkMasterRepository>();
+            services.AddScoped<IWorkMasterSubRepository, WorkMasterSubRepository>();
 
-            #region NewlyCreated Services
-            services.AddTransient<ICourtCacheRepository, CourtCacheRepository>();
-            services.AddTransient<ICourtRepository, CourtRepository>();
-            services.AddTransient<ILocationCacheRepository, LocationCacheRepository>();
-            services.AddTransient<ILocationRepository, LocationRepository>();
-            services.AddTransient<ICourtHallCacheRepository, CourtHallCacheRepository>();
-            services.AddTransient<ICourtHallRepository, CourtHallRepository>();
-            #endregion
+            services.AddScoped<IClientRepository, ClientRepository>();
+            services.AddScoped<IUserCaseRepository, UserCaseRepository>();
+
+            services.AddScoped<ICourtFeeStructureRepository, CourtFeeStructureRepository>();
+            services.AddScoped<IBillingDetailRepository, BillingDetailRepository>();
+
+            services.AddScoped<ILawyerRepository, LawyerMasterRepository>();
+            services.AddScoped<ISpecilityRepository, SpecilityRepository>();
+
+            services.AddScoped<IFormBuilderRepository, FormBuilderRepository>();
+            services.AddScoped<ITemplateInfoRepository, TemplateInfoRepository>();
+            services.AddScoped<IFormTempMappingRepository, FormTempMappingRepository>();
+
+            services.AddScoped<ILanguageRepository, LanguageRepository>();
+            services.AddScoped<IMultiLangWordRepository, MultiLangWordRepository>();
+            services.AddScoped<ICourtFormTypeRepository, CourtFormTypeRepository>();
+
+            services.AddScoped<IFSTitleRepository, FSTitleRepository>();
+            services.AddScoped<IDOTypeRepository, DOTypeRepository>();
+
+            services.AddScoped<ICadreMasterRepository, CadreMasterRepository>();
 
 
+            return services;
         }
+
+        #endregion
+
+        #region 🔹 CACHE
+
+        public static IServiceCollection AddCacheRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<ICourtFeeStructureCacheRepository, CourtFeeStructureCacheRepository>();
+            services.AddScoped<IBookTypeCacheRepository, BookTypeCacheRepository>();
+            services.AddScoped<IBookMasterCacheRepository, BookMasterCacheRepository>();
+            services.AddScoped<IPublicationCacheRepository, PublisherCacheRepository>();
+
+            services.AddScoped<ICaseKindCacheRepository, CaseKindCacheRepository>();
+            services.AddScoped<ICaseCategoryCacheRepository, CaseNatureCacheRepository>();
+            services.AddScoped<ISubjectCacheRepository, SubjectCacheRepository>();
+            services.AddScoped<ICaseStageCacheRepository, CaseStageCacheRepository>();
+            services.AddScoped<ICaseTypeCacheRepository, TypeOfCasesCacheRepository>();
+
+            services.AddScoped<ICourtCacheRepository, CourtCacheRepository>();
+            services.AddScoped<ICourtMasterCacheRepository, CourtMasterCacheRepository>();
+            services.AddScoped<ICourtLevelCacheRepository, CourtLevelCacheRepository>();
+            services.AddScoped<ICourtTypeCacheRepository, CourtTypeCacheRepository>();
+
+            services.AddScoped<IStateCacheRepository, StateMasterCacheRepository>();
+            services.AddScoped<IDsitrictMasterCacheRepository, DistrictMasterCacheRepository>();
+
+            services.AddScoped<ICourtDistrictCacheRepository, CourtDistrictCacheRepository>();
+            services.AddScoped<ICourtComplexCacheRepository, CourtComplexCacheRepository>();
+            services.AddScoped<ICourtHallCacheRepository, CourtHallCacheRepository>();
+
+            services.AddScoped<IClientCacheRepository, ClientCacheRepository>();
+            services.AddScoped<IUserCaseCacheRepository, UserCaseCacheRepository>();
+
+            services.AddScoped<ICaseDraftingCacheRepository, CaseDraftingCacheRepository>();
+
+            services.AddScoped<ICadreMasterCacheRepository, CadreMasterCacheRepository>();
+            services.AddScoped<IFSTitleCacheRepository, FSTitleCacheRepository>();
+            services.AddScoped<ILawyerCacheRepository, LawyerCacheRepository>();
+
+            services.AddScoped<IFormBuilderCacheRepository, FormBuilderCacheRepository>();
+            services.AddScoped<ITemplateInfoCacheRepository, TemplateInfoCacheRepository>();
+
+            services.AddScoped<ISpecilityCacheRepository, SpecilityCacheRepository>();
+
+            services.AddScoped<IMultiLangWordCacheRepository, MultiLangDictCacheRepository>();
+
+            services.AddScoped<IDOTypeCacheRepository, DOTypeCacheRepository>();
+            services.AddScoped<ILocationCacheRepository, LocationCacheRepository>();
+
+            return services;
+        }
+
+        #endregion
     }
 }

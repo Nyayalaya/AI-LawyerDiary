@@ -19,7 +19,7 @@ namespace CourtApp.Infrastructure.DataSeeder
                 .FirstOrDefaultAsync(u => u.Email == systemUser);
 
             var userId = superAdmin != null ? superAdmin.Id : "system";
-            var existingCodes = await context.courtLevelEntities
+            var existingCodes = await context.CourtLevels
                .Select(s => s.Code)
                .ToListAsync();
 
@@ -38,7 +38,7 @@ namespace CourtApp.Infrastructure.DataSeeder
                 state.CreatedBy = userId;
             }
 
-            await context.courtLevelEntities.AddRangeAsync(newCourtLevels);
+            await context.CourtLevels.AddRangeAsync(newCourtLevels);
             await context.SaveChangesAsync(userId);
             
         }

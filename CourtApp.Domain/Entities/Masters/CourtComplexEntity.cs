@@ -26,6 +26,6 @@ namespace CourtApp.Domain.Entities.Masters
         public virtual LocationEntity Location { get; set; }
 
         public List<LangEntity> Languages { get; set; }
-        public ICollection<CourtHallEntity> CourtHalls { get; set; }
+        public virtual ICollection<CourtHallEntity> CourtHalls { get; set; }
     }
 }

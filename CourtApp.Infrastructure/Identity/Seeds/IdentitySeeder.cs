@@ -15,7 +15,7 @@ namespace CourtApp.Infrastructure.Identity.Seeds
 
             await DefaultRoles.SeedAsync(roleManager);
             await RoleClaimsSeeder.SeedAsync(roleManager);
-            await DefaultUsers.SeedAsync(userManager);
+            await DefaultUserSeeder.SeedAsync(userManager);
             await UserRoleSeeder.SeedAsync(userManager);
         }
     }

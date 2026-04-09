@@ -86,9 +86,8 @@ namespace CourtApp.Infrastructure.Identity.Services
             // 🔹 Create Hierarchy Mapping
             var hierarchy = new UserHierarchy
             {
-                Id = Guid.NewGuid(),
-                ParentUserId = Guid.Parse(parentUserId),
-                ChildUserId = Guid.Parse(user.Id),
+                ParentUserId = parentUserId,
+                ChildUserId = user.Id,
                 RelationType = request.RelationType,
                 IsActive = true
             };
@@ -138,10 +137,10 @@ namespace CourtApp.Infrastructure.Identity.Services
 
         public async Task<List<UserDto>> GetSubUsersAsync(string userId)
         {
-            var parentId = Guid.Parse(userId);
+          
 
             var users = await _db.UserHierarchies
-                .Where(x => x.ParentUserId == parentId && x.IsActive)
+                .Where(x => x.ParentUserId == userId && x.IsActive)
                 .Include(x => x.ChildUser)
                 .Select(x => new UserDto
                 {
@@ -158,10 +157,10 @@ namespace CourtApp.Infrastructure.Identity.Services
 
         public async Task<string> RemoveSubUserAsync(string userId)
         {
-            var childId = Guid.Parse(userId);
+           
 
             var hierarchy = await _db.UserHierarchies
-                .FirstOrDefaultAsync(x => x.ChildUserId == childId && x.IsActive);
+                .FirstOrDefaultAsync(x => x.ChildUserId == userId && x.IsActive);
 
             if (hierarchy == null)
                 throw new Exception("Sub-user not found");
