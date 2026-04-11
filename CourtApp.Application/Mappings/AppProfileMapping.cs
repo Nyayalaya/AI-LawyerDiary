@@ -11,6 +11,8 @@ using CourtApp.Application.Features.CourtHall.DTOs;
 using CourtApp.Application.Features.CourtLevel.Query;
 using CourtApp.Application.Features.CourtType.Command;
 using CourtApp.Application.Features.CourtType.Query;
+using CourtApp.Application.Features.FormManagement.Commands;
+using CourtApp.Application.Features.FormManagement.DTOs;
 using CourtApp.Application.Features.Location;
 using CourtApp.Application.Features.State.Query;
 using CourtApp.Application.Features.WorkMasterSub.Commands;
@@ -86,6 +88,70 @@ namespace CourtApp.Application.Mappings
             CreateMap<LocationEntity, LocationByIdResponse>()
                 .ForMember(dest => dest.StateName, opt => opt.MapFrom(src => src.State.Name))
                 .ForMember(dest => dest.ParentLocationName, opt => opt.MapFrom(src => src.ParentLocation.Name));
+            #endregion
+
+            #region FormType Profile Mapping
+            CreateMap<FormTypeEntity, FormTypeDto>();
+            CreateMap<FormTypeEntity, FormTypeResponseDto>();
+            CreateMap<CreateFormTypeDto, FormTypeEntity>();
+            CreateMap<UpdateFormTypeDto, FormTypeEntity>();
+            #endregion
+
+            #region FormMaster Profile Mapping
+            CreateMap<FormMasterEntity, FormMasterDto>().ReverseMap();
+            CreateMap<FormMasterEntity, FormMasterResponseDto>()
+                .ForMember(dest => dest.FormTypeName, opt => opt.MapFrom(src => src.FormType.Name));
+            CreateMap<CreateFormMasterCommand, FormMasterEntity>();
+            CreateMap<UpdateFormMasterCommand, FormMasterEntity>();
+            CreateMap<CreateFormMasterDto, FormMasterEntity>();
+            CreateMap<UpdateFormMasterDto, FormMasterEntity>();
+            #endregion
+
+            #region FormSubtype Profile Mapping
+            CreateMap<FormSubtypeEntity, FormSubtypeDto>().ReverseMap();
+            CreateMap<FormSubtypeEntity, FormSubtypeResponseDto>()
+                .ForMember(dest => dest.FormName, opt => opt.MapFrom(src => src.Form.Name));
+            CreateMap<CreateFormSubtypeCommand, FormSubtypeEntity>();
+            CreateMap<UpdateFormSubtypeCommand, FormSubtypeEntity>();
+            CreateMap<CreateFormSubtypeDto, FormSubtypeEntity>();
+            CreateMap<UpdateFormSubtypeDto, FormSubtypeEntity>();
+            #endregion
+
+            #region FormTemplate Profile Mapping
+            CreateMap<FormTemplateEntity, FormTemplateDto>().ReverseMap();
+            CreateMap<FormTemplateEntity, FormTemplateResponseDto>()
+                .ForMember(dest => dest.FormSubtypeName, opt => opt.MapFrom(src => src.FormSubtype.Name));
+            CreateMap<CreateFormTemplateCommand, FormTemplateEntity>();
+            CreateMap<UpdateFormTemplateCommand, FormTemplateEntity>();
+            CreateMap<CreateFormTemplateDto, FormTemplateEntity>();
+            CreateMap<UpdateFormTemplateDto, FormTemplateEntity>();
+            #endregion
+
+            #region FormTemplateVersion Profile Mapping
+            CreateMap<FormTemplateVersionEntity, FormTemplateVersionDto>().ReverseMap();
+            CreateMap<FormTemplateVersionEntity, FormTemplateVersionResponseDto>();
+            CreateMap<CreateFormTemplateVersionCommand, FormTemplateVersionEntity>();
+            CreateMap<UpdateFormTemplateVersionCommand, FormTemplateVersionEntity>();
+            CreateMap<CreateFormTemplateVersionDto, FormTemplateVersionEntity>();
+            CreateMap<UpdateFormTemplateVersionDto, FormTemplateVersionEntity>();
+            #endregion
+
+            #region FormCaseCategoryMapping Profile Mapping
+            CreateMap<FormCaseCategoryMapping, FormCaseCategoryMappingDto>().ReverseMap();
+            CreateMap<FormCaseCategoryMapping, FormCaseCategoryMappingResponseDto>();
+            CreateMap<CreateFormCaseCategoryMappingCommand, FormCaseCategoryMapping>();
+            CreateMap<UpdateFormCaseCategoryMappingCommand, FormCaseCategoryMapping>();
+            CreateMap<CreateFormCaseCategoryMappingDto, FormCaseCategoryMapping>();
+            CreateMap<UpdateFormCaseCategoryMappingDto, FormCaseCategoryMapping>();
+            #endregion
+
+            #region FormCourtMapping Profile Mapping
+            CreateMap<FormCourtMapping, FormCourtMappingDto>().ReverseMap();
+            CreateMap<FormCourtMapping, FormCourtMappingResponseDto>();
+            CreateMap<CreateFormCourtMappingCommand, FormCourtMapping>();
+            CreateMap<UpdateFormCourtMappingCommand, FormCourtMapping>();
+            CreateMap<CreateFormCourtMappingDto, FormCourtMapping>();
+            CreateMap<UpdateFormCourtMappingDto, FormCourtMapping>();
             #endregion
         }
     }

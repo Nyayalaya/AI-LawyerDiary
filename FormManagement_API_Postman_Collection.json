@@ -1,0 +1,1316 @@
+{
+  "info": {
+    "_postman_id": "form-management-api",
+    "name": "Form Management API Collection",
+    "description": "Complete API collection for Form Management System covering all form-related operations",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "FormType",
+      "item": [
+        {
+          "name": "Get All Form Types",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/type/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "type",
+                "list"
+              ]
+            },
+            "description": "Get list of all form types"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Type By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/type/{{formTypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "type",
+                "{{formTypeId}}"
+              ]
+            },
+            "description": "Get form type by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Type By Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/type/code/{{formTypeCode}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "type",
+                "code",
+                "{{formTypeCode}}"
+              ]
+            },
+            "description": "Get form type by code"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Form Type",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"NOTICE\",\n  \"name\": \"Notice Form\",\n  \"description\": \"Form for sending notices\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/type",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "type"
+              ]
+            },
+            "description": "Create a new form type"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Form Type",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"NOTICE\",\n  \"name\": \"Notice Form Updated\",\n  \"description\": \"Form for sending notices - Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/type/{{formTypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "type",
+                "{{formTypeId}}"
+              ]
+            },
+            "description": "Update an existing form type"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Form Type",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/type/{{formTypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "type",
+                "{{formTypeId}}"
+              ]
+            },
+            "description": "Delete a form type"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FormMaster",
+      "item": [
+        {
+          "name": "Get All Form Masters",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/master/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "master",
+                "list"
+              ]
+            },
+            "description": "Get list of all form masters"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Master By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/master/{{formMasterId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "master",
+                "{{formMasterId}}"
+              ]
+            },
+            "description": "Get form master by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Master By Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/master/code/{{formMasterCode}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "master",
+                "code",
+                "{{formMasterCode}}"
+              ]
+            },
+            "description": "Get form master by code"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Masters By Type",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/master/type/{{formTypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "master",
+                "type",
+                "{{formTypeId}}"
+              ]
+            },
+            "description": "Get all form masters for a specific form type"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Form Master",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formTypeId\": \"{{formTypeId}}\",\n  \"code\": \"NOTICE_CIVIL\",\n  \"name\": \"Civil Notice Form\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/master",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "master"
+              ]
+            },
+            "description": "Create a new form master"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Form Master",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formTypeId\": \"{{formTypeId}}\",\n  \"code\": \"NOTICE_CIVIL\",\n  \"name\": \"Civil Notice Form Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/master/{{formMasterId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "master",
+                "{{formMasterId}}"
+              ]
+            },
+            "description": "Update a form master"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Form Master",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/master/{{formMasterId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "master",
+                "{{formMasterId}}"
+              ]
+            },
+            "description": "Delete a form master"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FormSubtype",
+      "item": [
+        {
+          "name": "Get All Form Subtypes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/subtype/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "subtype",
+                "list"
+              ]
+            },
+            "description": "Get list of all form subtypes"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Subtype By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/subtype/{{formSubtypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "subtype",
+                "{{formSubtypeId}}"
+              ]
+            },
+            "description": "Get form subtype by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Subtype By Code",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/subtype/code/{{formSubtypeCode}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "subtype",
+                "code",
+                "{{formSubtypeCode}}"
+              ]
+            },
+            "description": "Get form subtype by code"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Subtypes By Form",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/subtype/form/{{formMasterId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "subtype",
+                "form",
+                "{{formMasterId}}"
+              ]
+            },
+            "description": "Get all form subtypes for a specific form"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Form Subtype",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formId\": \"{{formMasterId}}\",\n  \"code\": \"NOTICE_SUBTYPE_1\",\n  \"name\": \"Notice Subtype 1\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/subtype",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "subtype"
+              ]
+            },
+            "description": "Create a new form subtype"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Form Subtype",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formId\": \"{{formMasterId}}\",\n  \"code\": \"NOTICE_SUBTYPE_1\",\n  \"name\": \"Notice Subtype 1 Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/subtype/{{formSubtypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "subtype",
+                "{{formSubtypeId}}"
+              ]
+            },
+            "description": "Update a form subtype"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Form Subtype",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/subtype/{{formSubtypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "subtype",
+                "{{formSubtypeId}}"
+              ]
+            },
+            "description": "Delete a form subtype"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FormTemplate",
+      "item": [
+        {
+          "name": "Get All Form Templates",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template",
+                "list"
+              ]
+            },
+            "description": "Get list of all form templates"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Template By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template/{{formTemplateId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template",
+                "{{formTemplateId}}"
+              ]
+            },
+            "description": "Get form template by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Templates By Subtype",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template/subtype/{{formSubtypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template",
+                "subtype",
+                "{{formSubtypeId}}"
+              ]
+            },
+            "description": "Get all form templates for a specific subtype"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Form Template",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"title\": \"Show Cause Notice\",\n  \"templateContent\": \"<html><body>This is a show cause notice template</body></html>\",\n  \"isEditable\": true,\n  \"version\": \"1.0.0\",\n  \"caseTypeCode\": \"CIVIL\",\n  \"stateCode\": \"RJ\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template"
+              ]
+            },
+            "description": "Create a new form template"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Form Template",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"title\": \"Show Cause Notice Updated\",\n  \"templateContent\": \"<html><body>This is an updated show cause notice template</body></html>\",\n  \"isEditable\": true,\n  \"version\": \"1.0.1\",\n  \"caseTypeCode\": \"CIVIL\",\n  \"stateCode\": \"RJ\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template/{{formTemplateId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template",
+                "{{formTemplateId}}"
+              ]
+            },
+            "description": "Update a form template"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Form Template",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template/{{formTemplateId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template",
+                "{{formTemplateId}}"
+              ]
+            },
+            "description": "Delete a form template"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FormTemplateVersion",
+      "item": [
+        {
+          "name": "Get All Form Template Versions",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template-version/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template-version",
+                "list"
+              ]
+            },
+            "description": "Get list of all form template versions"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Template Version By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template-version/{{formTemplateVersionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template-version",
+                "{{formTemplateVersionId}}"
+              ]
+            },
+            "description": "Get form template version by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Template Versions By Template",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template-version/template/{{formTemplateId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template-version",
+                "template",
+                "{{formTemplateId}}"
+              ]
+            },
+            "description": "Get all versions of a specific form template"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Form Template Version",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formTemplateId\": \"{{formTemplateId}}\",\n  \"content\": \"<html><body>Version 1.0 content</body></html>\",\n  \"version\": \"1.0.0\",\n  \"isPublished\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template-version",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template-version"
+              ]
+            },
+            "description": "Create a new form template version"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Form Template Version",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"content\": \"<html><body>Updated version 1.0 content</body></html>\",\n  \"version\": \"1.0.1\",\n  \"isPublished\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template-version/{{formTemplateVersionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template-version",
+                "{{formTemplateVersionId}}"
+              ]
+            },
+            "description": "Update a form template version"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Form Template Version",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/template-version/{{formTemplateVersionId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "template-version",
+                "{{formTemplateVersionId}}"
+              ]
+            },
+            "description": "Delete a form template version"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FormCaseCategoryMapping",
+      "item": [
+        {
+          "name": "Get All Form Case Category Mappings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/case-category-mapping/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "case-category-mapping",
+                "list"
+              ]
+            },
+            "description": "Get list of all form case category mappings"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Case Category Mapping By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/case-category-mapping/{{mappingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "case-category-mapping",
+                "{{mappingId}}"
+              ]
+            },
+            "description": "Get form case category mapping by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Case Category Mappings By Subtype",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/case-category-mapping/subtype/{{formSubtypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "case-category-mapping",
+                "subtype",
+                "{{formSubtypeId}}"
+              ]
+            },
+            "description": "Get all case category mappings for a specific form subtype"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Form Case Category Mapping",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"caseCategoryId\": \"{{caseCategoryId}}\",\n  \"isMandatory\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/case-category-mapping",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "case-category-mapping"
+              ]
+            },
+            "description": "Create a new form case category mapping"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Form Case Category Mapping",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"isMandatory\": false,\n  \"isActive\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/case-category-mapping/{{mappingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "case-category-mapping",
+                "{{mappingId}}"
+              ]
+            },
+            "description": "Update a form case category mapping"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Form Case Category Mapping",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/case-category-mapping/{{mappingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "case-category-mapping",
+                "{{mappingId}}"
+              ]
+            },
+            "description": "Delete a form case category mapping"
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "FormCourtMapping",
+      "item": [
+        {
+          "name": "Get All Form Court Mappings",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/court-mapping/list",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "court-mapping",
+                "list"
+              ]
+            },
+            "description": "Get list of all form court mappings"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Court Mapping By ID",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/court-mapping/{{courtMappingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "court-mapping",
+                "{{courtMappingId}}"
+              ]
+            },
+            "description": "Get form court mapping by ID"
+          },
+          "response": []
+        },
+        {
+          "name": "Get Form Court Mappings By Subtype",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Accept",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/court-mapping/subtype/{{formSubtypeId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "court-mapping",
+                "subtype",
+                "{{formSubtypeId}}"
+              ]
+            },
+            "description": "Get all court mappings for a specific form subtype"
+          },
+          "response": []
+        },
+        {
+          "name": "Create Form Court Mapping",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"courtTypeId\": \"{{courtTypeId}}\",\n  \"isMandatory\": true\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/court-mapping",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "court-mapping"
+              ]
+            },
+            "description": "Create a new form court mapping"
+          },
+          "response": []
+        },
+        {
+          "name": "Update Form Court Mapping",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"courtTypeId\": \"{{courtTypeId}}\",\n  \"isMandatory\": false\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/form/court-mapping/{{courtMappingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "court-mapping",
+                "{{courtMappingId}}"
+              ]
+            },
+            "description": "Update a form court mapping"
+          },
+          "response": []
+        },
+        {
+          "name": "Delete Form Court Mapping",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/api/form/court-mapping/{{courtMappingId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "form",
+                "court-mapping",
+                "{{courtMappingId}}"
+              ]
+            },
+            "description": "Delete a form court mapping"
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "formTypeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "formTypeCode",
+      "value": "NOTICE",
+      "type": "string"
+    },
+    {
+      "key": "formMasterId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "formMasterCode",
+      "value": "NOTICE_CIVIL",
+      "type": "string"
+    },
+    {
+      "key": "formSubtypeId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "formSubtypeCode",
+      "value": "NOTICE_SUBTYPE_1",
+      "type": "string"
+    },
+    {
+      "key": "formTemplateId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "formTemplateVersionId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "mappingId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courtMappingId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "caseCategoryId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "courtTypeId",
+      "value": "",
+      "type": "string"
+    }
+  ]
+}

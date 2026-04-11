@@ -34,7 +34,7 @@ namespace CourtApp.Application.Features.Clients.Handlers
                 Name = e.Name.ToUpper(),
                 Email = e.Email,
                 Mobile = e.Mobile,
-                ClientType = e.ClientType,
+                ClientType = e.ClientType.ToString(),
                 ReferalBy = e.ReferalBy,
                 Address = e.Address.ToUpper()
             };

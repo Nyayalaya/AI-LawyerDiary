@@ -55,8 +55,8 @@
     <Folder Include="DTOs\CaseCategory\" />
     <Folder Include="DTOs\Work\" />
     <Folder Include="Features\CaseType\Validators\" />
-    <Folder Include="Features\Clients\Validators\" />
     <Folder Include="Features\Clients\Services\" />
+    <Folder Include="Features\FormManagement\Services\" />
     <Folder Include="Features\State\Command\" />
     <Folder Include="Features\WorkMasterSub\Dtos\" />
     <Folder Include="Interfaces\CacheRepositories\LawyerDiary\" />

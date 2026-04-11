@@ -38,6 +38,15 @@ namespace CourtApp.Application.Interfaces.Contexts
 
         DbSet<LanguageEntity> Languages { get; set; }
         DbSet<MultiLangDictEntity> MultiLangDicts { get; set; }
+
+        DbSet<FormTypeEntity> FormTypes { get; set; }
+        DbSet<FormMasterEntity> FormMasters { get; set; }
+        DbSet<FormSubtypeEntity> FormSubtypes { get; set; }
+        DbSet<FormTemplateEntity> FormTemplates { get; set; }
+        DbSet<FormTemplateVersionEntity> FormTemplateVersions { get; set; }
+        DbSet<FormCaseCategoryMapping> FormCaseTypeMappings { get; set; }
+        DbSet<FormCourtMapping> FormCourtMappings { get; set; }
+
         #endregion
 
         #region 🔹 CASE MODULE

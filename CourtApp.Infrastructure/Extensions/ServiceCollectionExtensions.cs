@@ -7,6 +7,7 @@ using CourtApp.Application.Features.CaseType.Services;
 using CourtApp.Application.Features.CourtHall.Interfaces;
 using CourtApp.Application.Features.CourtLevel.Services;
 using CourtApp.Application.Features.CourtType.Services;
+using CourtApp.Application.Features.FormManagement.Interfaces;
 using CourtApp.Application.Features.Permission.Services;
 using CourtApp.Application.Features.Profile.Services;
 using CourtApp.Application.Features.State.Services;
@@ -181,6 +182,7 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddScoped<ICourtComplexRepository, CourtComplexRepository>();
             services.AddScoped<ICourtBenchRepository, CourtBenchRepository>();
             services.AddScoped<ICourtHallRepository, CourtHallRepository>();
+            services.AddScoped<IFormTypeRepository, FormTypeRepository>();
 
             services.AddScoped<ILocationRepository, LocationRepository>();
 
@@ -225,6 +227,14 @@ namespace CourtApp.Infrastructure.Extensions
 
             services.AddScoped<ICadreMasterRepository, CadreMasterRepository>();
 
+            // 🔹 FORM MANAGEMENT REPOSITORIES
+            services.AddScoped<IFormTypeRepository, FormTypeRepository>();
+            services.AddScoped<IFormMasterRepository, FormMasterRepository>();
+            services.AddScoped<IFormSubtypeRepository, FormSubtypeRepository>();
+            services.AddScoped<IFormTemplateRepository, FormTemplateRepository>();
+            services.AddScoped<IFormTemplateVersionRepository, FormTemplateVersionRepository>();
+            services.AddScoped<IFormCaseCategoryMappingRepository, FormCaseCategoryMappingRepository>();
+            services.AddScoped<IFormCourtMappingRepository, FormCourtMappingRepository>();
 
             return services;
         }

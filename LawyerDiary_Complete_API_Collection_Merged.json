@@ -1,0 +1,2432 @@
+{
+  "info": {
+    "name": "LawyerDiary AI - Complete API Collection (With Form Management)",
+    "description": "Complete API collection for LawyerDiary AI application with all controllers and endpoints\n\nBase URL: {{base_url}}\nAuthorization: Bearer {{token}}\n\nIncludes: Auth, Profile, Location, Court, Cadre, Case Management, Form Management, and more!",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "12345"
+  },
+  "item": [
+    {
+      "name": "🔐 Authentication",
+      "item": [
+        {
+          "name": "Register",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 201) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"user_id\", jsonData.data);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"SecurePassword@123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/register",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.environment.set(\"token\", jsonData.data.accessToken);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"SecurePassword@123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/login",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Confirm Email",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"user-id\",\n  \"token\": \"confirmation-token\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/confirm-email",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "confirm-email"]
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"testuser@example.com\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/forgot-password",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "forgot-password"]
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "auth": {
+              "type": "noauth"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"user-id\",\n  \"token\": \"reset-token\",\n  \"newPassword\": \"NewPassword@123\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/auth/reset-password",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "auth", "reset-password"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "👤 Profile Management",
+      "item": [
+        {
+          "name": "Get User Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/profile/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "profile", "{{user_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Update User Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"phoneNumber\": \"+919876543210\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/profile/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "profile", "{{user_id}}"]
+            }
+          }
+        },
+        {
+          "name": "Complete User Profile",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"dateOfBirth\": \"1990-05-15\",\n  \"gender\": 0,\n  \"addresses\": [],\n  \"contacts\": []\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/profile/{{user_id}}/complete",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "profile", "{{user_id}}", "complete"]
+            }
+          }
+        },
+        {
+          "name": "Create Organization",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationName\": \"Legal Associates\",\n  \"registrationNumber\": \"REG-2024-001\",\n  \"taxIdentificationNumber\": \"TIN-123456789\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/profile/{{user_id}}/organization",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "profile", "{{user_id}}", "organization"]
+            }
+          }
+        },
+        {
+          "name": "Update Organization Mapping",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"organizationId\": \"org-123\",\n  \"organizationName\": \"Legal Associates\",\n  \"role\": \"Admin\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/profile/{{user_id}}/organization-mapping",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "profile", "{{user_id}}", "organization-mapping"]
+            }
+          }
+        },
+        {
+          "name": "Create Sub-User",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Clerk\",\n  \"lastName\": \"User\",\n  \"email\": \"clerk@example.com\",\n  \"phoneNumber\": \"+919876543211\",\n  \"password\": \"SecurePassword@123\",\n  \"role\": \"Clerk\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/profile/{{user_id}}/subuser",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "profile", "{{user_id}}", "subuser"]
+            }
+          }
+        },
+        {
+          "name": "Add Billing Information",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"billingName\": \"John Doe\",\n  \"billingAddress\": \"123 Main St\",\n  \"city\": \"Mumbai\",\n  \"state\": \"Maharashtra\",\n  \"postalCode\": \"400001\",\n  \"country\": \"India\",\n  \"accountNumber\": \"1234567890\",\n  \"ifscCode\": \"HDFC0000001\",\n  \"pan\": \"ABCDE1234F\",\n  \"gstNo\": \"27AABCR1234B1Z0\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/profile/{{user_id}}/billing-info",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "profile", "{{user_id}}", "billing-info"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📍 Location Management",
+      "item": [
+        {
+          "name": "Get All Locations",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/location/1?pageNumber=1&pageSize=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "location", "1"],
+              "query": [
+                {
+                  "key": "pageNumber",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Location by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/location/detail/location-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "location", "detail", "location-id"]
+            }
+          }
+        },
+        {
+          "name": "Create Location",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stateId\": 1,\n  \"name\": \"Mumbai\",\n  \"code\": \"MUM\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/location",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "location"]
+            }
+          }
+        },
+        {
+          "name": "Update Location",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"stateId\": 1,\n  \"name\": \"Mumbai Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/location/location-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "location", "location-id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Location",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/location/location-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "location", "location-id"]
+            }
+          }
+        },
+        {
+          "name": "Get Cached Locations",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/location/cache/1",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "location", "cache", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏛️ Court Management",
+      "item": [
+        {
+          "name": "Get All Courts",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/court/location-id?pageNumber=1&pageSize=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "court", "location-id"],
+              "query": [
+                {
+                  "key": "pageNumber",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Court by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/court/detail/court-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "court", "detail", "court-id"]
+            }
+          }
+        },
+        {
+          "name": "Create Court",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"locationId\": \"location-id\",\n  \"courts\": [\n    {\n      \"name\": \"High Court\",\n      \"courtTypeId\": \"type-id\",\n      \"courtLevelId\": \"level-id\"\n    }\n  ]\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/court",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "court"]
+            }
+          }
+        },
+        {
+          "name": "Update Court",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"High Court Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/court/court-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "court", "court-id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Court",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/court/court-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "court", "court-id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🏢 Court District",
+      "item": [
+        {
+          "name": "Get All Court Districts",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/courtdistrict?pageNumber=1&pageSize=10",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "courtdistrict"],
+              "query": [
+                {
+                  "key": "pageNumber",
+                  "value": "1"
+                },
+                {
+                  "key": "pageSize",
+                  "value": "10"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Get Court District by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/courtdistrict/district-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "courtdistrict", "district-id"]
+            }
+          }
+        },
+        {
+          "name": "Create Court District",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"District 1\",\n  \"stateId\": 1\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/courtdistrict",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "courtdistrict"]
+            }
+          }
+        },
+        {
+          "name": "Update Court District",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"District 1 Updated\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/courtdistrict/district-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "courtdistrict", "district-id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Court District",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/courtdistrict/district-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "courtdistrict", "district-id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "🎓 Cadre Management",
+      "item": [
+        {
+          "name": "Get All Cadres",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cadre",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cadre"]
+            }
+          }
+        },
+        {
+          "name": "Get Cadre by ID",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cadre/cadre-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cadre", "cadre-id"]
+            }
+          }
+        },
+        {
+          "name": "Create Cadre",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Cadre Name\",\n  \"description\": \"Description\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/cadre",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cadre"]
+            }
+          }
+        },
+        {
+          "name": "Update Cadre",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Updated Cadre Name\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/v1/cadre/cadre-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cadre", "cadre-id"]
+            }
+          }
+        },
+        {
+          "name": "Delete Cadre",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/cadre/cadre-id",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "cadre", "cadre-id"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📋 Case Management",
+      "item": [
+        {
+          "name": "Case Category",
+          "item": [
+            {
+              "name": "Get All Case Categories",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/casecategory",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "casecategory"]
+                }
+              }
+            },
+            {
+              "name": "Create Case Category",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Civil Case\",\n  \"description\": \"Civil litigation cases\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/casecategory",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "casecategory"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Case Stage",
+          "item": [
+            {
+              "name": "Get All Case Stages",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/casestage",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "casestage"]
+                }
+              }
+            },
+            {
+              "name": "Create Case Stage",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Filed\",\n  \"description\": \"Case has been filed\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/casestage",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "casestage"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "🏗️ Court Infrastructure",
+      "item": [
+        {
+          "name": "Court Level",
+          "item": [
+            {
+              "name": "Get All Court Levels",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/courtlevel",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "courtlevel"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Court Type",
+          "item": [
+            {
+              "name": "Get All Court Types",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/courttype",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "courttype"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Court Complex",
+          "item": [
+            {
+              "name": "Get All Court Complexes",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/courtcomplex",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "courtcomplex"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Court Hall",
+          "item": [
+            {
+              "name": "Get All Court Halls",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/courthall",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "courthall"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "⚖️ Work & Proceeding",
+      "item": [
+        {
+          "name": "Work Master",
+          "item": [
+            {
+              "name": "Get All Work Masters",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/workmaster",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "workmaster"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Proceeding Head",
+          "item": [
+            {
+              "name": "Get All Proceeding Heads",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/proceedinghead",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "proceedinghead"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Proceeding Sub Head",
+          "item": [
+            {
+              "name": "Get All Proceeding Sub Heads",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/proceedingsubhead",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "proceedingsubhead"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "🎯 State Management",
+      "item": [
+        {
+          "name": "Get All States",
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{token}}"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/v1/state",
+              "host": ["{{base_url}}"],
+              "path": ["api", "v1", "state"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "📝 Form Management",
+      "item": [
+        {
+          "name": "Form Type",
+          "item": [
+            {
+              "name": "Create Form Type",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"name\": \"Civil Form Type\",\n  \"description\": \"Forms for civil cases\",\n  \"code\": \"CFT001\",\n  \"displayOrder\": 1,\n  \"isActive\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-type",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-type"]
+                }
+              }
+            },
+            {
+              "name": "Get All Form Types",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-type",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-type"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Type by ID",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-type/{{formTypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-type", "{{formTypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Type by Code",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-type/code/{{formTypeCode}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-type", "code", "{{formTypeCode}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Form Type",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"id\": \"{{formTypeId}}\",\n  \"name\": \"Updated Civil Form Type\",\n  \"description\": \"Updated description\",\n  \"code\": \"CFT001\",\n  \"displayOrder\": 1,\n  \"isActive\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-type/{{formTypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-type", "{{formTypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Form Type",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-type/{{formTypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-type", "{{formTypeId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Form Master",
+          "item": [
+            {
+              "name": "Create Form Master",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formTypeId\": \"{{formTypeId}}\",\n  \"name\": \"Petition Form\",\n  \"description\": \"Standard petition form for civil cases\",\n  \"code\": \"PET001\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-master",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-master"]
+                }
+              }
+            },
+            {
+              "name": "Get All Form Masters",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-master",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-master"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Master by ID",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-master/{{formMasterId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-master", "{{formMasterId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Master by Code",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-master/code/{{formMasterCode}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-master", "code", "{{formMasterCode}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Masters by Type",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-master/by-type/{{formTypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-master", "by-type", "{{formTypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Form Master",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formTypeId\": \"{{formTypeId}}\",\n  \"name\": \"Updated Petition Form\",\n  \"code\": \"PET001\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-master/{{formMasterId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-master", "{{formMasterId}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Form Master",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-master/{{formMasterId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-master", "{{formMasterId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Form Subtype",
+          "item": [
+            {
+              "name": "Create Form Subtype",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formId\": \"{{formMasterId}}\",\n  \"name\": \"Petition Subtype A\",\n  \"code\": \"PETA001\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-subtype",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-subtype"]
+                }
+              }
+            },
+            {
+              "name": "Get All Form Subtypes",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-subtype",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-subtype"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Subtype by ID",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-subtype/{{formSubtypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-subtype", "{{formSubtypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Subtype by Code",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-subtype/code/{{formSubtypeCode}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-subtype", "code", "{{formSubtypeCode}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Subtypes by Form",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-subtype/by-form/{{formMasterId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-subtype", "by-form", "{{formMasterId}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Form Subtype",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formId\": \"{{formMasterId}}\",\n  \"name\": \"Updated Petition Subtype A\",\n  \"code\": \"PETA001\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-subtype/{{formSubtypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-subtype", "{{formSubtypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Form Subtype",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-subtype/{{formSubtypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-subtype", "{{formSubtypeId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Form Template",
+          "item": [
+            {
+              "name": "Create Form Template",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"title\": \"Petition Template V1\",\n  \"templateContent\": \"{\\\"fields\\\":[]}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template"]
+                }
+              }
+            },
+            {
+              "name": "Get All Form Templates",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Template by ID",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template/{{formTemplateId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template", "{{formTemplateId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Templates by Subtype",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template/by-subtype/{{formSubtypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template", "by-subtype", "{{formSubtypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Form Template",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"title\": \"Updated Petition Template\",\n  \"templateContent\": \"{\\\"fields\\\":[]}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template/{{formTemplateId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template", "{{formTemplateId}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Form Template",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template/{{formTemplateId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template", "{{formTemplateId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Form Template Version",
+          "item": [
+            {
+              "name": "Create Form Template Version",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formTemplateId\": \"{{formTemplateId}}\",\n  \"content\": \"{\\\"fields\\\":[]}\",\n  \"version\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template-version",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template-version"]
+                }
+              }
+            },
+            {
+              "name": "Get All Form Template Versions",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template-version",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template-version"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Template Version by ID",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template-version/{{formTemplateVersionId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template-version", "{{formTemplateVersionId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Template Versions by Template",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template-version/by-template/{{formTemplateId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template-version", "by-template", "{{formTemplateId}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Form Template Version",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"content\": \"{\\\"fields\\\":[]}\",\n  \"version\": 1\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template-version/{{formTemplateVersionId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template-version", "{{formTemplateVersionId}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Form Template Version",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-template-version/{{formTemplateVersionId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-template-version", "{{formTemplateVersionId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Form Case Category Mapping",
+          "item": [
+            {
+              "name": "Create Form Case Category Mapping",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"caseCategoryId\": \"{{caseCategoryId}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-case-category-mapping",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-case-category-mapping"]
+                }
+              }
+            },
+            {
+              "name": "Get All Form Case Category Mappings",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-case-category-mapping",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-case-category-mapping"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Case Category Mapping by ID",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-case-category-mapping/{{mappingId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-case-category-mapping", "{{mappingId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Case Category Mappings by Subtype",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-case-category-mapping/by-subtype/{{formSubtypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-case-category-mapping", "by-subtype", "{{formSubtypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Form Case Category Mapping",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"isMandatory\": true,\n  \"isActive\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-case-category-mapping/{{mappingId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-case-category-mapping", "{{mappingId}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Form Case Category Mapping",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-case-category-mapping/{{mappingId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-case-category-mapping", "{{mappingId}}"]
+                }
+              }
+            }
+          ]
+        },
+        {
+          "name": "Form Court Mapping",
+          "item": [
+            {
+              "name": "Create Form Court Mapping",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "POST",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"formSubtypeId\": \"{{formSubtypeId}}\",\n  \"courtTypeId\": \"{{courtTypeId}}\"\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-court-mapping",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-court-mapping"]
+                }
+              }
+            },
+            {
+              "name": "Get All Form Court Mappings",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-court-mapping",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-court-mapping"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Court Mapping by ID",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-court-mapping/{{courtMappingId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-court-mapping", "{{courtMappingId}}"]
+                }
+              }
+            },
+            {
+              "name": "Get Form Court Mappings by Subtype",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "GET",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-court-mapping/by-subtype/{{formSubtypeId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-court-mapping", "by-subtype", "{{formSubtypeId}}"]
+                }
+              }
+            },
+            {
+              "name": "Update Form Court Mapping",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "PUT",
+                "header": [
+                  {
+                    "key": "Content-Type",
+                    "value": "application/json"
+                  }
+                ],
+                "body": {
+                  "mode": "raw",
+                  "raw": "{\n  \"courtTypeId\": \"{{courtTypeId}}\",\n  \"isMandatory\": true\n}"
+                },
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-court-mapping/{{courtMappingId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-court-mapping", "{{courtMappingId}}"]
+                }
+              }
+            },
+            {
+              "name": "Delete Form Court Mapping",
+              "request": {
+                "auth": {
+                  "type": "bearer",
+                  "bearer": [
+                    {
+                      "key": "token",
+                      "value": "{{token}}"
+                    }
+                  ]
+                },
+                "method": "DELETE",
+                "header": [],
+                "url": {
+                  "raw": "{{base_url}}/api/v1/form/form-court-mapping/{{courtMappingId}}",
+                  "host": ["{{base_url}}"],
+                  "path": ["api", "v1", "form", "form-court-mapping", "{{courtMappingId}}"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "your_jwt_token_here",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "user-id-here",
+      "type": "string"
+    },
+    {
+      "key": "formTypeId",
+      "value": "form-type-id-here",
+      "type": "string"
+    },
+    {
+      "key": "formTypeCode",
+      "value": "CFT001",
+      "type": "string"
+    },
+    {
+      "key": "formMasterId",
+      "value": "form-master-id-here",
+      "type": "string"
+    },
+    {
+      "key": "formMasterCode",
+      "value": "PET001",
+      "type": "string"
+    },
+    {
+      "key": "formSubtypeId",
+      "value": "form-subtype-id-here",
+      "type": "string"
+    },
+    {
+      "key": "formSubtypeCode",
+      "value": "PETA001",
+      "type": "string"
+    },
+    {
+      "key": "formTemplateId",
+      "value": "form-template-id-here",
+      "type": "string"
+    },
+    {
+      "key": "formTemplateVersionId",
+      "value": "form-template-version-id-here",
+      "type": "string"
+    },
+    {
+      "key": "mappingId",
+      "value": "mapping-id-here",
+      "type": "string"
+    },
+    {
+      "key": "courtMappingId",
+      "value": "court-mapping-id-here",
+      "type": "string"
+    },
+    {
+      "key": "caseCategoryId",
+      "value": "case-category-id-here",
+      "type": "string"
+    },
+    {
+      "key": "courtTypeId",
+      "value": "court-type-id-here",
+      "type": "string"
+    }
+  ]
+}

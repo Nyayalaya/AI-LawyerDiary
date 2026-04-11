@@ -18,7 +18,7 @@ namespace CourtApp.Infrastructure.Extensions
                .AddCommonServices()                    // Shared Services
                .AddPersistenceContexts(configuration)  // DbContext Abstraction
                .AddRepositories()                      // Repositories
-               .AddCacheRepositories();                // Cache Laye
+               .AddCacheRepositories();                // Cache Layer
         }
 
         #endregion

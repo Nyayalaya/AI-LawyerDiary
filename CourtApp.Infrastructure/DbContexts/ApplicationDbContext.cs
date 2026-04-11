@@ -56,6 +56,14 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CourtFormTypeEntity> CourtFormTypes { get; set; }
         public DbSet<WorksEntity> Works { get; set; }
 
+        public DbSet<FormTypeEntity> FormTypes { get; set; }
+        public DbSet<FormMasterEntity> FormMasters { get; set; }
+        public DbSet<FormSubtypeEntity> FormSubtypes { get; set; }
+        public DbSet<FormTemplateEntity> FormTemplates { get; set; }
+        public DbSet<FormTemplateVersionEntity> FormTemplateVersions { get; set; }
+        public DbSet<FormCaseCategoryMapping> FormCaseTypeMappings { get; set; }
+        public DbSet<FormCourtMapping> FormCourtMappings { get; set; }
+
         #endregion
 
         #region 🔹 CASE MODULE
@@ -148,6 +156,10 @@ namespace CourtApp.Infrastructure.DbContexts
             {
                 property.SetColumnType("decimal(18,2)");
             }
+
+            builder.Entity<ClientEntity>()
+                .Property(c => c.ClientType)
+                .HasConversion<string>();
 
             // 🔗 CourtMaster relations
             builder.Entity<CourtMasterEntity>()
