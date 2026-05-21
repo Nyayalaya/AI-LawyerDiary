@@ -11,6 +11,7 @@ using CourtApp.Application.Features.FormManagement.Interfaces;
 using CourtApp.Application.Features.Permission.Services;
 using CourtApp.Application.Features.Profile.Services;
 using CourtApp.Application.Features.State.Services;
+using CourtApp.Application.Features.SystemUsers.Services;
 
 using CourtApp.Application.Interfaces.CacheRepositories;
 using CourtApp.Application.Interfaces.CacheRepositories.Common;
@@ -114,6 +115,7 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddScoped<IUserBasicInfoService, UserBasicInfoService>();
             services.AddScoped<IUserOrganizationService, UserOrganizationService>();
             services.AddScoped<IUserApprovalService, UserApprovalService>();
+            services.AddScoped<ISystemUserService, SystemUserService>();
 
             #endregion
 

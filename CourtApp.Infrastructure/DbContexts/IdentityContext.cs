@@ -1,4 +1,5 @@
-﻿using CourtApp.Domain.Enums;
+﻿using CourtApp.Domain.Entities;
+using CourtApp.Domain.Enums;
 using CourtApp.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -24,6 +25,7 @@ public class IdentityContext : IdentityDbContext<ApplicationUser, IdentityRole<s
     public DbSet<UserOrganizationMapping> UserOrganizations { get; set; }
     public DbSet<UserSpecialization> UserSpecializations { get; set; }
     public DbSet<UserBillingModel> UserBillingInfos { get; set; }
+    public DbSet<SystemUser> SystemUsers { get; set; }
 
     #endregion
 
@@ -181,6 +183,21 @@ public class IdentityContext : IdentityDbContext<ApplicationUser, IdentityRole<s
                   .WithMany()
                   .HasForeignKey(x => x.UserId)
                   .OnDelete(DeleteBehavior.Cascade);
+        });
+
+        #endregion
+
+        #region 🔹 SYSTEM USERS MANAGEMENT
+
+        builder.Entity<SystemUser>(entity =>
+        {
+           
+            entity.HasIndex(x => x.UserId).IsUnique();
+            
+            entity.HasIndex(x => x.Status);
+            entity.HasIndex(x => x.Subscription);
+            entity.HasIndex(x => x.RegisteredDate);
+            entity.Property(x => x.StatusReason).HasMaxLength(500);
         });
 
         #endregion

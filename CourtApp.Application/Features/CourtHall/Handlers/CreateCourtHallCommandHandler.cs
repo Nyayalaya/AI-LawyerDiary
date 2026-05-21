@@ -34,7 +34,6 @@ namespace CourtApp.Application.Features.CourtHall.Handlers
             {
                 // Normalize to avoid null reference
                 var normalizedName = hall.Name?.Trim().ToLower();
-                var normalizedCode = hall.Code?.Trim().ToLower();
 
                 // Check for duplicate name within same complex
                 var nameExists = await repository.Entities
@@ -48,25 +47,9 @@ namespace CourtApp.Application.Features.CourtHall.Handlers
                     return Result<Guid>.Fail($"Court hall with name '{hall.Name}' already exists in this complex.");
                 }
 
-                // Check for duplicate code within same complex
-                if (!string.IsNullOrWhiteSpace(normalizedCode))
-                {
-                    var codeExists = await repository.Entities
-                        .AnyAsync(w =>
-                            w.Code.Trim().ToLower() == normalizedCode &&
-                            w.CourtComplexId == request.CourtComplexId,
-                            cancellationToken);
-
-                    if (codeExists)
-                    {
-                        return Result<Guid>.Fail($"Court hall with code '{hall.Code}' already exists in this complex.");
-                    }
-                }
-
                 var newEntity = new CourtHallEntity
                 {
                     Name = hall.Name?.Trim(),
-                    Code = hall.Code?.Trim(),
                     JudgeName = hall.JudgeName?.Trim(),
                     RoomNumber = hall.RoomNumber?.Trim(),
                     CourtComplexId = request.CourtComplexId

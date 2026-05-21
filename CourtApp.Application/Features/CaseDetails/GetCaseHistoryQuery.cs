@@ -109,8 +109,8 @@ namespace CourtApp.Application.Features.CaseDetails
                     {
                         NextDate = s.NextDate?.ToString("dd/MM/yyyy") ?? "",
                         Stage = s.StageId != null ? s.Stage.Name : "",
-                        Activity = s.SubHead.Name_En,
-                        Type = s.Head.Name_En,
+                        Activity = s.SubHead.Name,
+                        Type = s.Head.Name,
                         Date = (s.ProceedingDate ?? s.CreatedOn),
                         WorkDetail = s.ProcWork != null ? new List<CaseWorkDetail>
                         {

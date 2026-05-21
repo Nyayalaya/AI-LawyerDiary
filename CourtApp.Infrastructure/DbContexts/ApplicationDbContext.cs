@@ -55,7 +55,10 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CadreMasterEntity> Cadres { get; set; }
         public DbSet<CourtFormTypeEntity> CourtFormTypes { get; set; }
         public DbSet<WorksEntity> Works { get; set; }
-
+        public DbSet<WorkTypeEntity> WorkTypes { get; set; }
+        public DbSet<WorksEntity> WorkSubTypes { get; set; }
+        public DbSet<ProceedingTypeEntity> ProceedingTypes { get; set; }
+        public DbSet<ProceedingEntity> Proceedings { get; set; }
         public DbSet<FormTypeEntity> FormTypes { get; set; }
         public DbSet<FormMasterEntity> FormMasters { get; set; }
         public DbSet<FormSubtypeEntity> FormSubtypes { get; set; }
@@ -97,10 +100,7 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CourtFeeEntity> CourtFees { get; set; }
         public DbSet<CourtFeeTypeEntity> CourtFeeTypes { get; set; }
         public DbSet<CourtFeeStructureEntity> CourtFeeStructures { get; set; }
-        public DbSet<WorkTypeEntity> WorkTypes { get; set; }
-        public DbSet<WorksEntity> WorkSubTypes { get; set; }
-        public DbSet<ProceedingHeadEntity> ProceedingHeads { get; set; }
-        public DbSet<ProceedingSubHeadEntity> ProceedingSubHeads { get; set; }
+        
         public DbSet<CourtMasterEntity> CourtMasters { get; set; }
         #endregion
 

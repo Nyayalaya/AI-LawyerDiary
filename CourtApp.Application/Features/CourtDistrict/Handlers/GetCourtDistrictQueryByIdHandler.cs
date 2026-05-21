@@ -1,11 +1,12 @@
 using CourtApp.Application.Common;
 using AutoMapper;
-using CourtApp.Application.DTOs.CourtDistrict;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Application.Features.CourtDistrict.Query;
+using CourtApp.Application.Features.CourtDistrict.DTOs;
 
 namespace CourtApp.Application.Features.CourtDistrict.Handlers
 {

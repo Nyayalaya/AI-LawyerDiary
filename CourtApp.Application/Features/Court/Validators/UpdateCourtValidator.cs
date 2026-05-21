@@ -1,3 +1,4 @@
+using CourtApp.Application.Features.Court.Commands;
 using FluentValidation;
 
 namespace CourtApp.Application.Features.Court.Validators

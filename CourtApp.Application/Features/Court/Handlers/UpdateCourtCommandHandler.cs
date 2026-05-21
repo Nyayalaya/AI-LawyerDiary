@@ -1,4 +1,5 @@
 using CourtApp.Application.Common;
+using CourtApp.Application.Features.Court.Commands;
 using CourtApp.Application.Interfaces.CacheRepositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
@@ -34,9 +35,9 @@ namespace CourtApp.Application.Features.Court.Handlers
                 return Result<Guid>.Fail($"Court with name '{request.Name}' already exists in this location");
 
             court.Name = request.Name?.Trim();
-            court.LocationId = request.LocationId;
+           
             court.CourtTypeId = request.CourtTypeId;
-            court.CourtLevelId = request.CourtLevelId;
+            
 
             _repository.Update(court);
             await _cacheRepository.RemoveAsync(request.Id);

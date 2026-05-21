@@ -51,7 +51,7 @@ namespace CourtApp.Application.Features.CaseProceeding
         {
             // ✅ Step 1: Fetch Head Details
             var procDetail = await _ProcRepo.GetByIdAsync(request.HeadId);
-            if (procDetail != null && procDetail.Abbreviation == "DISP")
+            if (procDetail != null && procDetail.Code == "DISP")
             {
                 List<CaseDetailEntity> casesToUpdate = new List<CaseDetailEntity>();
                 if (request.MCasIds != null && request.MCasIds.Any())

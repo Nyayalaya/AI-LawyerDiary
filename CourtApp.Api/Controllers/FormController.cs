@@ -55,7 +55,7 @@ namespace CourtApp.Api.Controllers
         public async Task<IActionResult> GetAllFormTypesAsync()
         {
             var result = await Mediator.Send(new GetAllFormTypesQuery(), RequestAborted);
-            return Success(result);
+            return FromPaginated(result);
         }
 
         /// <summary>Update an existing form type</summary>
@@ -144,7 +144,7 @@ namespace CourtApp.Api.Controllers
         public async Task<IActionResult> GetAllFormMastersAsync()
         {
             var result = await Mediator.Send(new GetAllFormMastersQuery(), RequestAborted);
-            return Success(result);
+            return FromPaginated(result);
         }
 
         /// <summary>Update an existing form master</summary>
@@ -233,7 +233,7 @@ namespace CourtApp.Api.Controllers
         public async Task<IActionResult> GetAllFormSubtypesAsync()
         {
             var result = await Mediator.Send(new GetAllFormSubtypesQuery(), RequestAborted);
-            return Success(result);
+            return FromPaginated(result);
         }
 
         /// <summary>Update an existing form subtype</summary>

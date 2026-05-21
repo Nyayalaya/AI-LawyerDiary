@@ -1,4 +1,6 @@
 using AutoMapper;
+using CourtApp.Application.Common;
+using CourtApp.Application.Extensions;
 using CourtApp.Application.Features.FormManagement.Commands;
 using CourtApp.Application.Features.FormManagement.DTOs;
 using CourtApp.Application.Features.FormManagement.Queries;
@@ -12,9 +14,9 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Application.Features.FormManagement.Handlers
 {
-    public class FormTypeQueryHandler : IRequestHandler<GetAllFormTypesQuery, List<FormTypeResponseDto>>,
-                                         IRequestHandler<GetFormTypeByIdQuery, FormTypeResponseDto>,
-                                         IRequestHandler<GetFormTypeByCodeQuery, FormTypeResponseDto>
+    public class FormTypeQueryHandler : IRequestHandler<GetAllFormTypesQuery, PaginatedResult<FormTypeResponseDto>>,
+                                        IRequestHandler<GetFormTypeByIdQuery, FormTypeResponseDto>,
+                                        IRequestHandler<GetFormTypeByCodeQuery, FormTypeResponseDto>
     {
         private readonly IFormTypeRepository _repository;
         private readonly IMapper _mapper;
@@ -25,10 +27,11 @@ namespace CourtApp.Application.Features.FormManagement.Handlers
             _mapper = mapper;
         }
 
-        public async Task<List<FormTypeResponseDto>> Handle(GetAllFormTypesQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<FormTypeResponseDto>> Handle(GetAllFormTypesQuery request, CancellationToken cancellationToken)
         {
             var entities = await _repository.GetListAsync();
-            return _mapper.Map<List<FormTypeResponseDto>>(entities);
+            var result = _mapper.Map<List<FormTypeResponseDto>>(entities);
+            return result.ToPaginatedResult(request.PageNumber, request.PageSize);
         }
 
         public async Task<FormTypeResponseDto> Handle(GetFormTypeByIdQuery request, CancellationToken cancellationToken)

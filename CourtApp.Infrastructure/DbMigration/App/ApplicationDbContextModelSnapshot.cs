@@ -60,7 +60,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("AuditLogs", (string)null);
+                    b.ToTable("AuditLogs");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.AI.AIConversation", b =>
@@ -581,7 +581,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("ActID");
 
-                    b.ToTable("ad.m_repealed_rule", (string)null);
+                    b.ToTable("ad.m_repealed_rule");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Advocate.ActTypeEntity", b =>
@@ -1076,7 +1076,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("m_state_court_language", (string)null);
+                    b.ToTable("m_state_court_language");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Common.MultiLangDictEntity", b =>
@@ -1103,7 +1103,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("m_lang_dict", (string)null);
+                    b.ToTable("m_lang_dict");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Common.SubjectEntity", b =>
@@ -1189,7 +1189,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("m_court_case_template", (string)null);
+                    b.ToTable("m_court_case_template");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.FormBuilder.DraftingDetailEntity", b =>
@@ -1231,7 +1231,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("TemplateId");
 
-                    b.ToTable("case_petition_detail", (string)null);
+                    b.ToTable("case_petition_detail");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.FormBuilder.FormBuilderEntity", b =>
@@ -1259,7 +1259,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("m_frm_types", (string)null);
+                    b.ToTable("m_frm_types");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.FormBuilder.FormTemplateMappingEntity", b =>
@@ -1289,7 +1289,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("m_temp_frm_mapping", (string)null);
+                    b.ToTable("m_temp_frm_mapping");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.FormBuilder.TemplateInfoEntity", b =>
@@ -1325,7 +1325,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("m_template_info", (string)null);
+                    b.ToTable("m_template_info");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.BookTypeEntity", b =>
@@ -1450,9 +1450,11 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .HasColumnType("uuid");
 
                     b.Property<string>("Address")
-                        .HasColumnType("text");
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
 
                     b.Property<string>("ClientType")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CreatedBy")
@@ -1463,7 +1465,12 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Email")
-                        .HasColumnType("text");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("GST")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
@@ -1472,27 +1479,43 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("Mobile")
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("Name")
-                        .HasColumnType("text");
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("OfficeEmail")
-                        .HasColumnType("text");
+                        .HasMaxLength(150)
+                        .HasColumnType("character varying(150)");
+
+                    b.Property<string>("PAN")
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
                     b.Property<string>("Phone")
-                        .HasColumnType("text");
+                        .HasMaxLength(20)
+                        .HasColumnType("character varying(20)");
 
-                    b.Property<string>("Properiter")
-                        .HasColumnType("text");
+                    b.Property<string>("Proprietor")
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("ReferalBy")
-                        .HasColumnType("text");
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
 
                     b.Property<string>("RegNo")
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("Email");
+
+                    b.HasIndex("Mobile");
 
                     b.ToTable("client", "ld");
                 });
@@ -1531,9 +1554,6 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<string>("Code")
-                        .HasColumnType("text");
-
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
@@ -1557,13 +1577,10 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("StateId");
 
-                    b.HasIndex("Code", "StateId")
-                        .IsUnique();
-
                     b.HasIndex("Name", "StateId")
                         .IsUnique();
 
-                    b.ToTable("m_court_district", (string)null);
+                    b.ToTable("m_court_district");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.CourtMasterEntity", b =>
@@ -1838,78 +1855,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("LawyerId");
 
-                    b.ToTable("OppositCouncilEntity", (string)null);
-                });
-
-            modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.ProceedingHeadEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Abbreviation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name_En")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name_Hn")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("m_proceeding_head", "ld");
-                });
-
-            modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.ProceedingSubHeadEntity", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Abbreviation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("CreatedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid>("HeadId")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("LastModifiedBy")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("LastModifiedOn")
-                        .HasColumnType("timestamp without time zone");
-
-                    b.Property<string>("Name_En")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Name_Hn")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("HeadId");
-
-                    b.ToTable("m_proceeding_sub_head", "ld");
+                    b.ToTable("OppositCouncilEntity");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.PublisherEntity", b =>
@@ -2007,7 +1953,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("m_block", (string)null);
+                    b.ToTable("m_block");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CadreMasterEntity", b =>
@@ -2040,7 +1986,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("m_cadre", (string)null);
+                    b.ToTable("m_cadre");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CaseCategoryEntity", b =>
@@ -2078,7 +2024,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("CourtTypeId");
 
-                    b.ToTable("m_case_category", (string)null);
+                    b.ToTable("m_case_category");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CaseStageEntity", b =>
@@ -2114,7 +2060,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("m_case_stage", (string)null);
+                    b.ToTable("m_case_stage");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CityEntity", b =>
@@ -2138,7 +2084,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("DistrictId");
 
-                    b.ToTable("m_city", (string)null);
+                    b.ToTable("m_city");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtComplexEntity", b =>
@@ -2147,10 +2093,16 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CourtDistrictId")
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("CourtDistrictId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("CourtId")
+                    b.Property<Guid>("CourtId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("CreatedBy")
@@ -2160,14 +2112,14 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<bool>("IsVirtualComplex")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("timestamp without time zone");
-
-                    b.Property<Guid?>("LocationId")
-                        .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
@@ -2181,14 +2133,12 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("CourtId");
 
-                    b.HasIndex("LocationId");
-
                     b.HasIndex("StateId");
 
                     b.HasIndex("Name", "StateId")
                         .IsUnique();
 
-                    b.ToTable("m_court_complex", (string)null);
+                    b.ToTable("m_court_complex");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtEntity", b =>
@@ -2197,7 +2147,10 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
 
-                    b.Property<Guid>("CourtLevelId")
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<Guid?>("CourtDistrictId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("CourtTypeId")
@@ -2210,31 +2163,41 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
 
+                    b.Property<bool>("IsVirtualCourt")
+                        .HasColumnType("boolean");
+
                     b.Property<string>("LastModifiedBy")
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("LastModifiedOn")
                         .HasColumnType("timestamp without time zone");
 
-                    b.Property<Guid>("LocationId")
+                    b.Property<Guid?>("LocationEntityId")
                         .HasColumnType("uuid");
 
                     b.Property<string>("Name")
                         .HasColumnType("text");
 
+                    b.Property<int>("StateId")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
-                    b.HasIndex("CourtLevelId");
+                    b.HasIndex("Code")
+                        .IsUnique();
+
+                    b.HasIndex("CourtDistrictId")
+                        .HasDatabaseName("IX_m_court_CourtDistrictId1");
 
                     b.HasIndex("CourtTypeId")
                         .HasDatabaseName("IX_m_court_CourtTypeId1");
 
-                    b.HasIndex("LocationId");
+                    b.HasIndex("LocationEntityId");
 
-                    b.HasIndex("Name", "LocationId")
-                        .IsUnique();
+                    b.HasIndex("StateId")
+                        .HasDatabaseName("IX_m_court_StateId1");
 
-                    b.ToTable("m_court", (string)null);
+                    b.ToTable("m_court");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtHallEntity", b =>
@@ -2249,12 +2212,21 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.Property<Guid>("CourtComplexId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("CourtTypeId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("CreatedBy")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedOn")
                         .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("HasVideoConference")
+                        .HasColumnType("boolean");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("boolean");
 
                     b.Property<string>("JudgeName")
                         .HasColumnType("text");
@@ -2271,14 +2243,19 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.Property<string>("RoomNumber")
                         .HasColumnType("text");
 
+                    b.Property<int>("SeatingCapacity")
+                        .HasColumnType("integer");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CourtComplexId");
 
-                    b.HasIndex("Code", "CourtComplexId")
+                    b.HasIndex("CourtTypeId");
+
+                    b.HasIndex("Name", "CourtComplexId")
                         .IsUnique();
 
-                    b.ToTable("m_court_hall", (string)null);
+                    b.ToTable("m_court_hall");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtLevelEntity", b =>
@@ -2311,7 +2288,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("m_court_level", (string)null);
+                    b.ToTable("m_court_level");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtTypeEntity", b =>
@@ -2354,7 +2331,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("CourtLevelId");
 
-                    b.ToTable("m_court_type", (string)null);
+                    b.ToTable("m_court_type");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.DistrictEntity", b =>
@@ -2378,7 +2355,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("StateId");
 
-                    b.ToTable("m_district", (string)null);
+                    b.ToTable("m_district");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.FormCaseCategoryMapping", b =>
@@ -2417,7 +2394,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.HasIndex("FormSubtypeId", "CaseCategoryId")
                         .IsUnique();
 
-                    b.ToTable("m_form_case_category_mapping", (string)null);
+                    b.ToTable("m_form_case_category_mapping");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.FormCourtMapping", b =>
@@ -2450,7 +2427,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("m_form_court", (string)null);
+                    b.ToTable("m_form_court");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.FormMasterEntity", b =>
@@ -2485,7 +2462,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("FormTypeId");
 
-                    b.ToTable("m_form", (string)null);
+                    b.ToTable("m_form");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.FormSubtypeEntity", b =>
@@ -2520,7 +2497,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("FormId");
 
-                    b.ToTable("m_form_subtype", (string)null);
+                    b.ToTable("m_form_subtype");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.FormTemplateEntity", b =>
@@ -2570,7 +2547,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("FormSubtypeId");
 
-                    b.ToTable("m_form_template", (string)null);
+                    b.ToTable("m_form_template");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.FormTemplateVersionEntity", b =>
@@ -2608,7 +2585,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("FormTemplateId");
 
-                    b.ToTable("m_form_template_version", (string)null);
+                    b.ToTable("m_form_template_version");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.FormTypeEntity", b =>
@@ -2644,7 +2621,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("m_form_type", (string)null);
+                    b.ToTable("m_form_type");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.JudgeEntity", b =>
@@ -2676,7 +2653,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("CourtHallId");
 
-                    b.ToTable("m_judge", (string)null);
+                    b.ToTable("m_judge");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.LocationEntity", b =>
@@ -2720,7 +2697,72 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.HasIndex("Name", "StateId")
                         .IsUnique();
 
-                    b.ToTable("m_location", (string)null);
+                    b.ToTable("m_location");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.Masters.ProceedingEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<Guid>("ProceedingTypeId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProceedingTypeId");
+
+                    b.ToTable("m_proceeding");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.Masters.ProceedingTypeEntity", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Code")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("m_proceeding_type");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.Specialization", b =>
@@ -2753,7 +2795,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasKey("Id");
 
-                    b.ToTable("m_specialization", (string)null);
+                    b.ToTable("m_specialization");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.StateEntity", b =>
@@ -2788,7 +2830,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.HasIndex("Code")
                         .IsUnique();
 
-                    b.ToTable("m_state", (string)null);
+                    b.ToTable("m_state");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.WardEntity", b =>
@@ -2812,7 +2854,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("m_ward", (string)null);
+                    b.ToTable("m_ward");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.WorkTypeEntity", b =>
@@ -2847,7 +2889,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("CourtTypeId");
 
-                    b.ToTable("m_work_type", (string)null);
+                    b.ToTable("m_work_type");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.WorksEntity", b =>
@@ -2887,7 +2929,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.HasIndex("WorkId");
 
-                    b.ToTable("m_work", (string)null);
+                    b.ToTable("m_work");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.AI.DocumentChunk", b =>
@@ -3201,7 +3243,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CourtApp.Domain.Entities.LawyerDiary.ProceedingHeadEntity", "Head")
+                    b.HasOne("CourtApp.Domain.Entities.Masters.ProceedingTypeEntity", "Head")
                         .WithMany()
                         .HasForeignKey("HeadId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -3211,7 +3253,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .WithMany()
                         .HasForeignKey("StageId");
 
-                    b.HasOne("CourtApp.Domain.Entities.LawyerDiary.ProceedingSubHeadEntity", "SubHead")
+                    b.HasOne("CourtApp.Domain.Entities.Masters.ProceedingEntity", "SubHead")
                         .WithMany()
                         .HasForeignKey("SubHeadId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -3367,7 +3409,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("LanguageEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_state_court_language", (string)null);
+                            b1.ToTable("m_state_court_language");
 
                             b1.ToJson("Languages");
 
@@ -3397,7 +3439,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("MultiLangDictEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_lang_dict", (string)null);
+                            b1.ToTable("m_lang_dict");
 
                             b1.ToJson("MultiLangs");
 
@@ -3476,7 +3518,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("DraftingDetailEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("case_petition_detail", (string)null);
+                            b1.ToTable("case_petition_detail");
 
                             b1.ToJson("FieldDetails");
 
@@ -3502,7 +3544,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("FormBuilderEntityId");
 
-                            b1.ToTable("m_frm_types", (string)null);
+                            b1.ToTable("m_frm_types");
 
                             b1.ToJson("FieldsDetails");
 
@@ -3544,7 +3586,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                                     b2.HasKey("FormFieldsEntityFormBuilderEntityId", "__synthesizedOrdinal");
 
-                                    b2.ToTable("m_frm_types", (string)null);
+                                    b2.ToTable("m_frm_types");
 
                                     b2.WithOwner()
                                         .HasForeignKey("FormFieldsEntityFormBuilderEntityId");
@@ -3571,7 +3613,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                                             b3.HasKey("FieldDetailsEntityFormFieldsEntityFormBuilderEntityId", "FieldDetailsEntity__synthesizedOrdinal");
 
-                                            b3.ToTable("m_frm_types", (string)null);
+                                            b3.ToTable("m_frm_types");
 
                                             b3.WithOwner()
                                                 .HasForeignKey("FieldDetailsEntityFormFieldsEntityFormBuilderEntityId", "FieldDetailsEntity__synthesizedOrdinal");
@@ -3605,7 +3647,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("FormTemplateMappingEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_temp_frm_mapping", (string)null);
+                            b1.ToTable("m_temp_frm_mapping");
 
                             b1.ToJson("FieldsMapping");
 
@@ -3632,7 +3674,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("TemplateInfoEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_template_info", (string)null);
+                            b1.ToTable("m_template_info");
 
                             b1.ToJson("Tags");
 
@@ -3712,7 +3754,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("CourtDistrictEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_court_district", (string)null);
+                            b1.ToTable("m_court_district");
 
                             b1.ToJson("Languages");
 
@@ -3786,17 +3828,6 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.Navigation("Lawyer");
                 });
 
-            modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.ProceedingSubHeadEntity", b =>
-                {
-                    b.HasOne("CourtApp.Domain.Entities.LawyerDiary.ProceedingHeadEntity", "Head")
-                        .WithMany()
-                        .HasForeignKey("HeadId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Head");
-                });
-
             modelBuilder.Entity("CourtApp.Domain.Entities.LawyerDiary.TypeOfCasesEntity", b =>
                 {
                     b.HasOne("CourtApp.Domain.Entities.Masters.CourtTypeEntity", "CourtType")
@@ -3855,7 +3886,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("CaseCategoryEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_case_category", (string)null);
+                            b1.ToTable("m_case_category");
 
                             b1.ToJson("Languages");
 
@@ -3890,7 +3921,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("CaseStageEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_case_stage", (string)null);
+                            b1.ToTable("m_case_stage");
 
                             b1.ToJson("Languages");
 
@@ -3916,17 +3947,13 @@ namespace CourtApp.Infrastructure.DbMigration.App
                 {
                     b.HasOne("CourtApp.Domain.Entities.LawyerDiary.CourtDistrictEntity", "CourtDistrict")
                         .WithMany()
-                        .HasForeignKey("CourtDistrictId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourtDistrictId");
 
                     b.HasOne("CourtApp.Domain.Entities.Masters.CourtEntity", "Court")
                         .WithMany("Complexes")
-                        .HasForeignKey("CourtId");
-
-                    b.HasOne("CourtApp.Domain.Entities.Masters.LocationEntity", "Location")
-                        .WithMany()
-                        .HasForeignKey("LocationId");
+                        .HasForeignKey("CourtId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("CourtApp.Domain.Entities.Masters.StateEntity", "State")
                         .WithMany()
@@ -3954,7 +3981,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("CourtComplexEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_court_complex", (string)null);
+                            b1.ToTable("m_court_complex");
 
                             b1.ToJson("Languages");
 
@@ -3968,28 +3995,28 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                     b.Navigation("Languages");
 
-                    b.Navigation("Location");
-
                     b.Navigation("State");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtEntity", b =>
                 {
-                    b.HasOne("CourtApp.Domain.Entities.Masters.CourtLevelEntity", "CourtLevel")
+                    b.HasOne("CourtApp.Domain.Entities.LawyerDiary.CourtDistrictEntity", "CourtDistrict")
                         .WithMany()
-                        .HasForeignKey("CourtLevelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CourtDistrictId");
 
                     b.HasOne("CourtApp.Domain.Entities.Masters.CourtTypeEntity", "CourtType")
-                        .WithMany()
+                        .WithMany("Courts")
                         .HasForeignKey("CourtTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("CourtApp.Domain.Entities.Masters.LocationEntity", "Location")
+                    b.HasOne("CourtApp.Domain.Entities.Masters.LocationEntity", null)
                         .WithMany("Courts")
-                        .HasForeignKey("LocationId")
+                        .HasForeignKey("LocationEntityId");
+
+                    b.HasOne("CourtApp.Domain.Entities.Masters.StateEntity", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -4013,7 +4040,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("CourtEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_court", (string)null);
+                            b1.ToTable("m_court");
 
                             b1.ToJson("Languages");
 
@@ -4021,13 +4048,13 @@ namespace CourtApp.Infrastructure.DbMigration.App
                                 .HasForeignKey("CourtEntityId");
                         });
 
-                    b.Navigation("CourtLevel");
+                    b.Navigation("CourtDistrict");
 
                     b.Navigation("CourtType");
 
                     b.Navigation("Languages");
 
-                    b.Navigation("Location");
+                    b.Navigation("State");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtHallEntity", b =>
@@ -4037,6 +4064,10 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         .HasForeignKey("CourtComplexId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("CourtApp.Domain.Entities.Masters.CourtTypeEntity", "CourtType")
+                        .WithMany()
+                        .HasForeignKey("CourtTypeId");
 
                     b.OwnsMany("CourtApp.Domain.Entities.Common.LangEntity", "Languages", b1 =>
                         {
@@ -4058,7 +4089,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("CourtHallEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_court_hall", (string)null);
+                            b1.ToTable("m_court_hall");
 
                             b1.ToJson("Languages");
 
@@ -4067,6 +4098,8 @@ namespace CourtApp.Infrastructure.DbMigration.App
                         });
 
                     b.Navigation("CourtComplex");
+
+                    b.Navigation("CourtType");
 
                     b.Navigation("Languages");
                 });
@@ -4103,7 +4136,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("CourtTypeEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_court_type", (string)null);
+                            b1.ToTable("m_court_type");
 
                             b1.ToJson("Languages");
 
@@ -4214,7 +4247,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("LocationEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_location", (string)null);
+                            b1.ToTable("m_location");
 
                             b1.ToJson("Languages");
 
@@ -4227,6 +4260,17 @@ namespace CourtApp.Infrastructure.DbMigration.App
                     b.Navigation("ParentLocation");
 
                     b.Navigation("State");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.Masters.ProceedingEntity", b =>
+                {
+                    b.HasOne("CourtApp.Domain.Entities.Masters.ProceedingTypeEntity", "ProceedingType")
+                        .WithMany()
+                        .HasForeignKey("ProceedingTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ProceedingType");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.StateEntity", b =>
@@ -4251,7 +4295,7 @@ namespace CourtApp.Infrastructure.DbMigration.App
 
                             b1.HasKey("StateEntityId", "__synthesizedOrdinal");
 
-                            b1.ToTable("m_state", (string)null);
+                            b1.ToTable("m_state");
 
                             b1.ToJson("Languages");
 
@@ -4386,6 +4430,11 @@ namespace CourtApp.Infrastructure.DbMigration.App
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtLevelEntity", b =>
                 {
                     b.Navigation("CourtTypes");
+                });
+
+            modelBuilder.Entity("CourtApp.Domain.Entities.Masters.CourtTypeEntity", b =>
+                {
+                    b.Navigation("Courts");
                 });
 
             modelBuilder.Entity("CourtApp.Domain.Entities.Masters.DistrictEntity", b =>

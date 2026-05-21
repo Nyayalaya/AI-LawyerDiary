@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using CourtApp.Application.DTOs.CourtDistrict;
-using CourtApp.Application.Features.CourtDistrict;
+using CourtApp.Application.Features.CourtDistrict.Commands;
+using CourtApp.Application.Features.CourtDistrict.DTOs;
 using CourtApp.Domain.Entities.LawyerDiary;
 
 namespace CourtApp.Application.Mappings

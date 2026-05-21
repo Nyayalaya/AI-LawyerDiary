@@ -47,6 +47,12 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<FormCaseCategoryMapping> FormCaseTypeMappings { get; set; }
         DbSet<FormCourtMapping> FormCourtMappings { get; set; }
 
+        DbSet<WorkTypeEntity> WorkTypes { get; set; }
+        DbSet<WorksEntity> Works { get; set; }
+
+        DbSet<ProceedingTypeEntity> ProceedingTypes { get; set; }
+        DbSet<ProceedingEntity> Proceedings { get; set; }
+
         #endregion
 
         #region 🔹 CASE MODULE
@@ -83,13 +89,7 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<Specialization> Specializations { get; set; }
         #endregion
 
-        #region 🔹 WORK & PROCEEDING
-        DbSet<WorkTypeEntity> WorkTypes { get; set; }
-        DbSet<WorksEntity> Works { get; set; }
-
-        DbSet<ProceedingHeadEntity> ProceedingHeads { get; set; }
-        DbSet<ProceedingSubHeadEntity> ProceedingSubHeads { get; set; }
-        #endregion
+       
 
         #region 🔹 FORM BUILDER
         DbSet<FormBuilderEntity> FormBuilders { get; set; }

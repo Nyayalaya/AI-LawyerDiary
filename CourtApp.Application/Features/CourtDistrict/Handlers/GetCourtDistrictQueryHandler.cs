@@ -1,5 +1,4 @@
 using CourtApp.Application.Common;
-using CourtApp.Application.DTOs.CourtDistrict;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Extensions;
 using CourtApp.Domain.Entities.LawyerDiary;
@@ -12,6 +11,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using KT3Core.Areas.Global.Classes;
+using CourtApp.Application.Features.CourtDistrict.Query;
+using CourtApp.Application.Features.CourtDistrict.DTOs;
 
 namespace CourtApp.Application.Features.CourtDistrict.Handlers
 {
@@ -29,8 +30,8 @@ namespace CourtApp.Application.Features.CourtDistrict.Handlers
             Expression<Func<CourtDistrictEntity, CourtDistrictReponse>> expression = e => new CourtDistrictReponse
             {
                 Id = e.Id,
-                Code = e.Code,
                 Name = e.Name,
+                StateId = e.StateId,
                 StateName = e.State.Name,
                 Languages = e.Languages
             };
@@ -39,10 +40,12 @@ namespace CourtApp.Application.Features.CourtDistrict.Handlers
             if (request.StateId != 0)
                 predicate = predicate.And(y => y.StateId == request.StateId);
 
-            var result = await repository.Entities
+            var result = await repository.Entities.AsNoTracking()
                 .Include(x => x.State)
                 .Include(x => x.Languages)
                 .Where(predicate)
+                .OrderBy(x => x.State.Name)
+                    .ThenBy(x => x.Name)
                 .Select(expression)
                 .ToPaginatedListAsync(request.PageNumber, request.PageSize, cancellationToken);
 

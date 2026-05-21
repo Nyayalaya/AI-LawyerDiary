@@ -1,3 +1,4 @@
+using CourtApp.Application.Common;
 using CourtApp.Application.Features.FormManagement.DTOs;
 using MediatR;
 using System;
@@ -6,7 +7,10 @@ using System.Collections.Generic;
 namespace CourtApp.Application.Features.FormManagement.Queries
 {
     // FormMaster Queries
-    public class GetAllFormMastersQuery : IRequest<List<FormMasterResponseDto>> { }
+    public class GetAllFormMastersQuery : IRequest<PaginatedResult<FormMasterResponseDto>> {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+    }
 
     public class GetFormMasterByIdQuery : IRequest<FormMasterResponseDto>
     {
@@ -24,7 +28,10 @@ namespace CourtApp.Application.Features.FormManagement.Queries
     }
 
     // FormSubtype Queries
-    public class GetAllFormSubtypesQuery : IRequest<List<FormSubtypeResponseDto>> { }
+    public class GetAllFormSubtypesQuery : IRequest<PaginatedResult<FormSubtypeResponseDto>> {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+    }
 
     public class GetFormSubtypeByIdQuery : IRequest<FormSubtypeResponseDto>
     {
@@ -42,7 +49,10 @@ namespace CourtApp.Application.Features.FormManagement.Queries
     }
 
     // FormTemplate Queries
-    public class GetAllFormTemplatesQuery : IRequest<List<FormTemplateResponseDto>> { }
+    public class GetAllFormTemplatesQuery : IRequest<PaginatedResult<FormTemplateResponseDto>> {
+        public int PageNumber { get; set; }
+        public int PageSize { get; set; }
+    }
 
     public class GetFormTemplateByIdQuery : IRequest<FormTemplateResponseDto>
     {

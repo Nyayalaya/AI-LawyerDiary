@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text.Json.Serialization;
 
 namespace CourtApp.Domain.Entities.Masters
 {
@@ -11,10 +10,12 @@ namespace CourtApp.Domain.Entities.Masters
     [Index(nameof(Code), IsUnique = true)]
     public class CourtLevelEntity:AuditableEntity
     {
-       
+
         public string Name { get; set; }
+
         public string Code { get; set; }
-       
+
         public ICollection<CourtTypeEntity> CourtTypes { get; set; }
+            = new List<CourtTypeEntity>();
     }
 }

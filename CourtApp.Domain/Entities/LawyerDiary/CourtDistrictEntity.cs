@@ -11,12 +11,10 @@ namespace CourtApp.Domain.Entities.LawyerDiary
 {
     [Table("m_court_district")]
     [Index(nameof(Name), nameof(StateId), IsUnique = true)]
-    [Index(nameof(Code), nameof(StateId), IsUnique = true)]
     public class CourtDistrictEntity : AuditableEntity
     {         
         public required string Name { get; set; }
         public int StateId { get; set; }
-        public string Code { get; set; }
         public List<LangEntity> Languages { get; set; }
         public virtual StateEntity State { get; set; }
     }

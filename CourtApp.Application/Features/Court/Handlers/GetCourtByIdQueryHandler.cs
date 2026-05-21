@@ -1,6 +1,7 @@
 using AutoMapper;
 using CourtApp.Application.Common;
 using CourtApp.Application.Features.Court.DTOs;
+using CourtApp.Application.Features.Court.Queries;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System.Threading;

@@ -53,6 +53,7 @@
   <ItemGroup>
     <Folder Include="DTOs\APIRes\" />
     <Folder Include="DTOs\CaseCategory\" />
+    <Folder Include="DTOs\CourtDistrict\" />
     <Folder Include="DTOs\Work\" />
     <Folder Include="Features\CaseType\Validators\" />
     <Folder Include="Features\Clients\Services\" />

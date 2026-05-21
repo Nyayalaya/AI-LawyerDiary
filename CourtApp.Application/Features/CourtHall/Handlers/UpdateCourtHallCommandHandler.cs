@@ -40,23 +40,8 @@ namespace CourtApp.Application.Features.CourtHall.Handlers
             if (duplicateRecord != null)
                 return Result<Guid>.Fail("Another court hall with the same name already exists in this complex.");
 
-            // Check for code conflict if provided
-            if (!string.IsNullOrWhiteSpace(cmd.Code))
-            {
-                var normalizedCode = cmd.Code.Trim().ToLower();
-                var codeExists = await repository.Entities
-                    .Where(e => e.Id != cmd.Id
-                                && e.CourtComplexId == cmd.CourtComplexId
-                                && e.Code.ToLower() == normalizedCode)
-                    .FirstOrDefaultAsync(cancellationToken);
-
-                if (codeExists != null)
-                    return Result<Guid>.Fail("Another court hall with the same code already exists in this complex.");
-            }
-
             // Update the entity fields
             existingRecord.Name = cmd.Name?.Trim();
-            existingRecord.Code = cmd.Code?.Trim();
             existingRecord.JudgeName = cmd.JudgeName?.Trim();
             existingRecord.RoomNumber = cmd.RoomNumber?.Trim();
             existingRecord.CourtComplexId = cmd.CourtComplexId;

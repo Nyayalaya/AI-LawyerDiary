@@ -1,5 +1,4 @@
 ﻿using AuditTrail.Abstrations;
-using CourtApp.Domain.Entities.LawyerDiary;
 using CourtApp.Domain.Entities.Masters;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -16,9 +15,9 @@ namespace CourtApp.Domain.Entities.CaseDetails
         public DateTime? ProceedingDate { get; set; }
         public DateTime? NextDate { get; set; }
         public ProceedingWorkEntity ProcWork { get; set; }
-        public virtual ProceedingHeadEntity Head { get; set; }
+        public virtual ProceedingTypeEntity Head { get; set; }
         public virtual CaseStageEntity Stage { get; set; }
-        public virtual ProceedingSubHeadEntity SubHead { get; set; }
+        public virtual ProceedingEntity SubHead { get; set; }
         public virtual CaseDetailEntity Case { get; set; }
 
     }

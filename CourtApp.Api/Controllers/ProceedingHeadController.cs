@@ -12,11 +12,11 @@ namespace CourtApp.Api.Controllers
         [HttpGet]
         [ProducesResponseType(typeof(ApiResponse<List<GetProceedingHeadResponse>>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> GetAllAsync()
+        public async Task<IActionResult> GetAllAsync([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            Result<List<GetProceedingHeadResponse>> result = await Mediator.Send(
-                new GetProceedingHeadQuery(), RequestAborted);
-            return FromResult(result);
+            PaginatedResult<GetProceedingHeadResponse> result= await Mediator.Send(
+                new GetProceedingHeadQuery() { PageNumber = pageNumber, PageSize = pageSize }, RequestAborted);
+            return FromPaginated(result);
         }
 
         /// <summary>Create a new proceeding head</summary>

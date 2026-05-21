@@ -1,4 +1,6 @@
-﻿using CourtApp.Infrastructure.DbContexts;
+﻿
+using CourtApp.Infrastructure.DbContexts;
+using CourtApp.Infrastructure.Persistence.Seeds;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Threading.Tasks;
@@ -20,6 +22,9 @@ namespace CourtApp.Infrastructure.DataSeeder
             await CadreSeeder.SeedAsync(context, identityContext);
             await CourtFormSeeder.SeedAsync(context, identityContext);
             await FormCaseCategoryMappingSeeder.SeedAsync(context, identityContext);
+            await ProceedingTypeSeeder.SeedAsync(context, identityContext);
+            await ProceedingSeeder.SeedAsync(context, identityContext);
+            await WorkTypeSeeder.SeedAsync(context, identityContext);
         }
     }
 }

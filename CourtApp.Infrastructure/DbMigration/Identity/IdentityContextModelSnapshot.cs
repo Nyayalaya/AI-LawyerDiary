@@ -223,6 +223,67 @@ namespace CourtApp.Infrastructure.DbMigration.Identity
                     b.ToTable("m_user_professional", "public");
                 });
 
+            modelBuilder.Entity("CourtApp.Infrastructure.Identity.Models.SystemUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<bool>("IsEmailVerified")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastLoginDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("LastModifiedBy")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("LastModifiedOn")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("RegisteredDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("StatusReason")
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int>("Subscription")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("SubscriptionExpiryDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime?>("SubscriptionStartDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RegisteredDate");
+
+                    b.HasIndex("Status");
+
+                    b.HasIndex("Subscription");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.ToTable("SystemUsers", "public");
+                });
+
             modelBuilder.Entity("CourtApp.Infrastructure.Identity.Models.UserAddress", b =>
                 {
                     b.Property<Guid>("Id")
@@ -691,6 +752,15 @@ namespace CourtApp.Infrastructure.DbMigration.Identity
                         .WithOne("ProfessionalInfo")
                         .HasForeignKey("CourtApp.Infrastructure.Identity.Models.ProfessionalInfoEntity", "UserId")
                         .OnDelete(DeleteBehavior.Cascade);
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CourtApp.Infrastructure.Identity.Models.SystemUser", b =>
+                {
+                    b.HasOne("CourtApp.Infrastructure.Identity.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });

@@ -1,32 +1,21 @@
 using CourtApp.Application.Common;
-using CourtApp.Application.Features.Court;
+using CourtApp.Application.Features.Court.Commands;
 using CourtApp.Application.Features.Court.DTOs;
+using CourtApp.Application.Features.Court.Queries;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace CourtApp.Api.Controllers
 {
     public class CourtController : BaseController
-    {
-        [HttpGet("{locationId}")]
-        [ProducesResponseType(typeof(ApiResponse<List<CourtResponse>>), StatusCodes.Status200OK)]
-        [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> GetAllAsync(Guid locationId, [FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
-        {
-            var query = new GetCourtQuery { LocationId = locationId, PageNumber = pageNumber, PageSize = pageSize };
-            var result = await Mediator.Send(query);
-            return result.Succeeded ? FromPaginated(result.Data) : FromResult(result);
-        }
+    {   
 
         [HttpPost]
         [ProducesResponseType(typeof(ApiResponse<Guid>), StatusCodes.Status201Created)]
         [ProducesResponseType(typeof(ApiResponse<object>), StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> CreateAsync(CreateCourtCommand command)
+        public async Task<IActionResult> CreateAsync([FromBody] CreateCourtCommand command)
         {
-            var result = await Mediator.Send(command);
-            return result.Succeeded ? Created(result.Data) : FromResult(result);
+            Result<string> result = await Mediator.Send(command, RequestAborted);
+            return FromResult(result, successCode: 201);
         }
 
         [HttpGet("detail/{id}")]

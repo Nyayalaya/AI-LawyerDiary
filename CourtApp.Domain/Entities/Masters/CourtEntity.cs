@@ -1,5 +1,6 @@
 ﻿using AuditTrail.Abstrations;
 using CourtApp.Domain.Entities.Common;
+using CourtApp.Domain.Entities.LawyerDiary;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,23 +9,30 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.Masters
 {
     [Table("m_court")]
-    [Index(nameof(Name), nameof(LocationId), IsUnique = true)]
+    [Index(nameof(Code), IsUnique = true)]
     public class CourtEntity : AuditableEntity
     {
-        public required string Name { get; set; }    // Rajasthan High Court
+        public required string Name { get; set; }
 
-        public Guid CourtLevelId { get; set; }
-        public virtual CourtLevelEntity CourtLevel { get; set; }
+        public string Code { get; set; }
 
         public Guid CourtTypeId { get; set; }
-        public CourtTypeEntity CourtType { get; set; }
+        public virtual CourtTypeEntity CourtType { get; set; }
 
-        public Guid LocationId { get; set; }    // Jaipur Bench / District
-        public LocationEntity Location { get; set; }
+        public int StateId { get; set; }
+        public virtual StateEntity State { get; set; }
 
-        public List<LangEntity> Languages { get; set; } = new();
+        public Guid? CourtDistrictId { get; set; }
+
+        public virtual CourtDistrictEntity CourtDistrict { get; set; }
+
+        public bool IsVirtualCourt { get; set; }
+
+        public List<LangEntity> Languages { get; set; }
+            = new();
 
         public ICollection<CourtComplexEntity> Complexes { get; set; }
+            = new List<CourtComplexEntity>();
     }
 
 }

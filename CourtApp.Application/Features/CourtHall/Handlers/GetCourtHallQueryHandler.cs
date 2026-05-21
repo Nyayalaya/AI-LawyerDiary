@@ -30,7 +30,7 @@ namespace CourtApp.Application.Features.CourtHall.Handlers
             {
                 Id = e.Id,
                 Name = e.Name,
-                Code = e.Code,
+               
                 JudgeName = e.JudgeName,
                 RoomNumber = e.RoomNumber,
                 CourtComplexId = e.CourtComplexId,

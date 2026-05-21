@@ -4,7 +4,7 @@ using CourtApp.Application.DTOs.Location;
 using CourtApp.Application.DTOs.WorkSub;
 using CourtApp.Application.Features.Cadre.Commands;
 using CourtApp.Application.Features.Cadre.Dtos;
-using CourtApp.Application.Features.Court;
+using CourtApp.Application.Features.Court.Commands;
 using CourtApp.Application.Features.Court.DTOs;
 using CourtApp.Application.Features.CourtHall.Commands;
 using CourtApp.Application.Features.CourtHall.DTOs;
@@ -69,9 +69,9 @@ namespace CourtApp.Application.Mappings
             #region Court Profile Mapping
             CreateMap<CourtEntity, CourtResponse>();
             CreateMap<CourtEntity, CourtByIdResponse>()
-                .ForMember(dest => dest.LocationName, opt => opt.MapFrom(src => src.Location.Name))
+                
                 .ForMember(dest => dest.CourtTypeName, opt => opt.MapFrom(src => src.CourtType.Name))
-                .ForMember(dest => dest.CourtLevelName, opt => opt.MapFrom(src => src.CourtLevel.Name));
+                ;
             CreateMap<CreateCourtCommand, CourtEntity>();
             CreateMap<UpdateCourtCommand, CourtEntity>();
             #endregion

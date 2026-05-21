@@ -1,4 +1,5 @@
 using CourtApp.Application.Common;
+using CourtApp.Application.Features.CourtDistrict.Commands;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.Common;
 using MediatR;
@@ -30,7 +31,6 @@ namespace CourtApp.Application.Features.CourtDistrict.Handlers
                 return Result<Guid>.Fail("Record does not exist.");
 
             var normalizedName = request.Name.Trim().ToLower();
-            var normalizedCode = request.Code.Trim().ToLower();
 
             // Check for name conflict with other records (excluding the current record)
             var duplicateByName = await repository.Entities
@@ -42,18 +42,7 @@ namespace CourtApp.Application.Features.CourtDistrict.Handlers
             if (duplicateByName != null)
                 return Result<Guid>.Fail($"Another record with name '{request.Name}' already exists in this state.");
 
-            // Check for code conflict with other records (excluding the current record)
-            var duplicateByCode = await repository.Entities
-                .Where(e => e.Id != request.Id
-                    && e.StateId == request.StateId
-                    && e.Code.ToLower() == normalizedCode)
-                .FirstOrDefaultAsync(cancellationToken);
-
-            if (duplicateByCode != null)
-                return Result<Guid>.Fail($"Another record with code '{request.Code}' already exists in this state.");
-
             existingRecord.Name = request.Name.Trim();
-            existingRecord.Code = request.Code.Trim();
             existingRecord.StateId = request.StateId;
             existingRecord.Languages = request.Languages ?? new List<LangEntity>();
 

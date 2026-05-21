@@ -1,6 +1,8 @@
 using CourtApp.Application.Common;
-using CourtApp.Application.DTOs.CourtDistrict;
 using CourtApp.Application.Features.CourtDistrict;
+using CourtApp.Application.Features.CourtDistrict.Commands;
+using CourtApp.Application.Features.CourtDistrict.DTOs;
+using CourtApp.Application.Features.CourtDistrict.Query;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Net;
@@ -17,6 +19,16 @@ namespace CourtApp.Api.Controllers
         public async Task<IActionResult> GetAllAsync([FromQuery] GetCourtDistrictQuery query)
         {
             PaginatedResult<CourtDistrictReponse> result = await Mediator.Send(query, RequestAborted);
+            return FromPaginated(result);
+        }
+
+        /// <summary>Get court districts dropdown (Id, Name, State) - with optional pagination for dropdowns</summary>
+        [HttpGet("dropdown")]
+        [ProducesResponseType(typeof(ApiResponse<List<CourtDistrictDropdownResponse>>), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> GetDropdownAsync([FromQuery] GetCourtDistrictDropdownQuery query)
+        {
+            PaginatedResult<CourtDistrictDropdownResponse> result = await Mediator.Send(query, RequestAborted);
             return FromPaginated(result);
         }
 

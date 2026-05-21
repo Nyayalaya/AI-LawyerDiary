@@ -8,58 +8,58 @@ namespace CourtApp.Application.Features.Auth.Validators
         public RegisterCommandValidator()
         {
 
-            RuleFor(x => x.RegistrationRequestData)
+            RuleFor(x => x)
                 .NotNull()
                 .WithMessage("Registration data is required");
            
             // 🔹 Email
-            RuleFor(x => x.RegistrationRequestData.Email)
+            RuleFor(x => x.Email)
                 .NotEmpty().WithMessage("Email is required")
                 .EmailAddress().WithMessage("Invalid email format");
 
             // 🔹 Phone
-            RuleFor(x => x.RegistrationRequestData.PhoneNumber)
-                .NotEmpty().WithMessage("Phone number is required")
-                .Matches(@"^\d{10}$").WithMessage("Phone number must be a valid 10-digit number");
+            RuleFor(x => x.Contact)
+                .NotEmpty().WithMessage("Contact number is required")
+                .Matches(@"^\d{10}$").WithMessage("Contact number must be a valid 10-digit number");
 
             // 🔹 Password
-            RuleFor(x => x.RegistrationRequestData.Password)
+            RuleFor(x => x.Password)
                 .NotEmpty().WithMessage("Password is required")
                 .MinimumLength(6).WithMessage("Password must be at least 6 characters");
 
             // 🔹 Confirm Password
-            RuleFor(x => x.RegistrationRequestData.ConfirmPassword)
-                .NotEmpty().WithMessage("Confirm password is required")
-                .Equal(x => x.RegistrationRequestData.Password).WithMessage("Passwords do not match");
+            //RuleFor(x => x.ConfirmPassword)
+            //    .NotEmpty().WithMessage("Confirm password is required")
+            //    .Equal(x => x.Password).WithMessage("Passwords do not match");
 
             // 🔹 User Type
-            RuleFor(x => x.RegistrationRequestData.UserType)
+            RuleFor(x => x.UserType)
                 .IsInEnum().WithMessage("Invalid user type");
 
             // =========================
             // 🧍 LAWYER VALIDATION
             // =========================
-            When(x => x.RegistrationRequestData.UserType == RegisterType.Lawyer, () =>
+            When(x => x.UserType == RegisterType.Lawyer, () =>
             {
-                RuleFor(x => x.RegistrationRequestData.FirstName)
+                RuleFor(x => x.IndividualInfoDto.FirstName)
                     .NotEmpty().WithMessage("First name is required");
 
-                RuleFor(x => x.RegistrationRequestData.LastName)
+                RuleFor(x => x.IndividualInfoDto.LastName)
                     .NotEmpty().WithMessage("Last name is required");
 
-                RuleFor(x => x.RegistrationRequestData.EnrollmentNumber)
+                RuleFor(x => x.IndividualInfoDto.EnrollmentNumber)
                     .NotEmpty().WithMessage("Enrollment number is required");
             });
 
             // =========================
             // 🏢 CORPORATE VALIDATION
             // =========================
-            When(x => x.RegistrationRequestData.UserType == RegisterType.Corporate, () =>
+            When(x => x.UserType == RegisterType.Corporate, () =>
             {
-                RuleFor(x => x.RegistrationRequestData.CompanyName)
+                RuleFor(x => x.CompanyInfoDto.CompanyName)
                     .NotEmpty().WithMessage("Company name is required");
 
-                RuleFor(x => x.RegistrationRequestData.RegistrationNumber)
+                RuleFor(x => x.CompanyInfoDto.RegistrationNumber)
                     .NotEmpty().WithMessage("Registration number is required");
             });
         }

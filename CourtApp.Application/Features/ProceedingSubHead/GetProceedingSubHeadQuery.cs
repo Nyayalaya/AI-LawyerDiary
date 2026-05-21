@@ -3,16 +3,15 @@ using AutoMapper;
 using CourtApp.Application.DTOs.ProcSubHead;
 using CourtApp.Application.Extensions;
 using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.LawyerDiary;
 using KT3Core.Areas.Global.Classes;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Features.ProceedingSubHead
 {
@@ -38,31 +37,31 @@ namespace CourtApp.Application.Features.ProceedingSubHead
         public async Task<PaginatedResult<GetProcSubHeadResponse>> Handle(GetProceedingSubHeadQuery request, CancellationToken cancellationToken)
         {
             // Projection: maps directly to response DTO
-            Expression<Func<ProceedingSubHeadEntity, GetProcSubHeadResponse>> expression = e => new GetProcSubHeadResponse
+            Expression<Func<ProceedingEntity, GetProcSubHeadResponse>> expression = e => new GetProcSubHeadResponse
             {
                 Id = e.Id,
-                Name_En = e.Name_En,
-                Name_Hn = e.Name_Hn,
-                Head = e.Head.Name_En
+                Name = e.Name,
+                ProceedingType = e.ProceedingType.Name.ToString()
             };
 
             // Build predicate for filtering
-            var predicate = PredicateBuilder.True<ProceedingSubHeadEntity>();
+            var predicate = PredicateBuilder.True<ProceedingEntity>();
 
             if (request.HeadId != Guid.Empty)
-                predicate = predicate.And(e => e.HeadId == request.HeadId);
+                predicate = predicate.And(e => e.ProceedingTypeId == request.HeadId);
 
             if (!string.IsNullOrWhiteSpace(request.Search))
             {
                 predicate = predicate.And(e =>
-                    e.Name_En.ToLower().Contains(request.Search.ToLower()) ||
-                    e.Name_Hn.Contains(request.Search) ||
-                    e.Head.Name_En.ToLower().Contains(request.Search.ToLower()));
+                    e.Name.ToLower().Contains(request.Search.ToLower()) ||
+                  
+                    e.ProceedingType.ToString().ToLower().Contains(request.Search.ToLower()));
             }
 
             
                 var query = repository.Entities
-                    .Include(e => e.Head)
+
+                    .Include(e => e.ProceedingType)
                     .Where(predicate);
 
                 // Apply sorting
@@ -75,7 +74,7 @@ namespace CourtApp.Application.Features.ProceedingSubHead
                 else
                 {
                     // Default sorting (optional)
-                    query = query.OrderBy(e => e.Name_En);
+                    query = query.OrderBy(e => e.Name);
                 }
 
                 // Project and paginate

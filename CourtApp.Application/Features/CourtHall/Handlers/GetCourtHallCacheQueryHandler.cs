@@ -54,7 +54,6 @@ namespace CourtApp.Application.Features.CourtHall.Handlers
             {
                 Id = s.Id,
                 Name = s.Name.ToUpper(),
-                Code = s.Code,
                 JudgeName = s.JudgeName,
                 RoomNumber = s.RoomNumber,
                 CourtComplexId = s.CourtComplexId,

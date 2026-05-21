@@ -1,4 +1,5 @@
-using CourtApp.Application.CacheKeys;
+
+using CourtApp.Application.Constants;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
@@ -26,9 +27,9 @@ namespace CourtApp.Infrastructure.Repositories
         public async Task<CourtEntity> GetByIdAsync(Guid id)
         {
             return await _repository.Entities
-                .Include(x => x.Location)
+
                 .Include(x => x.CourtType)
-                .Include(x => x.CourtLevel)
+
                 .Include(x => x.Languages)
                 .AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Id == id);
@@ -37,10 +38,9 @@ namespace CourtApp.Infrastructure.Repositories
         public async Task<List<CourtEntity>> GetByLocationIdAsync(Guid locationId, int pageNumber, int pageSize)
         {
             return await _repository.Entities
-                .Where(x => x.LocationId == locationId)
-                .Include(x => x.Location)
+
                 .Include(x => x.CourtType)
-                .Include(x => x.CourtLevel)
+
                 .Include(x => x.Languages)
                 .OrderBy(x => x.Name)
                 .Skip((pageNumber - 1) * pageSize)
@@ -53,7 +53,7 @@ namespace CourtApp.Infrastructure.Repositories
         {
             var nameLower = name?.ToLower();
             return await _repository.Entities
-                .Where(x => x.LocationId == locationId && x.Name.ToLower() == nameLower)
+
                 .AsNoTracking()
                 .FirstOrDefaultAsync();
         }
@@ -61,12 +61,13 @@ namespace CourtApp.Infrastructure.Repositories
         public async Task<int> GetCountByLocationIdAsync(Guid locationId)
         {
             return await _repository.Entities
-                .Where(x => x.LocationId == locationId)
+
                 .CountAsync();
         }
 
         public async Task<CourtEntity> AddAsync(CourtEntity entity)
         {
+            await _distributedCache.RemoveAsync(CacheKeys.List<CourtEntity>());
             return await _repository.AddAsync(entity);
         }
 
@@ -82,6 +83,13 @@ namespace CourtApp.Infrastructure.Repositories
         public Task DeleteAsync(CourtEntity entity)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<string> AddRangeAsync(List<CourtEntity> entities)
+        {
+            await _repository.AddRange(entities);
+            await _distributedCache.RemoveAsync(CacheKeys.List<CourtEntity>());
+            return entities.FirstOrDefault().Id.ToString();
         }
     }
 }

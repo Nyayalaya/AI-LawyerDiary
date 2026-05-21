@@ -7,14 +7,16 @@ using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Application.Extensions;
 
 namespace CourtApp.Application.Features.ProceedingHead
 {
-    public class GetProceedingHeadQuery : IRequest<Result<List<GetProceedingHeadResponse>>>
+    public class GetProceedingHeadQuery : IRequest<PaginatedResult<GetProceedingHeadResponse>>
     {
-        
+        public int PageNumber { get; set; } = 1;
+        public int PageSize { get; set; } = 10;
     }
-    public class GetProceedingHeadQueryHandler : IRequestHandler<GetProceedingHeadQuery, Result<List<GetProceedingHeadResponse>>>
+    public class GetProceedingHeadQueryHandler : IRequestHandler<GetProceedingHeadQuery, PaginatedResult<GetProceedingHeadResponse>>
     {
         private readonly IProceedingHeadRepository repository;
         private readonly IMapper mapper;
@@ -23,11 +25,11 @@ namespace CourtApp.Application.Features.ProceedingHead
             this.repository = repository;
             this.mapper = mapper;
         }
-        public async Task<Result<List<GetProceedingHeadResponse>>> Handle(GetProceedingHeadQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<GetProceedingHeadResponse>> Handle(GetProceedingHeadQuery request, CancellationToken cancellationToken)
         {
             var Heads = await repository.GetListAsync();
             var HeadsDt = mapper.Map<List<GetProceedingHeadResponse>>(Heads);
-            return Result<List<GetProceedingHeadResponse>>.Success(HeadsDt);
+            return Result<PaginatedResult<GetProceedingHeadResponse>>.Success(HeadsDt.ToPaginatedResult(request.PageNumber, request.PageSize));
         }
     }
 

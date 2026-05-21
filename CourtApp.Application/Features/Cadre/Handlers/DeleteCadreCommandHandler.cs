@@ -9,7 +9,7 @@ using MediatR;
 
 namespace CourtApp.Application.Features.Cadre.Handlers
 {
-    public class DeleteCadreCommandHandler : IRequestHandler<DeleteCadreCommand, Result>
+    public class DeleteCadreCommandHandler : IRequestHandler<DeleteCadreCommand, Result<string>>
     {
         private readonly ICadreMasterRepository _repository;
         private readonly IUnitOfWork _unitOfWork;
@@ -20,15 +20,15 @@ namespace CourtApp.Application.Features.Cadre.Handlers
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<Result> Handle(DeleteCadreCommand request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(DeleteCadreCommand request, CancellationToken cancellationToken)
         {
             var cadre = await _repository.GetByIdAsync(request.Id);
             if (cadre == null)
-                return Result.Fail("Cadre not found");
+                return Result<string>.Fail("Cadre not found");
 
             await _repository.DeleteAsync(cadre);
             await _unitOfWork.Commit(cancellationToken);
-            return Result.Success("Cadre deleted successfully");
+            return Result<string>.Success("Cadre deleted successfully");
         }
     }
 }

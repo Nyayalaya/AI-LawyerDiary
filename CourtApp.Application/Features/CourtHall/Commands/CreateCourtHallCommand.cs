@@ -14,7 +14,6 @@ namespace CourtApp.Application.Features.CourtHall.Commands
     public class CourtHallDetail
     {
         public string Name { get; set; }
-        public string Code { get; set; }
         public string JudgeName { get; set; }
         public string RoomNumber { get; set; }
     }

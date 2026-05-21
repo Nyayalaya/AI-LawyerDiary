@@ -1,5 +1,6 @@
 using CourtApp.Application.Common;
 using CourtApp.Application.Features.Auth.Commands;
+using CourtApp.Application.Features.Auth.Dto;
 using CourtApp.Application.Features.Auth.Services;
 using CourtApp.Application.Interfaces.Shared;
 using CourtApp.Domain.Enums;
@@ -33,7 +34,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<st
     {
         try
         {
-            var data = request.RegistrationRequestData;
+            var data = request;
             if (data == null)
                 return await Result<string>.FailAsync("Invalid request");
 
@@ -41,27 +42,36 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<st
             if (await _userBasicInfoService.IsEmailExistAsync(data.Email))
                 return await Result<string>.FailAsync("Email is already taken.");
 
-            if (await _userBasicInfoService.IsContactExistAsync(data.PhoneNumber))
+            if (await _userBasicInfoService.IsContactExistAsync(data.Contact))
                 return await Result<string>.FailAsync("Contact number is already taken.");
 
             
             if (data.UserType == RegisterType.Lawyer)
             {
-                if (await _userBasicInfoService.IsEnrollmentExistAsync(data.EnrollmentNumber))
+                if (await _userBasicInfoService.IsEnrollmentExistAsync(data.IndividualInfoDto.EnrollmentNumber))
                     return await Result<string>.FailAsync("Enrollment number is already taken.");
             }
 
             
             if (data.UserType == RegisterType.Corporate)
             {
-                if (await _userBasicInfoService.IsRegistrationNumberExistAsync(data.RegistrationNumber))
+                if (await _userBasicInfoService.IsRegistrationNumberExistAsync(data.CompanyInfoDto.RegistrationNumber))
                     return await Result<string>.FailAsync("Registration number is already taken.");
             }
 
             string userId;
             try
             {
-                userId = await _registrationService.RegisterAsync(data);
+                var registerRequestInfo = new RegisterRequest
+                {
+                    Email = data.Email,
+                    Contact = data.Contact,
+                    UserType = data.UserType,
+                    IndividualInfoDto = data.IndividualInfoDto,
+                    CompanyInfoDto = data.CompanyInfoDto,
+                    Password=data.Password
+                };
+                userId = await _registrationService.RegisterAsync(registerRequestInfo);
             }
             catch (Exception ex)
             {
@@ -74,7 +84,7 @@ public class RegisterCommandHandler : IRequestHandler<RegisterCommand, Result<st
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error occurred during user registration for Email: {Email}", request?.RegistrationRequestData?.Email);
+            _logger.LogError(ex, "Error occurred during user registration for Email: {Email}", request?.Email);
 
             return await Result<string>.FailAsync(ex.Message);
         }

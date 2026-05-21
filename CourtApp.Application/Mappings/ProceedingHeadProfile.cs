@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CourtApp.Application.DTOs.ProceedingHead;
 using CourtApp.Application.Features.ProceedingHead;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Mappings
 {
@@ -9,10 +9,10 @@ namespace CourtApp.Application.Mappings
     {
         public ProceedingHeadProfile()
         {
-            CreateMap<ProceedingHeadEntity, GetProceedingHeadResponse>();
-            CreateMap<CreateProceedingHeadCommand, ProceedingHeadEntity>();
-            CreateMap<UpdateProceedingHeadCommand, ProceedingHeadEntity>();
-            CreateMap<DeleteProceedingHeadCommand, ProceedingHeadEntity>();
+            CreateMap<ProceedingTypeEntity, GetProceedingHeadResponse>();
+            CreateMap<CreateProceedingHeadCommand, ProceedingTypeEntity>();
+            CreateMap<UpdateProceedingHeadCommand, ProceedingTypeEntity>();
+            CreateMap<DeleteProceedingHeadCommand, ProceedingTypeEntity>();
             
         }
     }

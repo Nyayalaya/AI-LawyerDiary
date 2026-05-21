@@ -39,35 +39,22 @@ namespace CourtApp.Application.Features.ProceedingSubHead
             // Check for name conflict with other records (excluding the current record)
             var duplicateRecord = await _Repository.Entities
                 .Where(e => e.Id != request.Id
-                                && e.HeadId == request.HeadId
-                                && e.Name_En.ToUpper().Trim() == normializedProcName)
+                                && e.ProceedingTypeId == request.HeadId
+                                && e.Name.ToUpper().Trim() == normializedProcName)
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (duplicateRecord != null)
                 return Result<Guid>.Fail("Another record with the same name already exists.");
 
             // Update the entity fields
-            existingRecord.Name_En = normializedProcName;
-            existingRecord.Name_Hn = request.Name_Hn;
-            existingRecord.HeadId = request.HeadId;
+            existingRecord.Name = normializedProcName;
+            existingRecord.ProceedingTypeId = request.HeadId;
 
             await _Repository.UpdateAsync(existingRecord);
             await _unitOfWork.Commit(cancellationToken);
 
             return Result<Guid>.Success(existingRecord.Id);
-            //var detailById = await _Repository.GetByIdAsync(request.Id);
-            //if (detailById == null)
-            //    return Result<Guid>.Fail($"Proceeding sub head not found.");
-            //else
-            //{
-            //    detailById.Name_En = request.Name_En;
-            //    detailById.Name_Hn = request.Name_Hn;
-            //    detailById.HeadId = request.HeadId;
-
-            //    await _Repository.UpdateAsync(detailById);
-            //    await _unitOfWork.Commit(cancellationToken);
-            //    return Result<Guid>.Success(detailById.Id);
-            //}
+            
         }
     }
 }

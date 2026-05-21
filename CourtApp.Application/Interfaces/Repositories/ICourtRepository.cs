@@ -15,6 +15,7 @@ namespace CourtApp.Application.Interfaces.Repositories
         Task DeleteAsync(CourtEntity entity);
         Task<CourtEntity> GetByNameAndLocationAsync(string name, Guid locationId);
         Task<CourtEntity> AddAsync(CourtEntity entity);
+        Task<string> AddRangeAsync(List<CourtEntity> entities);
         void Update(CourtEntity entity);
     }
 }

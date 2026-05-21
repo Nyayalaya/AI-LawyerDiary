@@ -20,6 +20,13 @@ namespace CourtApp.Infrastructure.Repositories
         }
         public IQueryable<CourtDistrictEntity> Entities => _repository.Entities;
 
+        public async Task<string> AddRangeAsync(List<CourtDistrictEntity> Entities)
+        {
+            await _repository.AddRange(Entities);
+            await _distributedCache.RemoveAsync(CourtDistrictCacheKeys.ListKey);
+            return Entities.FirstOrDefault().Id.ToString(); 
+        }
+
         public async Task DeleteAsync(CourtDistrictEntity Entity)
         {
             await _repository.DeleteAsync(Entity);
@@ -59,6 +66,16 @@ namespace CourtApp.Infrastructure.Repositories
         {
             await _repository.UpdateAsync(Entity);
             await _distributedCache.RemoveAsync(CourtDistrictCacheKeys.ListKey);
+        }
+
+        Task<string> ICourtDistrictRepository.InsertAsync(CourtDistrictEntity Entity)
+        {
+            throw new NotImplementedException();
+        }
+
+        Task<string> ICourtDistrictRepository.InsertRangeAsync(List<CourtDistrictEntity> entities)
+        {
+            throw new NotImplementedException();
         }
     }
 }
