@@ -82,6 +82,7 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CaseDocsEntity> CaseDocuments { get; set; }
         public DbSet<AssignCaseEntity> AssignedCases { get; set; }
         public DbSet<DOTypeEntity> DOTypes { get; set; }
+        public DbSet<CaseEntity> CasesData { get; set; }
         #endregion
 
         #region 🔹 LAWYER DIARY

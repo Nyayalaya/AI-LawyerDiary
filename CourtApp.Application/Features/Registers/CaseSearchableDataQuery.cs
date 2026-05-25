@@ -69,7 +69,7 @@ namespace CourtApp.Application.Features.Registers
                               || request.LinkedIds.Contains(ac.LawyerId.ToString())
                                let asignedOrSelf = ac != null && request.LinkedIds.Contains(ac.LawyerId.ToString()) ? "Assigned" : "Self"
                                let isCaseAssigned = asignedOrSelf == "Self" && ac != null && ac.CaseId == c.Id
-                               let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : Guid.Empty
+                               let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : string.Empty
                                select new InstitutionResponse
                                {
                                    Id = c.Id,

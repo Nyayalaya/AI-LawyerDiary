@@ -16,7 +16,7 @@ using CourtApp.Application.Features.CaseCategory.Services;
 using CourtApp.Application.Features.CaseType.Services;
 using CourtApp.Application.Features.CaseStage.Services;
 
-namespace CourtApp.Application.Features.Case
+namespace CourtApp.Application.Features.CaseDetails
 {
     public class CreateCaseCommand : IRequest<Result<Guid>>
     {

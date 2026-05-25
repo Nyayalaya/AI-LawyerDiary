@@ -1,4 +1,5 @@
 ﻿using AuditTrail.Abstrations;
+using CourtApp.Domain.Entities.LawyerDiary;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -8,7 +9,8 @@ namespace CourtApp.Domain.Entities.CaseDetails
     public class AssignCaseEntity : AuditableEntity
     {
         public Guid CaseId { get; set; }
-        public Guid LawyerId { get; set; }
+        public string LawyerId { get; set; }
         public virtual CaseDetailEntity Case { get; set; }
+       
     }
 }

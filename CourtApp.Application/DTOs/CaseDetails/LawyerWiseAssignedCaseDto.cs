@@ -6,7 +6,7 @@ namespace CourtApp.Application.DTOs.CaseDetails
 {
     public class LawyerWiseAssignedCaseDto
     {
-        public Guid LawyerId { get; set; }
+        public string LawyerId { get; set; }
         public List<CaseDetailResponse> AssignedCaseInfo { get; set; }
     }
 }

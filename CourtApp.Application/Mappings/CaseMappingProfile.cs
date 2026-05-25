@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using CourtApp.Application.DTOs.Case;
 using CourtApp.Application.DTOs.CaseDetails;
-using CourtApp.Application.Features.Case;
 using CourtApp.Application.Features.CaseDetails;
 using CourtApp.Domain.Entities.CaseDetails;
 

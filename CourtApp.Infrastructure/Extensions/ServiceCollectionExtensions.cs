@@ -1,6 +1,7 @@
 ﻿using CourtApp.Application.Features.Auth.Services;
 using CourtApp.Application.Features.Cadre.Services;
 using CourtApp.Application.Features.CaseCategory.Services;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Features.CaseDocuments.Services;
 using CourtApp.Application.Features.CaseStage.Services;
 using CourtApp.Application.Features.CaseType.Services;
@@ -199,6 +200,7 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddScoped<ICaseAgainstRepository, CaseAgainstRepository>();
             services.AddScoped<ICaseAssignedRepository, CaseAssignedRepository>();
             services.AddScoped<ICaseHelperRepository, CaseHelperRepository>();
+            services.AddScoped<ICaseRepository, CaseRepository>();
 
             services.AddScoped<ICaseDraftingRepository, CaseDraftingRepository>();
 

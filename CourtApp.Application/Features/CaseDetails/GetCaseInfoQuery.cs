@@ -81,7 +81,7 @@ namespace CourtApp.Application.Features.CaseDetails
                              || request.LinkedIds.Contains(ac.LawyerId.ToString()) // Check if user is the creator or assigned lawyer
                              let asignedOrSelf = ac != null && request.LinkedIds.Contains(ac.LawyerId.ToString()) ? "Assigned" : "Self"
                              let isCaseAssigned = asignedOrSelf == "Self" && ac != null && ac.CaseId == c.Id
-                             let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : Guid.Empty
+                             let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : string.Empty
                              let caseLastProceedingDate = c.CaseProcEntities.Any() ?
                                                    c.CaseProcEntities
                                                    .OrderByDescending(d => d.ProceedingDate)

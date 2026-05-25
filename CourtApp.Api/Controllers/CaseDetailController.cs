@@ -1,6 +1,6 @@
 using CourtApp.Application.Common;
-using CourtApp.Application.Features.Case;
 using CourtApp.Application.Features.CaseDetails;
+using CourtApp.Application.Features.CaseDetails.Queries;
 using CourtApp.Application.Features.UserCase;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -9,16 +9,14 @@ namespace CourtApp.Api.Controllers
 {
     public sealed class CaseDetailController : BaseController
     {
-        /// <summary>Create a new case</summary>
         [HttpPost]
-        [ProducesResponseType(typeof(ApiResponse<Guid>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateCaseCommand command)
+        public async Task<IActionResult> GetAllAsync([FromQuery] GetCasesQuery query)
         {
-            command.LinkedIds = new List<string> { UserId };
-            Result<Guid> result = await Mediator.Send(command, RequestAborted);
-            return FromResult(result, successCode: 201);
+            var result = await Mediator.Send(query, RequestAborted);
+            return FromPaginated(result);
         }
 
         /// <summary>Get case details by ID</summary>
@@ -32,6 +30,21 @@ namespace CourtApp.Api.Controllers
             var result = await Mediator.Send(query, RequestAborted);
             return FromResult(result);
         }
+
+
+        /// <summary>Create a new case</summary>
+        [HttpPost]
+        [ProducesResponseType(typeof(ApiResponse<Guid>), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
+        public async Task<IActionResult> CreateAsync([FromBody] CreateCaseCommand command)
+        {
+            command.LinkedIds = new List<string> { UserId };
+            Result<Guid> result = await Mediator.Send(command, RequestAborted);
+            return FromResult(result, successCode: 201);
+        }
+
+        
 
         /// <summary>Update an existing case</summary>
         [HttpPut("{id:guid}")]

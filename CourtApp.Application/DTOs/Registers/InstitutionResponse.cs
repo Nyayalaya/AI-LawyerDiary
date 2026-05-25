@@ -5,6 +5,6 @@ namespace CourtApp.Application.DTOs.Registers
     public class InstitutionResponse : CaseBasicInfoDto
     {
         public bool IsCaseAssigned { get; set; }
-        public Guid LawyerId { get; set; }
+        public string LawyerId { get; set; }
     }
 }

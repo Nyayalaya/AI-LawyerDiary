@@ -72,6 +72,7 @@ namespace CourtApp.Application.Interfaces.Contexts
 
         DbSet<DOTypeEntity> DOTypes { get; set; }
         DbSet<FSTitleEntity> FSTitles { get; set; }
+        DbSet<CaseEntity> CasesData { get; set; }
         #endregion
 
         #region 🔹 LAWYER DIARY

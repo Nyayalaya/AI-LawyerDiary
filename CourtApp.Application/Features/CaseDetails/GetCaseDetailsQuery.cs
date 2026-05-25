@@ -170,7 +170,7 @@ namespace CourtApp.Application.Features.UserCase
                     IsProceedingDone = matchingProceeding != null,
                     ProceedingDate = matchingProceeding?.ProceedingDate ?? default,
                     IsCaseAssigned = refer == "Self" && ac != null && ac.CaseId == c.Id,
-                    LawyerId = refer == "Self" && ac != null ? ac.LawyerId : Guid.Empty,
+                    LawyerId = refer == "Self" && ac != null ? ac.LawyerId : string.Empty,
                     HasChild = helperRepository.IsCaseHavingChildAsync(c.Id).Result  //Check whether case has child or not
                 };
             }).ToList();

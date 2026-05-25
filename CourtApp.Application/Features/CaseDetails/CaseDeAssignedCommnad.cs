@@ -14,7 +14,7 @@ namespace CourtApp.Application.Features.CaseDetails
     public class CaseDeAssignedCommnad : IRequest<Result<Guid>>
     {
         public Guid Id { get; set; }
-        public Guid LawyerId { get; set; }
+        public string LawyerId { get; set; }
         public string Remark { get; set; }
     }
     public class CaseDeAssignedCommnadHandler : IRequestHandler<CaseDeAssignedCommnad, Result<Guid>>
