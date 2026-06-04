@@ -197,7 +197,7 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddScoped<ICaseDocsRepository, CaseDocsRepository>();
             services.AddScoped<ICaseProceedingRepository, CaseProceedingRepository>();
             services.AddScoped<ICaseWorkRepository, CaseWorkRepository>();
-            services.AddScoped<ICaseAgainstRepository, CaseAgainstRepository>();
+            //services.AddScoped<ICaseAgainstRepository, CaseAgainstRepository>();
             services.AddScoped<ICaseAssignedRepository, CaseAssignedRepository>();
             services.AddScoped<ICaseHelperRepository, CaseHelperRepository>();
             services.AddScoped<ICaseRepository, CaseRepository>();

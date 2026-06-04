@@ -5,7 +5,7 @@ using MediatR;
 
 namespace CourtApp.Application.Features.Clients.Queries.GetAllClients
 {
-    public sealed class GetAllClientsQuery : IRequest<Result<List<ClientListDto>>>
+    public sealed class GetAllClientsQuery : IRequest<PaginatedResult<ClientListDto>>
     {
         public int PageNumber { get; set; } = 1;
         public int PageSize { get; set; } = 10;

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.CaseDetails
 {
-    [Table("r_case_working", Schema = "ld")]
+    [Table("case_works")]
     public class CaseWorkEntity : AuditableEntity
     {
         

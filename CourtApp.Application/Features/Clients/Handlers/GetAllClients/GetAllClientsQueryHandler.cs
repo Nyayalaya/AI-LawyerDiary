@@ -11,7 +11,7 @@ using MediatR;
 
 namespace CourtApp.Application.Features.Clients.Handlers.GetAllClients
 {
-    public sealed class GetAllClientsQueryHandler : IRequestHandler<GetAllClientsQuery, Result<List<ClientListDto>>>
+    public sealed class GetAllClientsQueryHandler : IRequestHandler<GetAllClientsQuery, PaginatedResult<ClientListDto>>
     {
         private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
@@ -22,21 +22,31 @@ namespace CourtApp.Application.Features.Clients.Handlers.GetAllClients
             _mapper = mapper;
         }
 
-        public async Task<Result<List<ClientListDto>>> Handle(GetAllClientsQuery request, CancellationToken cancellationToken)
+        public async Task<PaginatedResult<ClientListDto>> Handle(GetAllClientsQuery request, CancellationToken cancellationToken)
         {
             try
             {
                 var clients = await _clientRepository.GetListAsync();
-                
+
                 if (!clients.Any())
-                    return Result<List<ClientListDto>>.Success(new List<ClientListDto>(), "No clients found");
+                    return PaginatedResult<ClientListDto>.Success(
+                        new List<ClientListDto>(),
+                        0,
+                        request.PageNumber,
+                        request.PageSize,
+                        "No clients found");
 
                 var mappedClients = _mapper.Map<List<ClientListDto>>(clients);
-                return Result<List<ClientListDto>>.Success(mappedClients);
+                return PaginatedResult<ClientListDto>.Success(
+                    mappedClients,
+                    mappedClients.Count,
+                    request.PageNumber,
+                    request.PageSize,
+                    "Clients retrieved successfully");
             }
             catch (System.Exception ex)
             {
-                return Result<List<ClientListDto>>.Fail($"Error retrieving clients: {ex.Message}");
+                return PaginatedResult<ClientListDto>.Failure($"Error retrieving clients: {ex.Message}");
             }
         }
     }

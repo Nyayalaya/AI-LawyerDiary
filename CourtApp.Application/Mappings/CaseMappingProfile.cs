@@ -1,24 +1,30 @@
 ﻿using AutoMapper;
-using CourtApp.Application.DTOs.Case;
-using CourtApp.Application.DTOs.CaseDetails;
-using CourtApp.Application.Features.CaseDetails;
+using CourtApp.Application.Features.CaseDetails.Dtos;
+using CourtApp.Application.Features.CaseDetails.Extensions;
 using CourtApp.Domain.Entities.CaseDetails;
-
+using System.Linq;
 namespace CourtApp.Application.Mappings
 {
     public class CaseMappingProfile : Profile
     {
         public CaseMappingProfile()
         {
+            CreateMap<CaseEntity, CaseBasicInfoDto>()
+               .MapCaseBasicInfo();
 
+            CreateMap<CaseEntity, CaseDataListDto>()
+                .IncludeBase<CaseEntity, CaseBasicInfoDto>()
 
-            CreateMap<CreateCaseCommand, CaseDetailEntity>();
-            CreateMap<UpdateCaseDetailCommand, CaseDetailEntity>();
-            CreateMap<CaseAgainstEntityModel, CaseDetailAgainstEntity>();
-            CreateMap<CaseDetailEntity, CaseDetailResponse>();
-            CreateMap<CaseDetailEntity, UserCaseDetailResponse>();
-            CreateMap<CaseDetailEntity, CaseDetailInfoDto>();
-            CreateMap<CreateCaseAssignedCommand, AssignCaseEntity>();
+                .ForMember(d => d.AssignedLawyerId,
+                    o => o.MapFrom(s =>
+                        s.CaseAssignedEntities
+                            .OrderByDescending(x => x.CreatedOn)
+                            .Select(x => x.LawyerId)
+                            .FirstOrDefault()));
+
+            CreateMap<CaseEntity, CaseHistoryDto>()
+                .IncludeBase<CaseEntity, CaseBasicInfoDto>();
+
         }
     }
 }

@@ -16,38 +16,40 @@ namespace CourtApp.Application.Features.Clients.Handlers.CreateClient
     {
         private readonly IClientRepository _clientRepository;
         private readonly IMapper _mapper;
+        private readonly IUnitOfWork unitOfWork;
 
-        public CreateClientCommandHandler(IClientRepository clientRepository, IMapper mapper)
+        public CreateClientCommandHandler(IClientRepository clientRepository, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _clientRepository = clientRepository;
             _mapper = mapper;
+            this.unitOfWork = unitOfWork;
         }
 
         public async Task<Result<Guid>> Handle(CreateClientCommand request, CancellationToken cancellationToken)
         {
             try
             {
-                // Parse ClientType from string to enum
+                
                 if (!Enum.TryParse<ClientType>(request.ClientType, true, out var clientType))
                     return Result<Guid>.Fail($"Invalid client type: {request.ClientType}");
-
-                var clientEntity = new ClientEntity
-                {
-                    Id = Guid.NewGuid(),
-                    Name = request.Name,
-                    Address = request.Address,
-                    Email = request.Email,
-                    Mobile = request.Mobile,
-                    OfficeEmail = request.OfficeEmail,
-                    Phone = request.Phone,
-                    ReferalBy = request.ReferralBy,
-                    RegNo = request.RegNo,
-                    Proprietor = request.Proprietor,
-                    ClientType = clientType
-                };
-
-                // Create is handled by repository
+                var clientEntity = _mapper.Map<ClientEntity>(request);
+                //var clientEntity = new ClientEntity
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Name = request.Name,
+                //    Address = request.Address,
+                //    Email = request.Email,
+                //    Mobile = request.Mobile,
+                //    OfficeEmail = request.OfficeEmail,
+                //    Phone = request.Phone,
+                //    ReferalBy = request.ReferralBy,
+                //    RegNo = request.RegNo,
+                //    Proprietor = request.Proprietor,
+                //    ClientType = clientType
+                //};
+               
                 var id = await _clientRepository.InsertAsync(clientEntity);
+                await unitOfWork.Commit(cancellationToken);
                 return Result<Guid>.Success(clientEntity.Id, "Client created successfully");
             }
             catch (Exception ex)

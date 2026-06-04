@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Data;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -71,7 +72,7 @@ namespace CourtApp.Infrastructure.DbContexts
 
         #region 🔹 CASE MODULE
         public DbSet<CaseDetailEntity> Cases { get; set; }
-        public DbSet<CaseDetailAgainstEntity> AgainstCases { get; set; }
+        public DbSet<CaseAgainstEntity> AgainstCases { get; set; }
         public DbSet<CaseStageEntity> CaseStages { get; set; }
         public DbSet<CaseCategoryEntity> CaseCategories { get; set; }
         public DbSet<TypeOfCasesEntity> CaseTypes { get; set; }
@@ -80,7 +81,7 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CaseProcedingEntity> CaseProceedings { get; set; }
         public DbSet<CaseWorkEntity> CaseWorks { get; set; }
         public DbSet<CaseDocsEntity> CaseDocuments { get; set; }
-        public DbSet<AssignCaseEntity> AssignedCases { get; set; }
+        public DbSet<CaseAssignedEntity> AssignedCases { get; set; }
         public DbSet<DOTypeEntity> DOTypes { get; set; }
         public DbSet<CaseEntity> CasesData { get; set; }
         #endregion
@@ -161,6 +162,8 @@ namespace CourtApp.Infrastructure.DbContexts
             builder.Entity<ClientEntity>()
                 .Property(c => c.ClientType)
                 .HasConversion<string>();
+
+           
 
             // 🔗 CourtMaster relations
             builder.Entity<CourtMasterEntity>()

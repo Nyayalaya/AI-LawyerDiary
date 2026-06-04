@@ -12,16 +12,14 @@ namespace CourtApp.Api.Controllers
 {
     public sealed class ClientController : BaseController
     {
-        /// <summary>Create a new client</summary>
         [HttpPost]
-        [ProducesResponseType(typeof(ApiResponse<Guid>), (int)HttpStatusCode.Created)]
-        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(ApiResponse<object>), (int)HttpStatusCode.Unauthorized)]
-        public async Task<IActionResult> CreateAsync([FromBody] CreateClientCommand command)
+        public async Task<IActionResult> CreateAsync( [FromBody] CreateClientCommand command,CancellationToken cancellationToken)
         {
             command.UserId = UserId;
-            Result<Guid> result = await Mediator.Send(command, RequestAborted);
-            return FromResult(result, successCode: 201);
+            var result = await Mediator.Send(command, cancellationToken);
+            return result.Succeeded
+                ? FromResult(result, StatusCodes.Status201Created)
+                : FromResult(result);
         }
 
         /// <summary>Get client by ID</summary>
@@ -43,7 +41,7 @@ namespace CourtApp.Api.Controllers
         public async Task<IActionResult> GetAllAsync([FromQuery] GetAllClientsQuery query)
         {
             var result = await Mediator.Send(query, RequestAborted);
-            return FromResult(result);
+            return FromPaginated(result);
         }
 
         /// <summary>Update an existing client</summary>

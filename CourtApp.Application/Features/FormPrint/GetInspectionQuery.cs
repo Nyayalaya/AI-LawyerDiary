@@ -1,6 +1,5 @@
 ﻿using CourtApp.Application.Common;
 using AutoMapper;
-using CourtApp.Application.DTOs.FormPrint;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -9,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Application.Features.FormPrint.Dtos;
 
 
 namespace CourtApp.Application.Features.FormPrint

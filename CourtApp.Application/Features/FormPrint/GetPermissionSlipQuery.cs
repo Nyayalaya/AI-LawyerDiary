@@ -1,5 +1,5 @@
 ﻿using CourtApp.Application.Common;
-using CourtApp.Application.DTOs.FormPrint;
+using CourtApp.Application.Features.FormPrint.Dtos;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,12 +18,12 @@ namespace CourtApp.Application.Features.FormPrint
     {
         private readonly IUserCaseRepository _CaseRepo;
         private readonly ICaseProceedingRepository _wRepo;
-        private readonly ICaseAgainstRepository _wAgainstRepo;
-        public GetPermissionSlipQueryHandler(IUserCaseRepository _CaseRepo, ICaseProceedingRepository _wRepo, ICaseAgainstRepository wAgainstRepo)
+        //private readonly ICaseAgainstRepository _wAgainstRepo;
+        public GetPermissionSlipQueryHandler(IUserCaseRepository _CaseRepo, ICaseProceedingRepository _wRepo/*, ICaseAgainstRepository wAgainstRepo*/)
         {
             this._CaseRepo = _CaseRepo;
             this._wRepo = _wRepo;
-            _wAgainstRepo = wAgainstRepo;
+            //_wAgainstRepo = wAgainstRepo;
         }
         public async Task<Result<List<PermissionSlipResponse>>> Handle(GetPermissionSlipQuery request, CancellationToken cancellationToken)
         {
@@ -39,7 +39,7 @@ namespace CourtApp.Application.Features.FormPrint
                             Title = cd.FirstTitle + " Vs " + cd.SecondTitle,
                             DoP = cd.InstitutionDate.ToString("dd/MM/yyyy"),
                             MatterGo = cd.CaseStage != null ? cd.CaseStage.Name : "",
-                            DoI = cd.CaseAgainstEntities != null && cd.CaseAgainstEntities.Any() ? cd.CaseAgainstEntities.FirstOrDefault().ImpugedOrderDate.ToString("dd/MM/yyyy") : "",
+                            //DoI = cd.CaseAgainstEntities != null && cd.CaseAgainstEntities.Any() ? cd.CaseAgainstEntities.FirstOrDefault().ImpugedOrderDate?.ToString("dd/MM/yyyy") ?? "" : "",
                             NextDate = cd.NextDate.HasValue && cd.CaseProcEntities.Any()
                                         ? cd.CaseProcEntities.Max(p => p.NextDate.HasValue ? p.NextDate.Value : DateTime.MinValue) > cd.NextDate.Value
                                         ? cd.CaseProcEntities.Max(p => p.NextDate.HasValue ? p.NextDate.Value : DateTime.MinValue).ToString("dd/MM/yyyy")

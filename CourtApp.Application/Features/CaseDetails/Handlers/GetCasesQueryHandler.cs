@@ -1,9 +1,11 @@
-﻿using CourtApp.Application.Common;
+﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using CourtApp.Application.Common;
 using CourtApp.Application.Extensions;
 using CourtApp.Application.Features.CaseDetails.Dtos;
+using CourtApp.Application.Features.CaseDetails.Extention;
 using CourtApp.Application.Features.CaseDetails.Queries;
 using CourtApp.Application.Features.CaseDetails.Repositories;
-using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.CaseDetails;
 using LinqKit;
 using MediatR;
@@ -18,9 +20,11 @@ namespace CourtApp.Application.Features.CaseDetails.Handlers
     public class GetCasesQueryHandler : IRequestHandler<GetCasesQuery, PaginatedResult<CaseDataListDto>>
     {
         private readonly ICaseRepository _userCaseRepository;
-        public GetCasesQueryHandler(ICaseRepository userCaseRepository)
+        private readonly IMapper mapper;
+        public GetCasesQueryHandler(ICaseRepository userCaseRepository, IMapper mapper)
         {
             _userCaseRepository = userCaseRepository;
+            this.mapper = mapper;
         }
         public async Task<PaginatedResult<CaseDataListDto>> Handle(GetCasesQuery request, CancellationToken cancellationToken)
         {
@@ -28,11 +32,6 @@ namespace CourtApp.Application.Features.CaseDetails.Handlers
             if (!string.IsNullOrEmpty(request.UserId))
             {
                 predicate = predicate.And(x => x.CreatedBy == request.UserId);
-            }
-            if (request.ConnectedUserIds != null && request.ConnectedUserIds.Any())
-            {
-                predicate = predicate.And(x => request.ConnectedUserIds.Contains(x.CreatedBy) ||
-                x.CaseAssignedEntities.Any(ca => request.ConnectedUserIds.Contains(ca.LawyerId)));
             }
 
             if (!string.IsNullOrWhiteSpace(request.Status))
@@ -88,13 +87,7 @@ namespace CourtApp.Application.Features.CaseDetails.Handlers
                         .Value.Date;
 
                 predicate = predicate.And(x =>
-
-                    x.FilingDate.HasValue
-
-                    &&
-
-                    x.FilingDate.Value.Date
-                        == filingDate
+                    x.InstitutionDate.Date == filingDate
                 );
             }
 
@@ -128,36 +121,38 @@ namespace CourtApp.Application.Features.CaseDetails.Handlers
                 predicate = predicate.And(x => x.IsDisposed == false);
             }
 
-            var query = _userCaseRepository
-               .Cases
-               .AsNoTracking()
-               .AsExpandable()
-               .Where(predicate);
+            var query = _userCaseRepository.Cases
+                         .AsNoTracking()
+                         .AsExpandable()
+                         .Where(predicate)
+                         .ApplyCaseAccessFilter(request.ConnectedUserIds)
+                         .ApplyDefaultOrdering();
 
             var data = await query
-                .OrderByDescending(x => x.NextDate ??
-                    x.CaseProceedingEntities.OrderByDescending(cp => cp.NextDate)
-                    .FirstOrDefault().NextDate)
-                .ThenByDescending(x => x.FilingDate)
-                .ThenByDescending(x => x.CreatedOn)
-                .Select(x => new CaseDataListDto
+                .ProjectTo<CaseDataListDto>(mapper.ConfigurationProvider)
+                .ToPaginatedListAsync(
+                    request.PageNumber,
+                    request.PageSize,
+                    cancellationToken);
+
+            if (request.ConnectedUserIds?.Any() == true)
+            {
+                var linkedSet = request.ConnectedUserIds.ToHashSet();
+
+                foreach (var item in data.Data)
                 {
-                    Id = x.Id,
-                    Court = x.Court.Name + (x.CourtDistrict != null ? ", " + x.CourtDistrict.Name : "") + (x.CourtComplex != null ? ", " + x.CourtComplex.Name : "") + (x.CourtHall != null ? ", " + x.CourtHall.Name : ""),
-                    CaseTitle = x.CaseFirstTitle + " VS " + x.CaseSecondTitle,
-                    CaseNumber = !string.IsNullOrWhiteSpace(x.CaseNo) ? $"{x.CaseNo}/{x.CaseYear}" : x.CaseYear.ToString(),
-                    CaseType = x.CaseCategory.Name,
-                    FilingDate = x.FilingDate,
-                    NextDate = x.NextDate ?? x.CaseProceedingEntities
-                            .OrderByDescending(p => p.NextDate).Select(p => p.NextDate)
-                            .FirstOrDefault(),
-                    AssignedLawyerId = x.CaseAssignedEntities.OrderByDescending(ca => ca.CreatedOn).FirstOrDefault().LawyerId,
-                    //AssignedLawyerName = x.CaseAssignedEntities.OrderByDescending(ca => ca.CreatedOn).FirstOrDefault().Lawyer.FullName,
-                    AssignedLawyerName = "",
-                    Status = x.IsDisposed ? "Disposed" : "Pending",
-                    ParentCaseId = x.ParentCaseId.HasValue ? x.ParentCaseId.Value : Guid.Empty,
-                    HasChildCases = x.ChildCases.Any(cc => !cc.IsDeleted)
-                }).ToPaginatedListAsync(request.PageNumber, request.PageSize, cancellationToken);
+                    item.Reference =
+                        !string.IsNullOrEmpty(item.AssignedLawyerId) &&
+                        linkedSet.Contains(item.AssignedLawyerId)
+                            ? "Assigned"
+                            : "Self";
+                }
+            }
+            else
+            {
+                foreach (var item in data.Data)
+                    item.Reference = "Self";
+            }
 
             return data;
         }

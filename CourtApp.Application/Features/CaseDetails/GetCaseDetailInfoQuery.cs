@@ -4,7 +4,6 @@ using CourtApp.Application.DTOs.CaseDetails;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -74,19 +73,18 @@ namespace CourtApp.Application.Features.CaseDetails
             {
                 ct.AgainstCases = detail.CaseAgainstEntities.Select(item => new AgainstCaseDetail
                 {
-                    ImpugedOrder = item.ImpugedOrderDate.ToString("dd/MM/yyyy"),
+                    ImpugedOrder = item.ImpugedOrderDate?.ToString("dd/MM/yyyy") ?? "",
                     State = item.State?.Name ?? "",
-                    CourtBench = item.CourtBench?.CourtBench_En ?? "",
                     CourtType = item.CourtType?.Name ?? "",
                     CaseNo = item.CaseNo ?? "",
                     CaseYear = item.CaseYear.ToString(),
-                    CisNo = item.CisNo ?? "",
-                    CisYear = item.CisYear.ToString(),
-                    CnrNo = item.CnrNo ?? "",
+                    CisNo = item.CisNumber ?? "",
+                    CisYear = item.CisYear?.ToString() ?? "",
+                    CnrNo = item.CnrNumber ?? "",
                     Cadre = item.Cadre?.Name ?? "",
                     OfficerName = item.OfficerName ?? "",
                     CaseCategory = item.CaseCategory?.Name ?? "",
-                    CourtComplex = item.Complex?.Name ?? "",
+                    CourtComplex = item.CourtComplex?.Name ?? "",
                     CaseType = item.CaseType?.Name_En ?? "",
                     DistrictCourt = item.CourtDistrict?.Name ?? ""
                 }).ToList();

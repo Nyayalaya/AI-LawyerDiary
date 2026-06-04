@@ -1,5 +1,5 @@
 ﻿using CourtApp.Application.Common;
-using CourtApp.Application.DTOs.FormPrint;
+using CourtApp.Application.Features.FormPrint.Dtos;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System;

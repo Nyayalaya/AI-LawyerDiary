@@ -57,8 +57,8 @@ namespace CourtApp.Application.Interfaces.Contexts
 
         #region 🔹 CASE MODULE
         DbSet<CaseDetailEntity> Cases { get; set; }
-        DbSet<CaseDetailAgainstEntity> AgainstCases { get; set; }
-        DbSet<AssignCaseEntity> AssignedCases { get; set; }
+        DbSet<CaseAgainstEntity> AgainstCases { get; set; }
+        DbSet<CaseAssignedEntity> AssignedCases { get; set; }
 
         DbSet<CaseStageEntity> CaseStages { get; set; }
         DbSet<CaseCategoryEntity> CaseCategories { get; set; }

@@ -1,6 +1,7 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Case;
 using CourtApp.Application.DTOs.CaseDetails;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System;

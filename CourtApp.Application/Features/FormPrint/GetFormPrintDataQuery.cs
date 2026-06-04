@@ -1,7 +1,6 @@
 ﻿using CourtApp.Application.Common;
 using AutoMapper;
 using CourtApp.Application.DTOs.CaseDetails;
-using CourtApp.Application.DTOs.FormPrint;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
 using CourtApp.Domain.Entities.CaseDetails;
@@ -14,6 +13,7 @@ using System.Security.Cryptography;
 using System.Threading;
 using System.Threading.Tasks;
 using static CourtApp.Application.Constants.Permissions;
+using CourtApp.Application.Features.FormPrint.Dtos;
 
 namespace CourtApp.Application.Features.FormPrint
 {
@@ -49,29 +49,27 @@ namespace CourtApp.Application.Features.FormPrint
             try
             {
                 string lang = request.Lang ?? "En";
-                var casesQuery = await _CaseRepo.Entites
-                        .Include(s => s.State)
-                        .Include(s => s.CourtType)
-                        .Include(s => s.CaseCategory)
-                        .Include(s => s.CourtDistrict)
-                        .Include(s => s.Complex)
-                        .Include(s => s.CourtBench)
-                        .Include(s => s.CaseType)
-                        .Include(s => s.CaseStage)
-                        .Include(s => s.FTitle)
-                        .Include(s => s.STitle)
-                        .Include(s => s.Titles).ThenInclude(t => t.CaseApplicants)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.State)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CourtType)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CourtDistrict)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.Complex)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CourtBench)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CaseType)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CaseCategory)
-                        .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.Cadre)
-                        .AsNoTracking()
-                        .Where(w => request.CaseIds.Contains(w.Id))
-                        .ToListAsync();
+                    var casesQuery = await _CaseRepo.Entites
+                            .Include(s => s.State)
+                            .Include(s => s.CourtType)
+                            .Include(s => s.CaseCategory)
+                            .Include(s => s.CourtDistrict)
+                            .Include(s => s.Complex)
+                            .Include(s => s.CourtBench)
+                            .Include(s => s.CaseType)
+                            .Include(s => s.CaseStage)
+                            .Include(s => s.FTitle)
+                            .Include(s => s.STitle)
+                            .Include(s => s.Titles).ThenInclude(t => t.CaseApplicants)
+                            .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.State)
+                            .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CourtType)
+                            .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CourtDistrict)
+                            .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CaseType)
+                            .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.CaseCategory)
+                            .Include(a => a.CaseAgainstEntities).ThenInclude(s => s.Cadre)
+                            .AsNoTracking()
+                            .Where(w => request.CaseIds.Contains(w.Id))
+                            .ToListAsync();
 
                 var result = new List<GlobalFormPrintDto>();
                 foreach (var x in casesQuery)
@@ -127,16 +125,16 @@ namespace CourtApp.Application.Features.FormPrint
 
                         AgainstCourtDetail = x.CaseAgainstEntities.Select(s => new AgainstCaseDetail
                         {
-                            ImpugedOrder = s.ImpugedOrderDate.ToString("dd/MM/yyyy"),
+                            ImpugedOrder = s.ImpugedOrderDate?.ToString("dd/MM/yyyy") ?? "",
                             State = lang == "Hi" ? GetCompleteWordAsync(s.State?.Name, lang).Result : s.State?.Name,
-                            CourtBench = lang == "Hi" ? GetCompleteWordAsync(s.CourtBench?.CourtBench_En, lang).Result : s.CourtBench?.CourtBench_En,
+                            CourtBench = lang == "Hi" ? GetCompleteWordAsync(s.Court.Name, lang).Result : s.Court.Name,
                             CaseType = lang == "Hi" ? GetCompleteWordAsync(s.CaseType?.Name_En, lang).Result : s.CaseType?.Name_En,
                             CaseNo = s.CaseNo ?? "",
                             CaseYear = s.CaseYear.ToString(),
-                            CisNoYear = string.IsNullOrWhiteSpace(s.CisNo) || s.CisNo == "0"
+                            CisNoYear = string.IsNullOrWhiteSpace(s.CisNumber) || s.CisNumber == "0"
                                 ? $"{s.CisYear}"
-                                : $"{s.CisNo}/{s.CisYear}",
-                            CnrNo = s.CnrNo ?? "",
+                                : $"{s.CisNumber}/{s.CisYear}",
+                            CnrNo = s.CnrNumber ?? "",
                             OfficerName=s.OfficerName,
                             Cadre=s.Cadre?.Name,
                         }).FirstOrDefault()

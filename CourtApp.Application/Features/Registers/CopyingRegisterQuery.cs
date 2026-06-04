@@ -1,5 +1,6 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Registers;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -75,10 +76,9 @@ ICaseAssignedRepository assignedRepo)
                                {
                                    Id = c.Id,
                                    Court = c.CourtBench.CourtBench_En.ToString(),
-                                   No = c.CaseNo,
-                                   Year = c.CaseYear.ToString(),
-                                   FirstTitle = c.FirstTitle,
-                                   SecondTitle = c.SecondTitle,
+                                   CaseNumber = c.CaseNo,
+                                   CaseYear = c.CaseYear,
+                                   CaseTitle = c.FirstTitle + " VS " + c.SecondTitle,
                                    CaseType = c.CaseType.Name_En,
                                    // Apply formatting client-side after data retrieval
                                    AppliedOn = Proceedings.SelectMany(s => s.ProcWork.Works)

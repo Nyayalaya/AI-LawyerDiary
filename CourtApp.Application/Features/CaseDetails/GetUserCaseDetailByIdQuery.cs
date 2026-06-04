@@ -82,20 +82,20 @@ namespace CourtApp.Application.Features.UserCase
                     StateId = item.StateId,
                     CourtTypeId = item.CourtTypeId,
                     IsAgHighCourt = item.CourtType?.Code == "HICT",
-                    BenchId = item.CourtType?.Code == "HICT" ? item.CourtBenchId : Guid.Empty,
-                    CourtId = item.CourtType?.Code != "HICT" ? item.CourtBenchId : Guid.Empty,
+                    BenchId = item.CourtType?.Code == "HICT" ? item.CourtId : Guid.Empty,
+                    CourtId = item.CourtType?.Code != "HICT" ? item.CourtId : Guid.Empty,
                     CourtDistrictId = item.CourtDistrictId ?? Guid.Empty,
-                    ComplexId = item.ComplexId ?? Guid.Empty,
+                    ComplexId = item.CourtComplexId ?? Guid.Empty,
                     CadreId = item.CadreId,
                     CaseNo = item.CaseNo,
                     CaseCategoryId = item.CaseCategoryId,
                     CaseTypeId = item.CaseTypeId,
                     CaseYear = item.CaseYear,
-                    CisNo = item.CisNo,
+                    CisNo = item.CisNumber,
                     CisYear = item.CisYear,
-                    CnrNo = item.CnrNo,
-                    OfficerName = item.OfficerName,
-                    StrengthId = item.StrengthId
+                    CnrNo = item.CnrNumber,
+                    OfficerName = item.OfficerName
+                    
                 }).ToList();
             }
 

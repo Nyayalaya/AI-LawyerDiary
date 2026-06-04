@@ -14,7 +14,7 @@ namespace CourtApp.Application.Common
         public int StatusCode { get; init; }
         public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public T? Data { get; init; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]

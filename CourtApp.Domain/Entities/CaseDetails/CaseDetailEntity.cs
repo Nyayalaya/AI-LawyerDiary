@@ -74,7 +74,7 @@ namespace CourtApp.Domain.Entities.CaseDetails
         public virtual CourtComplexEntity Complex { get; set; }
         public virtual CaseStageEntity CaseStage { get; set; }
         public virtual CaseDetailEntity LinkedCase { get; set; }
-        public virtual ICollection<CaseDetailAgainstEntity> CaseAgainstEntities { get; set; } = new List<CaseDetailAgainstEntity>();
+        public virtual ICollection<CaseAgainstEntity> CaseAgainstEntities { get; set; } = new List<CaseAgainstEntity>();
         public virtual ICollection<CaseProcedingEntity> CaseProcEntities { get; set; }
         public virtual ICollection<CaseTitleEntity> Titles { get; set; }
         public virtual ICollection<CaseDetailEntity> LinkedCases { get; set; } = new List<CaseDetailEntity>();

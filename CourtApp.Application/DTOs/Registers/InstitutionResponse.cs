@@ -1,5 +1,5 @@
 ﻿using System;
-using CourtApp.Application.DTOs.CaseDetails;
+using CourtApp.Application.Features.CaseDetails.Dtos;
 namespace CourtApp.Application.DTOs.Registers
 {
     public class InstitutionResponse : CaseBasicInfoDto

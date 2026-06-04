@@ -1,6 +1,7 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Registers;
 using CourtApp.Application.Extensions;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.CaseDetails;
 using KT3Core.Areas.Global.Classes;
@@ -55,12 +56,11 @@ namespace CourtApp.Application.Features.Registers
                                    Reference = asignedOrSelf,
                                    IsCaseAssigned = isCaseAssigned,
                                    CaseType = c.CaseType.Name_En,
-                                   No = c.CaseNo,
-                                   Year = c.CaseYear.ToString(),
+                                   CaseNumber = c.CaseNo,
+                                   CaseYear = c.CaseYear,
                                    Court = c.CourtBench.CourtBench_En,
-                                   FirstTitle = c.FirstTitle,
-                                   SecondTitle = c.SecondTitle,
-                                   InsititutionDate = c.InstitutionDate != default(DateTime) ? c.InstitutionDate.ToString("dd/MM/yyyy") : "-",
+                                   CaseTitle = c.FirstTitle + " VS " + c.SecondTitle,
+                                   InstitutionDate = c.InstitutionDate != default(DateTime) ? c.InstitutionDate.ToString("dd/MM/yyyy") : "-",
                                }).ToPaginatedListAsync(request.PageNumber, request.PageSize);
             return await caseDetails;
         }

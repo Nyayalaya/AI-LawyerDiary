@@ -22,7 +22,6 @@ namespace CourtApp.Application.Features.CaseDetails.Queries
         public Guid? ParentCaseId { get; set; }
         public bool? IsImportant { get; set; }
         public bool? IsUrgent { get; set; }
-
         public string CallingFrom { get; set; }
     }
 }

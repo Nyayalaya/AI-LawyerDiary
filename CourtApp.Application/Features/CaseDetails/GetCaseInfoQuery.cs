@@ -2,6 +2,7 @@
 using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.CaseDetails;
 using CourtApp.Application.Extensions;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.CaseDetails;
 using KT3Core.Areas.Global.Classes;

@@ -34,7 +34,7 @@ namespace CourtApp.Api.Controllers
 
         // ── User ──────────────────────────────────────────────────────
         protected UserContextInfo CurrentUser => CurrentUserService.GetCurrentUser();
-        protected string? UserId => CurrentUser.UserId;
+        protected string UserId => CurrentUser.UserId;
         protected string? UserEmail => CurrentUser.Email;
         protected string? UserName => CurrentUser.UserName;
         protected List<string> Roles => CurrentUser.Roles;
