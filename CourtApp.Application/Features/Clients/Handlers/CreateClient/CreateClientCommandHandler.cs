@@ -33,20 +33,7 @@ namespace CourtApp.Application.Features.Clients.Handlers.CreateClient
                 if (!Enum.TryParse<ClientType>(request.ClientType, true, out var clientType))
                     return Result<Guid>.Fail($"Invalid client type: {request.ClientType}");
                 var clientEntity = _mapper.Map<ClientEntity>(request);
-                //var clientEntity = new ClientEntity
-                //{
-                //    Id = Guid.NewGuid(),
-                //    Name = request.Name,
-                //    Address = request.Address,
-                //    Email = request.Email,
-                //    Mobile = request.Mobile,
-                //    OfficeEmail = request.OfficeEmail,
-                //    Phone = request.Phone,
-                //    ReferalBy = request.ReferralBy,
-                //    RegNo = request.RegNo,
-                //    Proprietor = request.Proprietor,
-                //    ClientType = clientType
-                //};
+                
                
                 var id = await _clientRepository.InsertAsync(clientEntity);
                 await unitOfWork.Commit(cancellationToken);

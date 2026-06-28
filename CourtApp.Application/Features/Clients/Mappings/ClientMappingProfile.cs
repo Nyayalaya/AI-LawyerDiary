@@ -1,4 +1,5 @@
 using AutoMapper;
+using CourtApp.Application.Features.Clients.Commands.CreateClient;
 using CourtApp.Application.Features.Clients.DTOs;
 using CourtApp.Domain.Entities.LawyerDiary;
 
@@ -23,6 +24,9 @@ namespace CourtApp.Application.Features.Clients.Mappings
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
 
             CreateMap<ClientUpdateDto, ClientEntity>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore());
+
+            CreateMap<CreateClientCommand, ClientEntity>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore());
         }
     }

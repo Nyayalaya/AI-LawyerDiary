@@ -13,10 +13,12 @@ namespace CourtApp.Application.Features.Clients.Handlers.UpdateClient
     public sealed class UpdateClientCommandHandler : IRequestHandler<UpdateClientCommand, Result<bool>>
     {
         private readonly IClientRepository _clientRepository;
+        private readonly IUnitOfWork unitOfWork;
 
-        public UpdateClientCommandHandler(IClientRepository clientRepository)
+        public UpdateClientCommandHandler(IClientRepository clientRepository, IUnitOfWork _unitOfWork)
         {
             _clientRepository = clientRepository;
+            unitOfWork = _unitOfWork;
         }
 
         public async Task<Result<bool>> Handle(UpdateClientCommand request, CancellationToken cancellationToken)
@@ -44,6 +46,7 @@ namespace CourtApp.Application.Features.Clients.Handlers.UpdateClient
                 client.ClientType = clientType;
 
                 await _clientRepository.UpdateAsync(client);
+                await unitOfWork.Commit(cancellationToken);
                 return Result<bool>.Success(true, "Client updated successfully");
             }
             catch (Exception ex)
