@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.LawyerDiary
 {
-    [Table("m_work_master_sub", Schema = "ld")]
+    [Table("m_work_master_sub", Schema = "masters")]
     public class WorkMasterSubEntity : AuditableEntity
     {
 

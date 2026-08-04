@@ -1,0 +1,16 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+INTELLECTUAL_PROPERTY,TRADEMARK,Trademark,Trademark registration and infringement matters,1
+INTELLECTUAL_PROPERTY,COPYRIGHT,Copyright,Copyright infringement proceedings,2
+INTELLECTUAL_PROPERTY,PATENT,Patent,Patent disputes and enforcement,3
+INTELLECTUAL_PROPERTY,DESIGN,Industrial Design,Industrial design registration disputes,4
+INTELLECTUAL_PROPERTY,GEOGRAPHICAL_INDICATION,Geographical Indication,GI registration and protection,5
+INTELLECTUAL_PROPERTY,TRADE_SECRET,Trade Secret,Trade secret misappropriation,6
+INTELLECTUAL_PROPERTY,DOMAIN_NAME,Domain Name,Domain name disputes,7
+INTELLECTUAL_PROPERTY,PASSING_OFF,Passing Off,Passing off actions,8
+INTELLECTUAL_PROPERTY,INFRINGEMENT,IP Infringement,General intellectual property infringement,9
+INTELLECTUAL_PROPERTY,LICENSING,Licensing,IP licensing disputes,10
+INTELLECTUAL_PROPERTY,ROYALTY,Royalty,Royalty payment disputes,11
+INTELLECTUAL_PROPERTY,IP_ASSIGNMENT,IP Assignment,Assignment of intellectual property rights,12
+INTELLECTUAL_PROPERTY,IP_APPEAL,IP Appeal,Appeal in intellectual property matters,13
+INTELLECTUAL_PROPERTY,IP_RECTIFICATION,Rectification Petition,Rectification of IP register,14
+INTELLECTUAL_PROPERTY,IP_MISC,IP Miscellaneous,Other intellectual property proceedings,15

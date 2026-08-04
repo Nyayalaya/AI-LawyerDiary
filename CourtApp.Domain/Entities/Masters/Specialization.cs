@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_specialization")]
+    [Table("m_specialization", Schema = "masters")]
     public class Specialization:AuditableEntity
     {
         public string Name { get; set; }

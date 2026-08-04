@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Entities.Advocate
 {
-    [Table("m_act_type",Schema ="ad")]
+    [Table("m_act_type",Schema ="masters")]
     public class ActTypeEntity: AuditableEntity
     {
         public new Guid Id { get; set; }        

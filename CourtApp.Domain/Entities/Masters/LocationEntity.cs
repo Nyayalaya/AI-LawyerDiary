@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_location")]
+    [Table("m_location", Schema = "common")]
     [Index(nameof(Name), nameof(StateId), IsUnique = true)]
     public class LocationEntity : AuditableEntity
     {

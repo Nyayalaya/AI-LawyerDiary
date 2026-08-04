@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+PROPERTY,LAND_DISPUTE,Land Dispute,Dispute relating to ownership or possession of land,1
+PROPERTY,PROPERTY_TITLE,Title Dispute,Title declaration and ownership dispute,2
+PROPERTY,PARTITION_PROPERTY,Partition Property,Partition of immovable property,3
+PROPERTY,MUTATION,Mutation,Mutation proceedings before revenue authorities,4
+PROPERTY,LAND_ACQUISITION,Land Acquisition,Proceedings under Land Acquisition laws,5
+PROPERTY,REVENUE_APPEAL,Revenue Appeal,Appeal before revenue authorities,6
+PROPERTY,TENANCY,Tenancy Matter,Tenant and landlord disputes,7
+PROPERTY,EVICTION,Eviction,Eviction proceedings,8
+PROPERTY,LEASE_DISPUTE,Lease Dispute,Lease agreement disputes,9
+PROPERTY,RENT_CONTROL,Rent Control,Rent Control Act proceedings,10
+PROPERTY,ENCROACHMENT,Encroachment,Removal of encroachment proceedings,11
+PROPERTY,EASEMENT,Easement Rights,Easement rights disputes,12
+PROPERTY,BOUNDARY_DISPUTE,Boundary Dispute,Boundary demarcation dispute,13
+PROPERTY,PROPERTY_INJUNCTION,Property Injunction,Injunction relating to property,14
+PROPERTY,ADVERSE_POSSESSION,Adverse Possession,Claim based on adverse possession,15
+PROPERTY,AGRICULTURAL_LAND,Agricultural Land,Agricultural land dispute,16
+PROPERTY,URBAN_PROPERTY,Urban Property,Urban property dispute,17
+PROPERTY,PROPERTY_EXECUTION,Property Execution,Execution of property decree,18
+PROPERTY,PROPERTY_APPEAL,Property Appeal,Appeal in property matters,19
+PROPERTY,PROPERTY_MISC,Property Miscellaneous,Other property proceedings,20

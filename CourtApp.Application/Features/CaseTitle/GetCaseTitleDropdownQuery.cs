@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
 using CourtApp.Application.DTOs.CaseTitle;
-using CourtApp.Application.DTOs.DropDowns;
+using CourtApp.Application.DTOs.DropdownDtos;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.CaseDetails;
 using KT3Core.Areas.Global.Classes;

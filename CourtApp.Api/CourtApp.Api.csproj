@@ -25,4 +25,9 @@
     <ProjectReference Include="..\CourtApp.Infrastructure\CourtApp.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Controllers\Cases\" />
+    <Folder Include="Controllers\Masters\" />
+  </ItemGroup>
+
 </Project>

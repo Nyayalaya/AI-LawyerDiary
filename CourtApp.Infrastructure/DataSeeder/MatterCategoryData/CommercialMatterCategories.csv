@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+COMMERCIAL,COMMERCIAL_SUIT,Commercial Suit,Commercial dispute before Commercial Court,1
+COMMERCIAL,COMMERCIAL_APPEAL,Commercial Appeal,Appeal arising from commercial matters,2
+COMMERCIAL,CONTRACT_DISPUTE,Contract Dispute,Dispute arising from contracts,3
+COMMERCIAL,BREACH_OF_CONTRACT,Breach of Contract,Proceedings for breach of contract,4
+COMMERCIAL,PARTNERSHIP_DISPUTE,Partnership Dispute,Disputes between partners,5
+COMMERCIAL,JOINT_VENTURE_DISPUTE,Joint Venture Dispute,Joint venture disputes,6
+COMMERCIAL,SUPPLY_AGREEMENT,Supply Agreement Dispute,Supply agreement litigation,7
+COMMERCIAL,DISTRIBUTORSHIP,Distributorship Dispute,Disputes relating to distributorship,8
+COMMERCIAL,AGENCY_DISPUTE,Agency Dispute,Agency agreement disputes,9
+COMMERCIAL,FRANCHISE_DISPUTE,Franchise Dispute,Franchise agreement disputes,10
+COMMERCIAL,TENDER_DISPUTE,Tender Dispute,Government or private tender disputes,11
+COMMERCIAL,TRADE_DISPUTE,Trade Dispute,Commercial trade disputes,12
+COMMERCIAL,EXPORT_IMPORT,Export Import Dispute,International trade disputes,13
+COMMERCIAL,RECOVERY_COMMERCIAL,Commercial Recovery,Commercial recovery proceedings,14
+COMMERCIAL,BANK_GUARANTEE,Bank Guarantee Dispute,Disputes involving bank guarantees,15
+COMMERCIAL,LETTER_OF_CREDIT,Letter of Credit Dispute,LC related disputes,16
+COMMERCIAL,COMMERCIAL_EXECUTION,Commercial Execution,Execution of commercial decree,17
+COMMERCIAL,COMMERCIAL_INJUNCTION,Commercial Injunction,Injunction in commercial disputes,18
+COMMERCIAL,COMMERCIAL_ARBITRATION,Commercial Arbitration,Commercial arbitration proceedings,19
+COMMERCIAL,COMMERCIAL_MISC,Commercial Miscellaneous,Other commercial proceedings,20

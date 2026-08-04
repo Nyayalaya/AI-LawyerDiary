@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_form_type")]
+    [Table("m_form_type", Schema = "masters")]
     [Index(nameof(Code), IsUnique = true)]
     public class FormTypeEntity : AuditableEntity
     { 

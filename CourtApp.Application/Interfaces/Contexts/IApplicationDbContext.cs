@@ -86,7 +86,7 @@ namespace CourtApp.Application.Interfaces.Contexts
         DbSet<ExpenseHeadEntity> ExpenseHeads { get; set; }
         DbSet<BillingDetailEntity> BillingDetails { get; set; }
 
-        DbSet<CadreMasterEntity> Cadres { get; set; }
+        DbSet<CadreEntity> Cadres { get; set; }
         DbSet<Specialization> Specializations { get; set; }
         #endregion
 

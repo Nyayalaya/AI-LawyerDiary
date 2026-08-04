@@ -3,7 +3,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_form_template_version")]
+    [Table("m_form_template_version", Schema = "masters")]
     public class FormTemplateVersionEntity : AuditableEntity
     {
         public Guid FormTemplateId { get; set; }

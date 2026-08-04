@@ -9,16 +9,16 @@ namespace CourtApp.Application.Features.Cadre.Services
 {
     public interface ICadreMasterRepository
     {
-        IQueryable<CadreMasterEntity> Entities { get; }
+        IQueryable<CadreEntity> Entities { get; }
 
-        Task<List<CadreMasterEntity>> GetListAsync();
+        Task<List<CadreEntity>> GetListAsync();
 
-        Task<CadreMasterEntity> GetByIdAsync(Guid id);
+        Task<CadreEntity> GetByIdAsync(Guid id);
 
-        Task<Guid> InsertAsync(CadreMasterEntity entity);
+        Task<Guid> InsertAsync(CadreEntity entity);
 
-        Task UpdateAsync(CadreMasterEntity entity);
+        Task UpdateAsync(CadreEntity entity);
 
-        Task DeleteAsync(CadreMasterEntity entity);
+        Task DeleteAsync(CadreEntity entity);
     }
 }

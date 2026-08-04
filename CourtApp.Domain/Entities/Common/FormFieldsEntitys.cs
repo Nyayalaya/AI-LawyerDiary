@@ -4,7 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.Common
 {
-    [Table("m_frm_fields")]
+    [Table("m_frm_fields", Schema = "masters")]
     [Index(nameof(Code), IsUnique = true)]
     public class FormFieldsEntitys : AuditableEntity
     {

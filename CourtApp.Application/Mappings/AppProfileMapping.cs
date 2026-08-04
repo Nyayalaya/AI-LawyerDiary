@@ -54,16 +54,16 @@ namespace CourtApp.Application.Mappings
 
             #region Cadre Profile Mapping
             // Map from entity to DTOs
-            CreateMap<CadreMasterEntity, CadreResponse>();
-            CreateMap<CadreMasterEntity, CadreByIdResponse>();
+            CreateMap<CadreEntity, CadreResponse>();
+            CreateMap<CadreEntity, CadreByIdResponse>();
 
             // Backward compatibility with old DTOs
-            CreateMap<CadreMasterEntity, GetCadreResponseById>();
-            CreateMap<CadreMasterEntity, GetCadreResponse>();
+            CreateMap<CadreEntity, GetCadreResponseById>();
+            CreateMap<CadreEntity, GetCadreResponse>();
 
             // Map from commands to entity
-            CreateMap<CreateCadreCommand, CadreMasterEntity>();
-            CreateMap<UpdateCadreCommand, CadreMasterEntity>();
+            CreateMap<CreateCadreCommand, CadreEntity>();
+            CreateMap<UpdateCadreCommand, CadreEntity>();
             #endregion
 
             #region Court Profile Mapping

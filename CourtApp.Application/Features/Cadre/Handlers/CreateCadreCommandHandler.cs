@@ -26,7 +26,7 @@ namespace CourtApp.Application.Features.Cadre.Handlers
 
         public async Task<Result<string>> Handle(CreateCadreCommand request, CancellationToken cancellationToken)
         {
-            var cadreEntity = _mapper.Map<CadreMasterEntity>(request);
+            var cadreEntity = _mapper.Map<CadreEntity>(request);
             cadreEntity.Id = Guid.NewGuid();
             await _repository.InsertAsync(cadreEntity);
             await _unitOfWork.Commit(cancellationToken);

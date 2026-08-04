@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.CaseDetails
 {
 
-    [Table("case_against_data")]
+    [Table("case_against_data", Schema = "cases")]
     public class CaseAgainstEntity:AuditableEntity
     {
         public Guid CaseId { get; set; }
@@ -38,6 +38,6 @@ namespace CourtApp.Domain.Entities.CaseDetails
         public virtual CaseCategoryEntity CaseCategory { get; set; }
         public virtual TypeOfCasesEntity CaseType { get; set; }
         public virtual StateEntity State { get; set; }
-        public virtual CadreMasterEntity Cadre { get; set; }
+        public virtual CadreEntity Cadre { get; set; }
     }
 }

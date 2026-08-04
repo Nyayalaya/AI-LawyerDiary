@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_gp")]    
+    [Table("m_gp", Schema = "common")]    
     public class GPEntity
     {
         

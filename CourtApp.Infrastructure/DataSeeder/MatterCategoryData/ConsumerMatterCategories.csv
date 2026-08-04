@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+CONSUMER,CONSUMER_COMPLAINT,Consumer Complaint,Complaint before Consumer Commission,1
+CONSUMER,DEFICIENCY_SERVICE,Deficiency in Service,Complaint regarding deficient service,2
+CONSUMER,DEFECTIVE_GOODS,Defective Goods,Complaint regarding defective goods,3
+CONSUMER,MEDICAL_NEGLIGENCE,Medical Negligence,Medical negligence complaint,4
+CONSUMER,INSURANCE_CLAIM,Insurance Claim,Insurance claim dispute,5
+CONSUMER,BANKING_SERVICE,Banking Service,Banking service deficiency complaint,6
+CONSUMER,HOUSING_SERVICE,Housing Service,Housing and builder disputes,7
+CONSUMER,REAL_ESTATE,Real Estate,Consumer real estate complaint,8
+CONSUMER,E_COMMERCE,E-Commerce,E-commerce consumer disputes,9
+CONSUMER,EDUCATION_SERVICE,Education Service,Educational institution complaints,10
+CONSUMER,TELECOM_SERVICE,Telecom Service,Telecommunication complaints,11
+CONSUMER,ELECTRICITY_SERVICE,Electricity Service,Electricity consumer disputes,12
+CONSUMER,TRANSPORT_SERVICE,Transport Service,Transport related complaints,13
+CONSUMER,TRAVEL_TOURISM,Travel & Tourism,Travel service disputes,14
+CONSUMER,UNFAIR_TRADE,Unfair Trade Practice,Complaint for unfair trade practice,15
+CONSUMER,PRODUCT_LIABILITY,Product Liability,Product liability claim,16
+CONSUMER,COMPENSATION,Consumer Compensation,Compensation claim,17
+CONSUMER,CONSUMER_APPEAL,Consumer Appeal,Appeal before Consumer Commission,18
+CONSUMER,CONSUMER_REVISION,Consumer Revision,Revision petition,19
+CONSUMER,CONSUMER_MISC,Consumer Miscellaneous,Other consumer proceedings,20

@@ -1,0 +1,26 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+CIVIL,PROPERTY_DISPUTE,Property Dispute,Disputes relating to immovable property,1
+CIVIL,PARTITION_SUIT,Partition Suit,Partition of joint family or co-owned property,2
+CIVIL,MONEY_RECOVERY,Money Recovery Suit,Suit for recovery of money,3
+CIVIL,SPECIFIC_PERFORMANCE,Specific Performance,Specific performance of contract,4
+CIVIL,DECLARATION_SUIT,Declaration Suit,Suit seeking declaration of legal rights,5
+CIVIL,PERMANENT_INJUNCTION,Permanent Injunction,Relief of permanent injunction,6
+CIVIL,TEMPORARY_INJUNCTION,Temporary Injunction,Application for temporary injunction,7
+CIVIL,MANDATORY_INJUNCTION,Mandatory Injunction,Mandatory injunction proceedings,8
+CIVIL,POSSESSION_SUIT,Possession Suit,Recovery of possession of property,9
+CIVIL,EVICTION_SUIT,Eviction Suit,Eviction of tenant,10
+CIVIL,TENANCY_DISPUTE,Tenancy Dispute,Tenant and landlord disputes,11
+CIVIL,MORTGAGE_SUIT,Mortgage Suit,Mortgage enforcement proceedings,12
+CIVIL,EASEMENT_RIGHTS,Easement Rights,Disputes relating to easement rights,13
+CIVIL,TITLE_SUIT,Title Suit,Title declaration and ownership disputes,14
+CIVIL,DAMAGES_CLAIM,Damages Claim,Claim for damages and compensation,15
+CIVIL,MESNE_PROFITS,Mesne Profits,Claim for mesne profits,16
+CIVIL,EXECUTION_PETITION,Execution Petition,Execution of decree,17
+CIVIL,ATTACHMENT,Attachment Proceedings,Attachment before or after decree,18
+CIVIL,SUCCESSION_CERTIFICATE,Succession Certificate,Succession certificate proceedings,19
+CIVIL,PROBATE,Probate,Grant of probate,20
+CIVIL,LETTERS_OF_ADMINISTRATION,Letters of Administration,Administration of estate,21
+CIVIL,GUARDIANSHIP,Guardianship,Civil guardianship matters,22
+CIVIL,TRUST_DISPUTE,Trust Dispute,Trust related civil disputes,23
+CIVIL,CONTRACT_DISPUTE,Contract Dispute,Breach of contract matters,24
+CIVIL,CIVIL_MISC,Civil Miscellaneous,Miscellaneous civil proceedings,25

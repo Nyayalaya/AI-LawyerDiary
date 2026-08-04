@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.Account
 {
 
-    [Table("m_court_fee_type", Schema = "account")]
+    [Table("m_court_fee_type", Schema = "accounts")]
     public class CourtFeeTypeEntity : AuditableEntity
     {        
         public required string CourtFeeType { get; set; }

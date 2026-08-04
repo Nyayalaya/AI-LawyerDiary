@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_work_type")]
+    [Table("m_work_type", Schema = "masters")]
     public class WorkTypeEntity : AuditableEntity
     {
         public string Name { get; set; }

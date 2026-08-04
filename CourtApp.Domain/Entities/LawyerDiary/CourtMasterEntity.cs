@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.LawyerDiary
 {
-    [Table("m_court", Schema = "ld")]
+    [Table("m_court_1", Schema = "masters")]
     public class CourtMasterEntity : AuditableEntity
     {
         public int StateId { get; set; }

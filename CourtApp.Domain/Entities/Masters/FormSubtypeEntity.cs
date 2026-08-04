@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_form_subtype")]
+    [Table("m_form_subtype", Schema = "masters")]
     public class FormSubtypeEntity : AuditableEntity
     {
         public Guid FormId { get; set; }

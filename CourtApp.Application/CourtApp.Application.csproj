@@ -57,7 +57,6 @@
     <Folder Include="DTOs\CourtDistrict\" />
     <Folder Include="DTOs\Work\" />
     <Folder Include="Features\CaseType\Validators\" />
-    <Folder Include="Features\Clients\Services\" />
     <Folder Include="Features\FormManagement\Services\" />
     <Folder Include="Features\State\Command\" />
     <Folder Include="Features\WorkMasterSub\Dtos\" />

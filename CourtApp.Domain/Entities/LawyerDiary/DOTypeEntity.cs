@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Entities.LawyerDiary
 {
-    [Table("m_do_type", Schema = "ld")]
+    [Table("m_document_type", Schema = "masters")]
     public class DOTypeEntity : AuditableEntity
     {
         public int TypeId { get; set; }

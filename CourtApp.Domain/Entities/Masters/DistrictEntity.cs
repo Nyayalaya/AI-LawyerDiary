@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_district")]    
+    [Table("m_district", Schema = "common")]    
     public class DistrictEntity
     {
        

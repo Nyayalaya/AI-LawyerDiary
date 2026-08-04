@@ -53,7 +53,7 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<LocationEntity> Locations { get; set; }
         public DbSet<LanguageEntity> Languages { get; set; }
         public DbSet<MultiLangDictEntity> MultiLangDicts { get; set; }
-        public DbSet<CadreMasterEntity> Cadres { get; set; }
+        public DbSet<CadreEntity> Cadres { get; set; }
         public DbSet<CourtFormTypeEntity> CourtFormTypes { get; set; }
         public DbSet<WorksEntity> Works { get; set; }
         public DbSet<WorkTypeEntity> WorkTypes { get; set; }
@@ -67,6 +67,12 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<FormTemplateVersionEntity> FormTemplateVersions { get; set; }
         public DbSet<FormCaseCategoryMapping> FormCaseTypeMappings { get; set; }
         public DbSet<FormCourtMapping> FormCourtMappings { get; set; }
+        public DbSet<CourtMasterEntity> CourtMasters { get; set; }
+        public DbSet<MatterTypeEntity> MatterTypes { get; set; }
+        public DbSet<MatterCategoryEntity> MatterCategories { get; set; }
+        public DbSet<MatterSubCategoryEntity> MatterSubCategories { get; set; }
+        public DbSet<DynamicPropertyEntity> DynamicProperties { get; set; }
+
 
         #endregion
 
@@ -93,8 +99,6 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<BookTypeEntity> BookTypes { get; set; }
         public DbSet<PublisherEntity> Publishers { get; set; }
         public DbSet<SubjectEntity> PracticeSubjects { get; set; }
-        public DbSet<ExpenseHeadEntity> ExpenseHeads { get; set; }
-        public DbSet<BillingDetailEntity> BillingDetails { get; set; }
         public DbSet<Specialization> Specializations { get; set; }
         #endregion
 
@@ -102,8 +106,10 @@ namespace CourtApp.Infrastructure.DbContexts
         public DbSet<CourtFeeEntity> CourtFees { get; set; }
         public DbSet<CourtFeeTypeEntity> CourtFeeTypes { get; set; }
         public DbSet<CourtFeeStructureEntity> CourtFeeStructures { get; set; }
+        public DbSet<ExpenseHeadEntity> ExpenseHeads { get; set; }
+        public DbSet<BillingDetailEntity> BillingDetails { get; set; }
+
         
-        public DbSet<CourtMasterEntity> CourtMasters { get; set; }
         #endregion
 
         #region 🔹 FORM BUILDER

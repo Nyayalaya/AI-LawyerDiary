@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_court_hall")]
+    [Table("m_court_hall", Schema = "masters")]
     [Index(nameof(Name), nameof(CourtComplexId), IsUnique = true)]
     public class CourtHallEntity : AuditableEntity
     {

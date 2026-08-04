@@ -1,0 +1,11 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+ELECTION,ELECTION_PETITION,Election Petition,Challenge to election result,1
+ELECTION,LOK_SABHA,Parliament Election,Parliament election dispute,2
+ELECTION,VIDHAN_SABHA,Assembly Election,State assembly election dispute,3
+ELECTION,PANCHAYAT,Panchayat Election,Panchayat election dispute,4
+ELECTION,MUNICIPAL,Municipal Election,Municipal election dispute,5
+ELECTION,MAYORAL,Mayor Election,Mayor election proceedings,6
+ELECTION,COOPERATIVE_ELECTION,Cooperative Society Election,Cooperative election dispute,7
+ELECTION,ELECTION_DISQUALIFICATION,Disqualification Petition,Disqualification proceedings,8
+ELECTION,ELECTION_APPEAL,Election Appeal,Appeal in election matters,9
+ELECTION,ELECTION_MISC,Election Miscellaneous,Other election proceedings,10

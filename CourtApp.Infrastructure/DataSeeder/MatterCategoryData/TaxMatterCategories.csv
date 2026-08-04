@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+TAX,GST_APPEAL,GST Appeal,Appeal under GST Act,1
+TAX,GST_ASSESSMENT,GST Assessment,Assessment proceedings,2
+TAX,GST_REFUND,GST Refund,Refund claim under GST,3
+TAX,GST_PENALTY,GST Penalty,Penalty proceedings under GST,4
+TAX,INCOME_TAX_APPEAL,Income Tax Appeal,Appeal under Income Tax Act,5
+TAX,INCOME_TAX_REVISION,Income Tax Revision,Revision proceedings,6
+TAX,TDS,TDS Matter,Tax Deducted at Source proceedings,7
+TAX,CUSTOMS,Customs Matter,Customs Act proceedings,8
+TAX,EXCISE,Central Excise,Excise duty disputes,9
+TAX,SERVICE_TAX,Service Tax,Service Tax matters,10
+TAX,STAMP_DUTY,Stamp Duty,Stamp duty disputes,11
+TAX,REGISTRATION_FEE,Registration Fee,Registration fee matters,12
+TAX,PROPERTY_TAX,Property Tax,Property tax disputes,13
+TAX,PROFESSIONAL_TAX,Professional Tax,Professional tax matters,14
+TAX,MUNICIPAL_TAX,Municipal Tax,Municipal taxation,15
+TAX,TAX_RECOVERY,Tax Recovery,Recovery proceedings,16
+TAX,TAX_PENALTY,Tax Penalty,Tax penalty proceedings,17
+TAX,TAX_REFUND,Tax Refund,Refund proceedings,18
+TAX,TAX_APPEAL,Tax Appeal,General tax appeal,19
+TAX,TAX_MISC,Tax Miscellaneous,Other taxation matters,20

@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_block")]   
+    [Table("m_block",Schema ="common")]   
     public class BlockEntity
     {        
         public required int Id { get; set; }

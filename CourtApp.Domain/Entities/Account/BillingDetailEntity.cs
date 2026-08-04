@@ -2,7 +2,7 @@
 using AuditTrail.Abstrations;
 namespace CourtApp.Domain.Entities.Account
 {
-    [Table("billing_detail", Schema = "account")]
+    [Table("billing_detail", Schema = "accounts")]
     public class BillingDetailEntity:AuditableEntity
     {
         public string LawyerId { get; set; }

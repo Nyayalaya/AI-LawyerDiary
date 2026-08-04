@@ -2,7 +2,7 @@
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_ward")]   
+    [Table("m_ward", Schema = "common")]   
     public class WardEntity
     {
         public int Id { get; set; }

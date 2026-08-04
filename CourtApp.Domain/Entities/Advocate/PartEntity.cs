@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Entities.Advocate
 {
-    [Table("m_part", Schema = "ad")]
+    [Table("m_part", Schema = "masters")]
     public class PartEntity : AuditableEntity
     {
         [Key]

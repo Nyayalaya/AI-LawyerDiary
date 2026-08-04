@@ -9,8 +9,8 @@ namespace CourtApp.Application.Features.Cadre.Services
 {
     public interface ICadreMasterCacheRepository
     {
-        Task<List<CadreMasterEntity>> GetCachedListAsync();
+        Task<List<CadreEntity>> GetCachedListAsync();
 
-        Task<CadreMasterEntity> GetByIdAsync(Guid id);
+        Task<CadreEntity> GetByIdAsync(Guid id);
     }
 }

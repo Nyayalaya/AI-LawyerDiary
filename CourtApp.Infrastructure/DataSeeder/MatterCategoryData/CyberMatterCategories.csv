@@ -1,0 +1,16 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+CYBER,CYBER_CRIME,Cyber Crime,Cyber crime proceedings,1
+CYBER,HACKING,Hacking,Unauthorized access to systems,2
+CYBER,DATA_THEFT,Data Theft,Unauthorized theft of digital data,3
+CYBER,IDENTITY_THEFT,Identity Theft,Digital identity theft proceedings,4
+CYBER,ONLINE_FRAUD,Online Fraud,Internet and online fraud matters,5
+CYBER,PHISHING,Phishing,Phishing related offences,6
+CYBER,CYBER_STALKING,Cyber Stalking,Online stalking and harassment,7
+CYBER,SOCIAL_MEDIA,Social Media Offence,Offences through social media platforms,8
+CYBER,DATA_PRIVACY,Data Privacy,Personal data protection disputes,9
+CYBER,DIGITAL_SIGNATURE,Digital Signature,Digital signature disputes,10
+CYBER,ELECTRONIC_EVIDENCE,Electronic Evidence,Admissibility and authenticity of electronic evidence,11
+CYBER,IT_ACT,Information Technology Act,Proceedings under the Information Technology Act,12
+CYBER,CRYPTOCURRENCY,Cryptocurrency,Cryptocurrency related disputes and offences,13
+CYBER,CYBER_APPEAL,Cyber Appeal,Appeal in cyber law matters,14
+CYBER,CYBER_MISC,Cyber Miscellaneous,Other cyber law proceedings,15

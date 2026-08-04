@@ -12,25 +12,25 @@ namespace CourtApp.Infrastructure.Repositories
 {
     public class CadreMasterRepository : ICadreMasterRepository
     {
-        private readonly IRepositoryAsync<CadreMasterEntity> _repository;
+        private readonly IRepositoryAsync<CadreEntity> _repository;
         private readonly IDistributedCache _distributedCache;
 
-        public CadreMasterRepository(IRepositoryAsync<CadreMasterEntity> _repository,
+        public CadreMasterRepository(IRepositoryAsync<CadreEntity> _repository,
             IDistributedCache _distributedCache)
         {
             this._distributedCache = _distributedCache;
             this._repository = _repository;
         }
-        public IQueryable<CadreMasterEntity> Entities => _repository.Entities;
+        public IQueryable<CadreEntity> Entities => _repository.Entities;
 
-        public async Task DeleteAsync(CadreMasterEntity entity)
+        public async Task DeleteAsync(CadreEntity entity)
         {
             await _repository.DeleteAsync(entity);
             await _distributedCache.RemoveAsync(CadreMasterCacheKeys.ListKey);
             await _distributedCache.RemoveAsync(CadreMasterCacheKeys.GetKey(entity.Id));
         }
 
-        public async Task<CadreMasterEntity> GetByIdAsync(Guid id)
+        public async Task<CadreEntity> GetByIdAsync(Guid id)
         {
             return await _repository
                 .Entities
@@ -38,19 +38,19 @@ namespace CourtApp.Infrastructure.Repositories
                 .FirstOrDefaultAsync();
         }
 
-        public async Task<List<CadreMasterEntity>> GetListAsync()
+        public async Task<List<CadreEntity>> GetListAsync()
         {
             return await _repository.Entities.ToListAsync();
         }
 
-        public async Task<Guid> InsertAsync(CadreMasterEntity entity)
+        public async Task<Guid> InsertAsync(CadreEntity entity)
         {
             await _repository.AddAsync(entity);
             await _distributedCache.RemoveAsync(CadreMasterCacheKeys.ListKey);
             return entity.Id;
         }
 
-        public async Task UpdateAsync(CadreMasterEntity entity)
+        public async Task UpdateAsync(CadreEntity entity)
         {
             await _repository.UpdateAsync(entity);
             await _distributedCache.RemoveAsync(CadreMasterCacheKeys.ListKey);

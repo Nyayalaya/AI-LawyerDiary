@@ -1,8 +1,6 @@
 ﻿using CourtApp.Domain.Enums;
-using CourtApp.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace CourtApp.Infrastructure.Identity.Seeds

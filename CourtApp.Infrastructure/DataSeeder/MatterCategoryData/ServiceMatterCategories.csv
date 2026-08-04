@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+SERVICE,RECRUITMENT,Recruitment Dispute,Dispute relating to recruitment or appointment,1
+SERVICE,APPOINTMENT,Appointment Matter,Appointment related proceedings,2
+SERVICE,PROMOTION,Promotion Matter,Promotion dispute,3
+SERVICE,SENIORITY,Seniority Dispute,Seniority related dispute,4
+SERVICE,TRANSFER,Transfer Matter,Transfer challenge,5
+SERVICE,SUSPENSION,Suspension Matter,Suspension challenge,6
+SERVICE,TERMINATION,Termination Service,Termination from service,7
+SERVICE,DISMISSAL,Dismissal Service,Dismissal proceedings,8
+SERVICE,COMPULSORY_RETIREMENT,Compulsory Retirement,Challenge to compulsory retirement,9
+SERVICE,VOLUNTARY_RETIREMENT,Voluntary Retirement,VRS related proceedings,10
+SERVICE,PENSION,Pension Matter,Pension benefits dispute,11
+SERVICE,GRATUITY,Gratuity Matter,Gratuity claim,12
+SERVICE,LEAVE_ENCASHMENT,Leave Encashment,Leave encashment claim,13
+SERVICE,DISCIPLINARY_PROCEEDINGS,Disciplinary Proceedings,Departmental inquiry,14
+SERVICE,INCREMENT,Increment Matter,Annual increment dispute,15
+SERVICE,PAY_FIXATION,Pay Fixation,Pay fixation dispute,16
+SERVICE,REGULARIZATION,Regularization,Regularization of service,17
+SERVICE,SERVICE_BENEFITS,Service Benefits,Other service benefits,18
+SERVICE,SERVICE_APPEAL,Service Appeal,Appeal in service matters,19
+SERVICE,SERVICE_MISC,Service Miscellaneous,Other service proceedings,20

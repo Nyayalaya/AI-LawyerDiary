@@ -231,7 +231,8 @@ namespace CourtApp.Infrastructure.Identity.Services
                 ExpiresOn = jwtSecurityToken.ValidTo.ToLocalTime(),
                 Email = user.Email,
                 UserName = user.UserName,
-                IsVerified = user.EmailConfirmed
+                IsVerified = user.EmailConfirmed,
+                Roles = user != null ? _userManager.GetRolesAsync(user).Result.ToList() : new List<string>()
             };
         }
 

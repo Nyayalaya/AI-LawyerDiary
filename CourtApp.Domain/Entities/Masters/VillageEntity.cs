@@ -7,7 +7,7 @@ using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Domain.Entities.Masters
 {
-    [Table("m_village")]
+    [Table("m_village", Schema = "common")]
     public class VillageEntity
     {
         public int Id { get; set; }

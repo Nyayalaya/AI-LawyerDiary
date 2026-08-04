@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CourtApp.Domain.Entities.Advocate
 {
-    [Table("m_act_amended", Schema = "ad")]
+    [Table("m_act_amended", Schema = "masters")]
     public class ActAmendedEntity : AuditableEntity
     {
         public int AmendedActID { get; set; }

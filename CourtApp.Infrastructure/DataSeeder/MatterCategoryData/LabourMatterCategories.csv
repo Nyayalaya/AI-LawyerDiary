@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+LABOUR,INDUSTRIAL_DISPUTE,Industrial Dispute,Industrial dispute proceedings,1
+LABOUR,LABOUR_COURT_CASE,Labour Court Case,Proceedings before Labour Court,2
+LABOUR,INDUSTRIAL_TRIBUNAL,Industrial Tribunal,Industrial Tribunal proceedings,3
+LABOUR,TERMINATION_OF_SERVICE,Termination of Service,Illegal termination dispute,4
+LABOUR,WRONGFUL_DISMISSAL,Wrongful Dismissal,Dismissal challenge,5
+LABOUR,RETRENCHMENT,Retrenchment,Retrenchment compensation dispute,6
+LABOUR,LAYOFF,Layoff,Dispute regarding layoff,7
+LABOUR,MINIMUM_WAGES,Minimum Wages,Minimum Wages Act proceedings,8
+LABOUR,BONUS,Bonus Claim,Payment of Bonus Act matters,9
+LABOUR,GRATUITY,Gratuity Claim,Payment of Gratuity Act proceedings,10
+LABOUR,EPF,Employees Provident Fund,EPF disputes,11
+LABOUR,ESI,Employees State Insurance,ESI matters,12
+LABOUR,WORKMEN_COMPENSATION,Employees Compensation,Employees Compensation Act proceedings,13
+LABOUR,TRADE_UNION,Trade Union,Trade union disputes,14
+LABOUR,UNFAIR_LABOUR_PRACTICE,Unfair Labour Practice,Unfair labour practice complaint,15
+LABOUR,WAGE_RECOVERY,Wage Recovery,Recovery of unpaid wages,16
+LABOUR,CONTRACT_LABOUR,Contract Labour,Contract labour disputes,17
+LABOUR,CHILD_LABOUR,Child Labour,Child labour law proceedings,18
+LABOUR,LABOUR_APPEAL,Labour Appeal,Appeal in labour matters,19
+LABOUR,LABOUR_MISC,Labour Miscellaneous,Other labour proceedings,20

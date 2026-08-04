@@ -8,7 +8,7 @@ using AuditTrail.Abstrations;
 
 namespace CourtApp.Domain.Entities.Common
 {
-    [Table("m_state_court_language")]
+    [Table("m_state_court_language", Schema = "common")]
     public class LanguageEntity:AuditableEntity
     {
         public int StateId { get; set; }

@@ -25,6 +25,8 @@ namespace CourtApp.Infrastructure.DataSeeder
             await ProceedingTypeSeeder.SeedAsync(context, identityContext);
             await ProceedingSeeder.SeedAsync(context, identityContext);
             await WorkTypeSeeder.SeedAsync(context, identityContext);
+            await MatterTypeSeeder.SeedAsync(context, identityContext);
+            await MatterCategorySeeder.SeedAsync(context, identityContext);
         }
     }
 }

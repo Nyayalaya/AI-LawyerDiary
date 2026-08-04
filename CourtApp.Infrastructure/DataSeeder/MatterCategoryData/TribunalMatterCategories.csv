@@ -1,0 +1,31 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+TRIBUNAL,CAT,Central Administrative Tribunal,Service matters before CAT,1
+TRIBUNAL,NCLT,National Company Law Tribunal,Company law proceedings,2
+TRIBUNAL,NCLAT,National Company Law Appellate Tribunal,Company appeals,3
+TRIBUNAL,DRT,Debt Recovery Tribunal,Banking recovery matters,4
+TRIBUNAL,DRAT,Debt Recovery Appellate Tribunal,Appeals against DRT orders,5
+TRIBUNAL,RERA,Real Estate Regulatory Authority,Real estate disputes,6
+TRIBUNAL,REAT,Rajasthan REAT,Revenue appellate tribunal,7
+TRIBUNAL,NGT,National Green Tribunal,Environmental matters,8
+TRIBUNAL,AFT,Armed Forces Tribunal,Military service matters,9
+TRIBUNAL,SAT,Securities Appellate Tribunal,SEBI appeals,10
+TRIBUNAL,CESTAT,Customs Excise and Service Tax Tribunal,Indirect tax matters,11
+TRIBUNAL,ITAT,Income Tax Appellate Tribunal,Income tax appeals,12
+TRIBUNAL,MACT,Motor Accident Claims Tribunal,Motor accident claims,13
+TRIBUNAL,RAILWAY_CLAIMS,Railway Claims Tribunal,Railway compensation matters,14
+TRIBUNAL,CONSUMER_COMMISSION,District Consumer Commission,Consumer disputes,15
+TRIBUNAL,STATE_CONSUMER_COMMISSION,State Consumer Commission,Consumer appeals,16
+TRIBUNAL,NATIONAL_CONSUMER_COMMISSION,National Consumer Commission,NCDRC proceedings,17
+TRIBUNAL,ELECTRICITY_TRIBUNAL,Electricity Tribunal,Electricity Act disputes,18
+TRIBUNAL,TELECOM_TRIBUNAL,TDSAT,Telecom disputes,19
+TRIBUNAL,COOPERATIVE_TRIBUNAL,Cooperative Tribunal,Cooperative society disputes,20
+TRIBUNAL,WAKF_TRIBUNAL,Wakf Tribunal,Wakf property disputes,21
+TRIBUNAL,LABOUR_TRIBUNAL,Labour Tribunal,Industrial disputes,22
+TRIBUNAL,INDUSTRIAL_TRIBUNAL,Industrial Tribunal,Industrial relations matters,23
+TRIBUNAL,FOREST_TRIBUNAL,Forest Tribunal,Forest law matters,24
+TRIBUNAL,REVENUE_TRIBUNAL,Revenue Tribunal,Revenue appeals,25
+TRIBUNAL,LAND_TRIBUNAL,Land Tribunal,Land reform matters,26
+TRIBUNAL,SMALL_CAUSES,Small Causes Court,Small cause proceedings,27
+TRIBUNAL,FAMILY_COURT,Family Court,Family Court proceedings,28
+TRIBUNAL,COMMERCIAL_COURT,Commercial Court,Commercial Court proceedings,29
+TRIBUNAL,TRIBUNAL_MISC,Tribunal Miscellaneous,Other tribunal proceedings,30

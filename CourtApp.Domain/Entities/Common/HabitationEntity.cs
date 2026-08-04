@@ -3,7 +3,7 @@ using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Domain.Entities.Common
 {
-    [Table("m_habitation")]   
+    [Table("m_habitation", Schema = "common")]   
     public class HabitationEntity
     {
        

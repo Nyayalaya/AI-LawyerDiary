@@ -1,14 +1,12 @@
 using CourtApp.Api.Extensions;
 using CourtApp.Application.DTOs.Settings;
 using CourtApp.Application.Extensions;
+using CourtApp.Infrastructure.AI.Extensions;
 using CourtApp.Infrastructure.DataSeeder;
-using CourtApp.Infrastructure.DbContexts;
 using CourtApp.Infrastructure.Extensions;
-using CourtApp.Infrastructure.Identity.Models;
 using CourtApp.Infrastructure.Identity.Seeds;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.HttpOverrides;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using NLog.Web;
 using System.Text;
@@ -35,6 +33,7 @@ var jwtSettings = builder.Configuration
 builder.Services.AddApiServices();
 builder.Services.AddApplicationLayer();
 builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddAIServices(builder.Configuration);
 
 
 // ---------------- CORS ----------------

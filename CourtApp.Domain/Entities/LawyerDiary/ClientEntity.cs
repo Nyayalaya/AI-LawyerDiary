@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.LawyerDiary
 {
 
-    [Table("client", Schema = "ld")]
+    [Table("client", Schema = "clients")]
     [Index(nameof(Email), IsUnique = false)]
     [Index(nameof(Mobile), IsUnique = false)]
     public class ClientEntity : AuditableEntity

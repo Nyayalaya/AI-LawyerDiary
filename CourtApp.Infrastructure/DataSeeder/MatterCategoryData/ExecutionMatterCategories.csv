@@ -1,0 +1,16 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+EXECUTION,DECREE_EXECUTION,Execution of Decree,Execution of civil decree,1
+EXECUTION,MONEY_DECREE,Money Decree Execution,Execution of money decree,2
+EXECUTION,POSSESSION_EXECUTION,Delivery of Possession,Execution for possession of immovable property,3
+EXECUTION,SPECIFIC_PERFORMANCE_EXECUTION,Specific Performance Execution,Execution of decree for specific performance,4
+EXECUTION,ATTACHMENT_PROPERTY,Attachment of Property,Attachment before or during execution,5
+EXECUTION,ATTACHMENT_SALARY,Attachment of Salary,Salary attachment proceedings,6
+EXECUTION,GARNISHEE,Garnishee Proceedings,Garnishee order proceedings,7
+EXECUTION,AUCTION_SALE,Auction Sale,Sale of attached property by auction,8
+EXECUTION,ARREST_JUDGMENT_DEBTOR,Arrest of Judgment Debtor,Execution by arrest and detention,9
+EXECUTION,RESTITUTION,Restitution,Restitution under CPC,10
+EXECUTION,EXECUTION_OBJECTION,Execution Objection,Objections in execution proceedings,11
+EXECUTION,EXECUTION_TRANSFER,Transfer of Execution,Transfer of execution proceedings,12
+EXECUTION,EXECUTION_APPEAL,Execution Appeal,Appeal arising from execution proceedings,13
+EXECUTION,EXECUTION_RECALL,Recall of Execution Order,Recall or modification of execution order,14
+EXECUTION,EXECUTION_MISC,Execution Miscellaneous,Other execution proceedings,15

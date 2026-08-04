@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.Account
 {
 
-    [Table("court_fee", Schema = "account")]
+    [Table("court_fee", Schema = "accounts")]
     public class CourtFeeEntity : AuditableEntity
     {
         public Guid FeeTypeId { get; set; }     

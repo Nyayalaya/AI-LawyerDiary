@@ -1,6 +1,5 @@
 ﻿using CourtApp.Domain.Entities.Masters;
 using CourtApp.Infrastructure.DbContexts;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,7 +19,7 @@ namespace CourtApp.Infrastructure.DataSeeder
                 .FirstOrDefaultAsync() ?? "system";
 
             // ✅ Correct DbSet
-            var existingCodes = await context.Set<CadreMasterEntity>()
+            var existingCodes = await context.Set<CadreEntity>()
                 .Select(s => s.Code)
                 .ToHashSetAsync();
 
@@ -40,12 +39,12 @@ namespace CourtApp.Infrastructure.DataSeeder
             }
 
             // ✅ Correct DbSet
-            await context.Set<CadreMasterEntity>().AddRangeAsync(newCadres);
+            await context.Set<CadreEntity>().AddRangeAsync(newCadres);
 
             await context.SaveChangesAsync(userId);
         }
 
-        private static readonly List<CadreMasterEntity> _cadres = new List<CadreMasterEntity>
+        private static readonly List<CadreEntity> _cadres = new List<CadreEntity>
         {
             new() { Name = "Supreme Court Judge Cadre", Code = "SCJ" },
             new() { Name = "Supreme Court Registry Service", Code = "SCRS" },

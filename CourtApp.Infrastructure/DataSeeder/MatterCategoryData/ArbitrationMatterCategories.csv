@@ -1,0 +1,16 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+ARBITRATION,DOMESTIC_ARBITRATION,Domestic Arbitration,Domestic arbitration proceedings,1
+ARBITRATION,INTERNATIONAL_ARBITRATION,International Arbitration,International commercial arbitration,2
+ARBITRATION,ARBITRATION_PETITION,Arbitration Petition,Petition under Arbitration Act,3
+ARBITRATION,SECTION_9,Section 9 Petition,Interim measures under Section 9,4
+ARBITRATION,SECTION_11,Section 11 Petition,Appointment of Arbitrator,5
+ARBITRATION,SECTION_14,Section 14 Petition,Termination of arbitrator mandate,6
+ARBITRATION,SECTION_17,Section 17 Application,Interim measures before Tribunal,7
+ARBITRATION,SECTION_34,Section 34 Petition,Challenge to arbitral award,8
+ARBITRATION,SECTION_36,Section 36 Execution,Enforcement of arbitral award,9
+ARBITRATION,SECTION_37,Section 37 Appeal,Appeal under Arbitration Act,10
+ARBITRATION,ARBITRATION_AWARD,Arbitral Award,Award proceedings,11
+ARBITRATION,CONCILIATION,Conciliation,Conciliation proceedings,12
+ARBITRATION,MEDIATION,Mediation,Court referred mediation,13
+ARBITRATION,ARBITRATION_EXECUTION,Execution of Award,Execution of arbitral award,14
+ARBITRATION,ARBITRATION_MISC,Arbitration Miscellaneous,Other arbitration proceedings,15

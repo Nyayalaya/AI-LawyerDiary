@@ -1,4 +1,4 @@
-﻿using System;
+﻿
 using CourtApp.Application.Common;
 using AutoMapper;
 using MediatR;

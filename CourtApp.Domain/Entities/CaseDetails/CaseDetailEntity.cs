@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.CaseDetails
 {
-    [Table("case_detail", Schema = "ld")]
+    [Table("case_detail", Schema = "cases")]
     public class CaseDetailEntity : AuditableEntity
     {
         #region Common Properties Among all Court Type

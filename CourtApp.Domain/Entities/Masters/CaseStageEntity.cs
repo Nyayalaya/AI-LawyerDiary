@@ -9,7 +9,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.Masters
 {
 
-    [Table("m_case_stage")]
+    [Table("m_case_stage", Schema = "masters")]
     [Index(nameof(Code), IsUnique = true)]
     public class CaseStageEntity : AuditableEntity
     {   
