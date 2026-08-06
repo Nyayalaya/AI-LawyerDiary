@@ -5,7 +5,7 @@ using CourtApp.Application.Features.CourtType.Command;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Domain.Entities.Common;
+using CourtApp.Domain.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -53,15 +53,15 @@ namespace CourtApp.Application.Features.CourtType.Handlers
                     return Result<string>.Fail("Court type not found.");
                 }
 
-                var abbreviation = request.Abbreviation?.Trim();
-                var courtType = request.CourtType?.Trim();
+                var abbreviation = request.Code?.Trim();
+                var courtType = request.Name?.Trim();
 
                 // Check for duplicates (excluding current entity)
                 var isDuplicate = await _repository.CourtTypeEntities
                     .AsNoTracking()
                     .AnyAsync(x => x.Id != request.Id &&
-                        ((abbreviation != null && x.Abbreviation == abbreviation) ||
-                         (courtType != null && x.CourtType == courtType)),
+                        ((abbreviation != null && x.Code == abbreviation) ||
+                         (courtType != null && x.Name == courtType)),
                         cancellationToken);
 
                 if (isDuplicate)
@@ -70,9 +70,9 @@ namespace CourtApp.Application.Features.CourtType.Handlers
                     return Result<string>.Fail($"{courtType} already exists.");
                 }
 
-                entity.CourtType = courtType;
-                entity.Abbreviation = abbreviation;
-                entity.Languages = _mapper.Map<List<LangEntity>>(request.Language);
+                entity.Name = courtType;
+                entity.Code = abbreviation;
+                //entity.Languages = _mapper.Map<List<LangEntity>>(request.Language);
 
                 await _repository.UpdateAsync(entity);
                 await _unitOfWork.Commit(cancellationToken);

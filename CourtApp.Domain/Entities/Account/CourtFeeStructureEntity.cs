@@ -1,12 +1,12 @@
 ﻿using AuditTrail.Abstrations;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Account
 {
 
-    [Table("court_fee_structure", Schema = "account")]
+    [Table("court_fee_structure", Schema = "accounts")]
     public class CourtFeeStructureEntity : AuditableEntity
     {
         public double MinValue { get; set; }

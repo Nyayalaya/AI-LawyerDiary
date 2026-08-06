@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+MISC,MISC_APPLICATION,Miscellaneous Application,General miscellaneous application,1
+MISC,INTERLOCUTORY_APPLICATION,Interlocutory Application,Interlocutory application during proceedings,2
+MISC,REVIEW_PETITION,Review Petition,Petition seeking review of judgment,3
+MISC,REVISION_PETITION,Revision Petition,Revision against subordinate court order,4
+MISC,RESTORATION_APPLICATION,Restoration Application,Application for restoration of case,5
+MISC,RECALL_APPLICATION,Recall Application,Application for recall of order,6
+MISC,CONDONATION_DELAY,Condonation of Delay,Application for condonation of delay,7
+MISC,CAVEAT,Caveat Petition,Caveat under Section 148A CPC,8
+MISC,INTERVENTION_APPLICATION,Intervention Application,Application for intervention by third party,9
+MISC,IMPLEADMENT_APPLICATION,Impleadment Application,Application for impleading a party,10
+MISC,AMENDMENT_APPLICATION,Amendment Application,Application for amendment of pleadings,11
+MISC,EXEMPTION_APPLICATION,Exemption Application,Application seeking exemption,12
+MISC,COMMISSION_APPLICATION,Commission Application,Application for appointment of commissioner,13
+MISC,TRANSFER_PETITION,Transfer Petition,Transfer of case from one court to another,14
+MISC,CONTEMPT_PETITION,Contempt Petition,Civil or criminal contempt proceedings,15
+MISC,CERTIFIED_COPY,Certified Copy Application,Application for certified copies,16
+MISC,DOCUMENT_PRODUCTION,Document Production,Application for production of documents,17
+MISC,STAY_APPLICATION,Stay Application,Application seeking stay of proceedings or order,18
+MISC,CLARIFICATION_APPLICATION,Clarification Application,Application seeking clarification of order,19
+MISC,MISC_OTHER,Other Miscellaneous Matter,Other proceedings not covered elsewhere,20

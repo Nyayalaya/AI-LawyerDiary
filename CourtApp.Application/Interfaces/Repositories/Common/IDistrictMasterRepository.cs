@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Interfaces.Repositories.Common
 {
@@ -10,6 +10,6 @@ namespace CourtApp.Application.Interfaces.Repositories.Common
     {
         IQueryable<DistrictEntity> Entities{get;}
         Task<List<DistrictEntity>> GetDistrictListByStateAsync(int StateCode);
-        DistrictEntity GetDistrictById(int Id);
+        //DistrictEntity GetDistrictById(int Id);
     }
 }

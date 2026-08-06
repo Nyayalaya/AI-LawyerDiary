@@ -1,0 +1,41 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+CRIMINAL,FIR,FIR Registration,Registration of First Information Report,1
+CRIMINAL,CRIMINAL_COMPLAINT,Criminal Complaint,Private criminal complaint before Magistrate,2
+CRIMINAL,POLICE_REPORT,Police Report,Charge sheet or police report proceedings,3
+CRIMINAL,REGULAR_BAIL,Regular Bail,Application for regular bail,4
+CRIMINAL,ANTICIPATORY_BAIL,Anticipatory Bail,Application under Section 438 CrPC/BNSS,5
+CRIMINAL,INTERIM_BAIL,Interim Bail,Interim bail application,6
+CRIMINAL,DEFAULT_BAIL,Default Bail,Statutory/default bail application,7
+CRIMINAL,CANCELLATION_OF_BAIL,Cancellation of Bail,Petition for cancellation of bail,8
+CRIMINAL,CHEQUE_BOUNCE,Cheque Bounce (NI Act),Complaint under Section 138 Negotiable Instruments Act,9
+CRIMINAL,CRIMINAL_APPEAL,Criminal Appeal,Appeal against conviction or acquittal,10
+CRIMINAL,CRIMINAL_REVISION,Criminal Revision,Revision petition,11
+CRIMINAL,CRIMINAL_MISC,Criminal Miscellaneous,Miscellaneous criminal proceedings,12
+CRIMINAL,SESSIONS_TRIAL,Sessions Trial,Sessions Court trial,13
+CRIMINAL,SUMMONS_CASE,Summons Case,Trial of summons cases,14
+CRIMINAL,WARRANT_CASE,Warrant Case,Trial of warrant cases,15
+CRIMINAL,NDPS_CASE,NDPS Case,Proceedings under NDPS Act,16
+CRIMINAL,POCSO_CASE,POCSO Case,Proceedings under POCSO Act,17
+CRIMINAL,DOMESTIC_VIOLENCE,Domestic Violence,Proceedings under Domestic Violence Act,18
+CRIMINAL,DOWRY_CASE,Dowry Case,Dowry Prohibition related offences,19
+CRIMINAL,DOWRY_DEATH,Dowry Death,Offence under IPC/BNS,20
+CRIMINAL,MURDER,Murder,Offence of murder,21
+CRIMINAL,ATTEMPT_TO_MURDER,Attempt to Murder,Attempt to commit murder,22
+CRIMINAL,CULPABLE_HOMICIDE,Culpable Homicide,Culpable homicide proceedings,23
+CRIMINAL,KIDNAPPING,Kidnapping,Offences relating to kidnapping,24
+CRIMINAL,ABDUCTION,Abduction,Offences relating to abduction,25
+CRIMINAL,RAPE,Rape,Sexual offence proceedings,26
+CRIMINAL,SEXUAL_HARASSMENT,Sexual Harassment,Sexual harassment offences,27
+CRIMINAL,ACID_ATTACK,Acid Attack,Acid attack offences,28
+CRIMINAL,CYBER_CRIME,Cyber Crime,Offences under IT laws,29
+CRIMINAL,ECONOMIC_OFFENCE,Economic Offence,Economic and financial crimes,30
+CRIMINAL,MONEY_LAUNDERING,Money Laundering,Proceedings under PMLA,31
+CRIMINAL,CBI_CASE,CBI Case,Cases investigated by CBI,32
+CRIMINAL,ED_CASE,Enforcement Directorate Case,Proceedings by Enforcement Directorate,33
+CRIMINAL,LOKAYUKTA_CASE,Lokayukta Case,Anti-corruption proceedings,34
+CRIMINAL,PREVENTION_OF_CORRUPTION,Prevention of Corruption,PC Act proceedings,35
+CRIMINAL,CONTEMPT_CRIMINAL,Criminal Contempt,Criminal contempt proceedings,36
+CRIMINAL,EXTRADITION,Extradition,Extradition proceedings,37
+CRIMINAL,JUVENILE_OFFENCE,Juvenile Offence,Proceedings before Juvenile Justice Board,38
+CRIMINAL,PAROLE_FURLOUGH,Parole / Furlough,Applications for parole or furlough,39
+CRIMINAL,CRIMINAL_EXECUTION,Execution of Criminal Orders,Execution of criminal judgments and orders,40

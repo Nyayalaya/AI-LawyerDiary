@@ -4,7 +4,7 @@ using CourtApp.Domain.Entities.CaseDetails;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.FormBuilder;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System.Data;
@@ -19,47 +19,90 @@ namespace CourtApp.Application.Interfaces.Contexts
         bool HasChanges { get; }
 
         EntityEntry Entry(object entity);
-
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
+
+        #region 🔹 MASTER
         DbSet<StateEntity> States { get; set; }
         DbSet<DistrictEntity> Districts { get; set; }
-        DbSet<BookTypeEntity> BookTypes { get; set; }
-        DbSet<LDBookEntity> LDBooks { get; set; }
-        DbSet<PublisherEntity> Publishers { get; set; }
-        DbSet<ClientEntity> Clients { get; set; }
-        DbSet<CourtTypeEntity> CourtType { get; set; }
-        DbSet<TypeOfCasesEntity> Typeofcases { get; set; }
-        DbSet<CaseKindEntity> CaseKinds { get; set; }
+        DbSet<CityEntity> Cities { get; set; }
+        DbSet<LocationEntity> Locations { get; set; }
+
+        DbSet<CourtTypeEntity> CourtTypes { get; set; }
+        DbSet<CourtLevelEntity> CourtLevels { get; set; }
+        DbSet<CourtDistrictEntity> CourtDistricts { get; set; }
+        DbSet<CourtComplexEntity> CourtComplexes { get; set; }
+        DbSet<CourtEntity> Courts { get; set; }
+        DbSet<CourtHallEntity> CourtHalls { get; set; }
+        DbSet<CourtBenchEntity> CourtBenches { get; set; }
+        DbSet<JudgeEntity> Judges { get; set; }
+
+        DbSet<LanguageEntity> Languages { get; set; }
+        DbSet<MultiLangDictEntity> MultiLangDicts { get; set; }
+
+        DbSet<FormTypeEntity> FormTypes { get; set; }
+        DbSet<FormMasterEntity> FormMasters { get; set; }
+        DbSet<FormSubtypeEntity> FormSubtypes { get; set; }
+        DbSet<FormTemplateEntity> FormTemplates { get; set; }
+        DbSet<FormTemplateVersionEntity> FormTemplateVersions { get; set; }
+        DbSet<FormCaseCategoryMapping> FormCaseTypeMappings { get; set; }
+        DbSet<FormCourtMapping> FormCourtMappings { get; set; }
+
+        DbSet<WorkTypeEntity> WorkTypes { get; set; }
+        DbSet<WorksEntity> Works { get; set; }
+
+        DbSet<ProceedingTypeEntity> ProceedingTypes { get; set; }
+        DbSet<ProceedingEntity> Proceedings { get; set; }
+
+        #endregion
+
+        #region 🔹 CASE MODULE
         DbSet<CaseDetailEntity> Cases { get; set; }
-        DbSet<LawyerMasterEntity> Laywers { get; set; }
-        DbSet<ProceedingHeadEntity> ProceedingHeads { get; set; }
-        DbSet<ProceedingSubHeadEntity> ProceedingSubHeads { get; set; }
-        DbSet<WorkMasterEntity> WorkMasters { get; set; }
-        DbSet<WorkMasterSubEntity> WorkMasterSubs { get; set; }
-        DbSet<CaseDetailAgainstEntity> AgainstCaseDetails { get; set; }
-        DbSet<CourtDistrictEntity> CDistricts { get; set; }
-        DbSet<CourtComplexEntity> CourtComplex { get; set; }
-        DbSet<CaseTitleEntity> CaseTitiles { get; set; }
-        DbSet<CourtBenchEntity> CourtBenchEntities { get; set; }
-        DbSet<CaseProcedingEntity> CaseProcedingEntities { get; set; }
-        DbSet<CaseWorkEntity> CaseWorkEntities { get; set; }
-        DbSet<DOTypeEntity> DOTypeEntities { get; set; }
-        DbSet<CaseDocsEntity> caseDocsEntities { get; set; }
-        DbSet<FSTitleEntity> FSTitleEntities { get; set; }
-        DbSet<FormBuilderEntity> DynamicFrmBuilders { get; set; }
-        DbSet<DraftingDetailEntity> CaseTempMappings { get; set; }
-        DbSet<FormTemplateMappingEntity> TempFormMappings { get; set; }
-        DbSet<CadreMasterEntity> Cadres { get; set; }
-        DbSet<SpecializationEntity> Specilities { get; set; }
-        DbSet<AssignCaseEntity> AssignedCases { get; set; }
-        DbSet<LanguageEntity> LanguageEntities { get; set; }
-        DbSet<CourtFormTypeEntity> CourtFormTypeEntities { get; set; }
+        DbSet<CaseAgainstEntity> AgainstCases { get; set; }
+        DbSet<CaseAssignedEntity> AssignedCases { get; set; }
+
+        DbSet<CaseStageEntity> CaseStages { get; set; }
+        DbSet<CaseCategoryEntity> CaseCategories { get; set; }
+        DbSet<TypeOfCasesEntity> CaseTypes { get; set; }
+        DbSet<CaseKindEntity> CaseKinds { get; set; }
+        DbSet<CaseTitleEntity> CaseTitles { get; set; }
+
+        DbSet<CaseProcedingEntity> CaseProceedings { get; set; }
+        DbSet<CaseWorkEntity> CaseWorks { get; set; }
+        DbSet<CaseDocsEntity> CaseDocuments { get; set; }
+
+        DbSet<DOTypeEntity> DOTypes { get; set; }
+        DbSet<FSTitleEntity> FSTitles { get; set; }
+        DbSet<CaseEntity> CasesData { get; set; }
+        #endregion
+
+        #region 🔹 LAWYER DIARY
+        DbSet<ClientEntity> Clients { get; set; }
+        DbSet<LawyerMasterEntity> Lawyers { get; set; }
+
+        DbSet<LDBookEntity> LDBooks { get; set; }
+        DbSet<BookTypeEntity> BookTypes { get; set; }
+        DbSet<PublisherEntity> Publishers { get; set; }
+
+        DbSet<ExpenseHeadEntity> ExpenseHeads { get; set; }
         DbSet<BillingDetailEntity> BillingDetails { get; set; }
 
-        public DbSet<AIConversation> AIConversations { get; set; }
-        public DbSet<DocumentChunk> DocumentChunks { get; set; }
-        public DbSet<LegalCitationEntity> LegalCitations { get; set; }
-        public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get; set; }
+        DbSet<CadreEntity> Cadres { get; set; }
+        DbSet<Specialization> Specializations { get; set; }
+        #endregion
 
+       
+
+        #region 🔹 FORM BUILDER
+        DbSet<FormBuilderEntity> FormBuilders { get; set; }
+        DbSet<FormTemplateMappingEntity> FormTemplateMappings { get; set; }
+        DbSet<DraftingDetailEntity> DraftingDetails { get; set; }
+        #endregion
+
+        #region 🔹 AI MODULE
+        DbSet<AIConversation> AIConversations { get; set; }
+        DbSet<DocumentChunk> DocumentChunks { get; set; }
+        DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get; set; }
+        DbSet<LegalCitationEntity> LegalCitations { get; set; }
+        #endregion
     }
 }

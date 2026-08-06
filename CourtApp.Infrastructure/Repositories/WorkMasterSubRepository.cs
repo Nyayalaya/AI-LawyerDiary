@@ -1,5 +1,5 @@
 ﻿using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
@@ -11,15 +11,15 @@ namespace CourtApp.Infrastructure.Repositories
 {
     public class WorkMasterSubRepository : IWorkMasterSubRepository
     {
-        private readonly IRepositoryAsync<WorkMasterSubEntity> _repository;
+        private readonly IRepositoryAsync<WorksEntity> _repository;
         private readonly IDistributedCache _distributedCache;
-        public WorkMasterSubRepository(IRepositoryAsync<WorkMasterSubEntity> _repository, IDistributedCache _distributedCache)
+        public WorkMasterSubRepository(IRepositoryAsync<WorksEntity> _repository, IDistributedCache _distributedCache)
         {
             this._repository = _repository;
             this._distributedCache = _distributedCache;
         }
-        public IQueryable<WorkMasterSubEntity> Entities => _repository.Entities.Include(o => o.Work);
-        public async Task<List<WorkMasterSubEntity>> GetListAsync()
+        public IQueryable<WorksEntity> Entities => _repository.Entities.Include(o => o.Work);
+        public async Task<List<WorksEntity>> GetListAsync()
         {
             try { var data = _repository.Entities.Include(o => o.Work).ToListAsync(); return await data; }
             catch (Exception ex)
@@ -30,23 +30,23 @@ namespace CourtApp.Infrastructure.Repositories
 
 
         }
-        public async Task<WorkMasterSubEntity> GetByIdAsync(Guid Id)
+        public async Task<WorksEntity> GetByIdAsync(Guid Id)
         {
             var DetailDt = await _repository.Entities.Include(w => w.Work)
                 .Where(c => c.Id == Id).FirstOrDefaultAsync();
             return DetailDt;
         }
-        public async Task<Guid> InsertAsync(WorkMasterSubEntity workMasterEntity)
+        public async Task<Guid> InsertAsync(WorksEntity workMasterEntity)
         {
             await _repository.AddAsync(workMasterEntity);
             return workMasterEntity.Id;
         }
 
-        public async Task UpdateAsync(WorkMasterSubEntity workMasterEntity)
+        public async Task UpdateAsync(WorksEntity workMasterEntity)
         {
             await _repository.UpdateAsync(workMasterEntity);
         }
-        public async Task DeleteAsync(WorkMasterSubEntity workMasterEntity)
+        public async Task DeleteAsync(WorksEntity workMasterEntity)
         {
             await _repository.DeleteAsync(workMasterEntity);
         }

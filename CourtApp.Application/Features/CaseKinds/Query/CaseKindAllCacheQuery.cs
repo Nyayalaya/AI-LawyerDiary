@@ -33,7 +33,7 @@ namespace CourtApp.Application.Features.CaseKinds.Query
             Expression<Func<CaseKindEntity, CaseKindCacheQueryResponse>> expression = e => new CaseKindCacheQueryResponse
             {
                 Id = e.Id,
-                CourtType = e.CourtType.CourtType,
+                CourtType = e.CourtType.Name,
                 CaseKind = e.CaseKind
             };
             var predicate = PredicateBuilder.True<CaseKindEntity>();

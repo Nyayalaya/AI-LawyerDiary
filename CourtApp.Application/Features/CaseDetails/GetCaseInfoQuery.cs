@@ -2,6 +2,7 @@
 using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.CaseDetails;
 using CourtApp.Application.Extensions;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Domain.Entities.CaseDetails;
 using KT3Core.Areas.Global.Classes;
@@ -66,7 +67,7 @@ namespace CourtApp.Application.Features.CaseDetails
                     c.CaseNo.ToLower().Contains(search) ||
                     c.FirstTitle.ToLower().Contains(search) ||
                     c.SecondTitle.ToLower().Contains(search) ||
-                    c.CaseStage.CaseStage.ToLower().Contains(search) ||
+                    c.CaseStage.Name.ToLower().Contains(search) ||
                     (isYearSearch && c.CaseYear == parsedYear) ||
                     (isDateSearch && c.NextDate.HasValue && c.NextDate.Value.Date == parsedDate.Date) ||
                     c.CaseType.Name_En.ToLower().Contains(search));
@@ -81,7 +82,7 @@ namespace CourtApp.Application.Features.CaseDetails
                              || request.LinkedIds.Contains(ac.LawyerId.ToString()) // Check if user is the creator or assigned lawyer
                              let asignedOrSelf = ac != null && request.LinkedIds.Contains(ac.LawyerId.ToString()) ? "Assigned" : "Self"
                              let isCaseAssigned = asignedOrSelf == "Self" && ac != null && ac.CaseId == c.Id
-                             let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : Guid.Empty
+                             let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : string.Empty
                              let caseLastProceedingDate = c.CaseProcEntities.Any() ?
                                                    c.CaseProcEntities
                                                    .OrderByDescending(d => d.ProceedingDate)
@@ -100,10 +101,10 @@ namespace CourtApp.Application.Features.CaseDetails
                                  LawyerId = AssignedLawyerId,
                                  No = c.CaseNo,
                                  Year = c.CaseYear.ToString(),
-                                 CourtType = c.CourtType.CourtType.ToString(),
+                                 CourtType = c.CourtType.Name.ToString(),
                                  CaseType = c.CaseType.Name_En,
                                  Court = c.CourtBench.CourtBench_En.ToUpper(),
-                                 CaseStage = c.CaseStage.CaseStage.ToUpper(),
+                                 CaseStage = c.CaseStage.Name.ToUpper(),
                                  DisposalDate = c.DisposalDate,
                                  CaseDetail = (c.FirstTitle + " V/S " + c.SecondTitle).ToUpper(),
                                  NextDate = caseLatestNextDate

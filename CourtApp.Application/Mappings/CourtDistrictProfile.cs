@@ -1,13 +1,7 @@
 ﻿using AutoMapper;
-using CourtApp.Application.DTOs.CourtDistrict;
-using CourtApp.Application.Features.BookTypes.Command;
-using CourtApp.Application.Features.CourtDistrict;
+using CourtApp.Application.Features.CourtDistrict.Commands;
+using CourtApp.Application.Features.CourtDistrict.DTOs;
 using CourtApp.Domain.Entities.LawyerDiary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CourtApp.Application.Mappings
 {
@@ -19,7 +13,6 @@ namespace CourtApp.Application.Mappings
             CreateMap<CourtDistrictEntity, CourtDistrictReponse>();
             CreateMap<CreateCourtDistrictCommand, CourtDistrictEntity>();
             CreateMap<UpdateCourtDistrictCommand, CourtDistrictEntity>();
-            
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CourtApp.Application.Features.CaseDetails.Dtos;
+using System;
 namespace CourtApp.Application.DTOs.CaseDetails
 {
     public class CaseWithOutHearingDateDto:CaseBasicInfoDto

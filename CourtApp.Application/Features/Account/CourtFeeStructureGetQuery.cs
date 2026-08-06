@@ -36,7 +36,7 @@ namespace CourtApp.Application.Features.Account
             Expression<Func<CourtFeeStructureEntity, CourtFeeStructureDto>> expression = e => new CourtFeeStructureDto
             {
                 Id = e.Id,              
-                StateName = e.State.Name_En,
+                StateName = e.State.Name,
                 MaxValue=e.MaxValue,
                 MinValue=e.MinValue,
                 Rate=e.Rate,

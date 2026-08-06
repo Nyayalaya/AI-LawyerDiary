@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Advocate
 {
-    [Table("m_book", Schema = "ad")]
+    [Table("m_book", Schema = "masters")]
     public class BookEntity : AuditableEntity
     {
         public new Guid Id { get; set; }

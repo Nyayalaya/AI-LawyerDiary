@@ -1,13 +1,13 @@
 ﻿using AuditTrail.Abstrations;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.CaseDetails
 {
-    [Table("case_detail", Schema = "ld")]
+    [Table("case_detail", Schema = "cases")]
     public class CaseDetailEntity : AuditableEntity
     {
         #region Common Properties Among all Court Type
@@ -70,11 +70,11 @@ namespace CourtApp.Domain.Entities.CaseDetails
         public virtual FSTitleEntity FTitle { get; set; }
         public virtual CourtBenchEntity CourtBench { get; set; }
         public virtual TypeOfCasesEntity CaseType { get; set; }
-        public virtual NatureEntity CaseCategory { get; set; }
+        public virtual CaseCategoryEntity CaseCategory { get; set; }
         public virtual CourtComplexEntity Complex { get; set; }
         public virtual CaseStageEntity CaseStage { get; set; }
         public virtual CaseDetailEntity LinkedCase { get; set; }
-        public virtual ICollection<CaseDetailAgainstEntity> CaseAgainstEntities { get; set; } = new List<CaseDetailAgainstEntity>();
+        public virtual ICollection<CaseAgainstEntity> CaseAgainstEntities { get; set; } = new List<CaseAgainstEntity>();
         public virtual ICollection<CaseProcedingEntity> CaseProcEntities { get; set; }
         public virtual ICollection<CaseTitleEntity> Titles { get; set; }
         public virtual ICollection<CaseDetailEntity> LinkedCases { get; set; } = new List<CaseDetailEntity>();

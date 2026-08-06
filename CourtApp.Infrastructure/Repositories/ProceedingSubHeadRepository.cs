@@ -1,5 +1,5 @@
 ﻿using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
@@ -11,17 +11,17 @@ namespace CourtApp.Infrastructure.Repositories
 {
     public class ProceedingSubHeadRepository : IProceedingSubHeadRepository
     {
-        private readonly IRepositoryAsync<ProceedingSubHeadEntity> _repository;
+        private readonly IRepositoryAsync<ProceedingEntity> _repository;
         private readonly IDistributedCache _distributedCache;
-        public ProceedingSubHeadRepository(IRepositoryAsync<ProceedingSubHeadEntity> _repository, IDistributedCache _distributedCache)
+        public ProceedingSubHeadRepository(IRepositoryAsync<ProceedingEntity> _repository, IDistributedCache _distributedCache)
         {
             this._repository = _repository;
             this._distributedCache = _distributedCache;
         }
-        public IQueryable<ProceedingSubHeadEntity> Entities => _repository.Entities;
-        public async Task<List<ProceedingSubHeadEntity>> GetListAsync()
+        public IQueryable<ProceedingEntity> Entities => _repository.Entities;
+        public async Task<List<ProceedingEntity>> GetListAsync()
         {
-            try { var data = _repository.Entities.Include(o => o.Head).ToListAsync(); return await data; }
+            try { var data = _repository.Entities.Include(o => o.ProceedingType).ToListAsync(); return await data; }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -30,23 +30,23 @@ namespace CourtApp.Infrastructure.Repositories
 
 
         }
-        public async Task<ProceedingSubHeadEntity> GetByIdAsync(Guid Id)
+        public async Task<ProceedingEntity> GetByIdAsync(Guid Id)
         {
             var DetailDt = await _repository.Entities
                 .Where(c => c.Id == Id).FirstOrDefaultAsync();
             return DetailDt;
         }
-        public async Task<Guid> InsertAsync(ProceedingSubHeadEntity proceedingSubHeadEntity)
+        public async Task<Guid> InsertAsync(ProceedingEntity proceedingSubHeadEntity)
         {
             await _repository.AddAsync(proceedingSubHeadEntity);
             return proceedingSubHeadEntity.Id;
         }
 
-        public async Task UpdateAsync(ProceedingSubHeadEntity proceedingSubHeadEntity)
+        public async Task UpdateAsync(ProceedingEntity proceedingSubHeadEntity)
         {
             await _repository.UpdateAsync(proceedingSubHeadEntity);
         }
-        public async Task DeleteAsync(ProceedingSubHeadEntity proceedingSubHeadEntity)
+        public async Task DeleteAsync(ProceedingEntity proceedingSubHeadEntity)
         {
             await _repository.DeleteAsync(proceedingSubHeadEntity);
         }

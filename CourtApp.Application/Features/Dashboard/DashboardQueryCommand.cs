@@ -1,6 +1,7 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.CaseDetails;
 using CourtApp.Application.DTOs.Dashboard;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System;
@@ -39,7 +40,7 @@ namespace CourtApp.Application.Features.Dashboard
                              || request.LinkedIds.Contains(ac.LawyerId.ToString()) // Check if user is the creator or assigned lawyer
                              let asignedOrSelf = ac != null && request.LinkedIds.Contains(ac.LawyerId.ToString()) ? "Assigned" : "Self"
                              let isCaseAssigned = asignedOrSelf == "Self" && ac != null && ac.CaseId == c.Id
-                             let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : Guid.Empty
+                             let AssignedLawyerId = asignedOrSelf == "Self" && ac != null ? ac.LawyerId : string.Empty
                              select new GetCaseInfoDto
                              {
                                  Id = c.Id,
@@ -49,10 +50,10 @@ namespace CourtApp.Application.Features.Dashboard
                                  LawyerId = AssignedLawyerId,
                                  No = c.CaseNo,
                                  Year = c.CaseYear.ToString(),
-                                 CourtType = c.CourtType.CourtType.ToString(),
+                                 CourtType = c.CourtType.Name.ToString(),
                                  CaseType = c.CaseType.Name_En,
                                  Court = c.CourtBench.CourtBench_En.ToUpper(),
-                                 CaseStage = c.CaseStage.CaseStage.ToUpper(),
+                                 CaseStage = c.CaseStage.Name.ToUpper(),
                                  DisposalDate = c.DisposalDate,
                                  CaseDetail = (c.FirstTitle + " V/S " + c.SecondTitle).ToUpper(),
                                  NextDate = c.CaseProcEntities
@@ -108,7 +109,7 @@ namespace CourtApp.Application.Features.Dashboard
                 .Select(g => new MonthlyCaseStatusDto
                 {
                     Year = g.Key.Year,
-                    Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"), // Jan, Feb, etc.
+                    //Month = new DateTime(g.Key.Year, g.Key.Month).ToString("MMM"), // Jan, Feb, etc.
                     Filed = g.Count(),
                     Disposed = 0
                 }).ToList();
@@ -124,7 +125,7 @@ namespace CourtApp.Application.Features.Dashboard
                 .Select(g => new MonthlyCaseStatusDto
                 {
                     Year = g.Key.Year,
-                    Month = new DateTime(g.Key.Year, g.Key.Month, 1).ToString("MMM"),
+                    //Month = new DateTime(g.Key.Year, g.Key.Month).ToString("MMM"),
                     Filed = 0,
                     Disposed = g.Count()
                 }).ToList();

@@ -27,11 +27,11 @@ namespace CourtApp.Application.Features.CaseType.Handlers
             Expression<Func<TypeOfCasesEntity, GetAllTypeOfCasesResponse>> expression = e => new GetAllTypeOfCasesResponse
             {
                 Id = e.Id,
-                CaseNature = e.Nature.Name_En.ToUpper(),
+                CaseNature = e.Nature.Name.ToUpper(),
                 Name_En = e.Name_En.ToUpper(),
                 Name_Hn = e.Name_Hn,
                 Abbreviation = e.Abbreviation.ToUpper(),
-                CourtTypeName = e.CourtType.CourtType.ToUpper(),
+                CourtTypeName = e.CourtType.Name.ToUpper(),
                
             };
             var predicate = PredicateBuilder.True<TypeOfCasesEntity>();

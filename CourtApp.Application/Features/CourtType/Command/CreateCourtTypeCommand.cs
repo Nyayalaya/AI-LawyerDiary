@@ -9,8 +9,9 @@ namespace CourtApp.Application.Features.CourtType.Command
 {
     public class CreateCourtTypeCommand : IRequest<Result<string>>
     {
-        public string CourtType { get; set; }
-        public string Abbreviation { get; set; }
+        public Guid Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
         public List<LangDto> Language { get; set; }
     }
 }

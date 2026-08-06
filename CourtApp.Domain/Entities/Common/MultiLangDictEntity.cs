@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.Common
 {
-    [Table("m_lang_dict")]
+    [Table("m_lang_dict", Schema = "common"  )]
     public class MultiLangDictEntity :AuditableEntity, IDomainLayer
     {
         public string KeyWord { get; set; }

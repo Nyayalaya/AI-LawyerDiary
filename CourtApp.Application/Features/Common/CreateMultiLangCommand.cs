@@ -3,13 +3,14 @@ using AutoMapper;
 using CourtApp.Application.DTOs.Common;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Domain.Entities.Common;
 using MediatR;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities;
+using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Application.Features.Common
 {
@@ -49,9 +50,9 @@ namespace CourtApp.Application.Features.Common
                 if (entity.Id == Guid.Empty)
                     entity.Id = Guid.NewGuid();
             }
-                var insertedIds = await _repository.BulkInsertAsync(allEntities);
+                //var insertedIds = await _repository.BulkInsertAsync(allEntities);
                 await _unitOfWork.Commit(cancellationToken);
-            return await Result<List<Guid>>.SuccessAsync(insertedIds);
+            return await Result<List<Guid>>.SuccessAsync();
 
         }
     }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using CourtApp.Application.DTOs.DropDowns;
+using CourtApp.Application.DTOs.DropdownDtos;
 using CourtApp.Application.Features.Clients.Commands;
 using CourtApp.Domain.Entities.LawyerDiary;
 using System;

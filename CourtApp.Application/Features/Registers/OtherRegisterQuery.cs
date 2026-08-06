@@ -1,5 +1,6 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Registers;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace CourtApp.Application.Features.Registers
         public int PageNumber { get; set; }
         public int PageSize { get; set; }
         public List<string> LinkedIds { get; set; }
-        //public string UserId { get; set; }
+       
     }
     public class OtherRegisterQueryHandler : IRequestHandler<OtherRegisterQuery, Result<List<OtherRegisterResponse>>>
     {
@@ -55,7 +56,7 @@ namespace CourtApp.Application.Features.Registers
                                                 into caseAssignments
                         from ac in caseAssignments.DefaultIfEmpty()
                         from work in p.ProcWork.Works
-                        join w in _wRepo.Entities.Where(w => !w.Abbreviation.Equals("COPY"))
+                        join w in _wRepo.Entities.Where(w => !w.Code.Equals("COPY"))
                             on work.WorkTypeId equals w.Id
                         let c = p.Case
                         where c != null && (request.LinkedIds.Contains(c.CreatedBy) ||
@@ -64,14 +65,13 @@ namespace CourtApp.Application.Features.Registers
                         {
                             Id = c.Id,
                             Reference = ac != null && request.LinkedIds.Contains(ac.LawyerId.ToString()) ? "Assigned" : "Self",
-                            //Reference = ac != null && ac.LawyerId == Guid.Parse(request.UserId) ? "Assigned" : "Self",
                             CaseType = c.CaseType != null ? c.CaseType.Name_En : string.Empty,
-                            Year = c.CaseYear.ToString(),
+                            CaseYear = c.CaseYear,
                             Court = c.CourtBench != null ? c.CourtBench.CourtBench_En : string.Empty,
-                            FirstTitle = c.FirstTitle,
-                            SecondTitle = c.SecondTitle,
-                            No = c.CaseNo,
-                            WorkDone = w.Work_En,
+                            CaseTitle = c.FirstTitle + " VS " + c.SecondTitle,
+                            CaseNumber = c.CaseNo,
+                            Status = c.DisposalDate.HasValue ? "Disposed" : "Pending",
+                            WorkDone = w.Name,
                             WorkDate = w.LastModifiedOn.HasValue
                                 ? w.LastModifiedOn.Value.ToString("dd/MM/yyyy")
                                 : "-"

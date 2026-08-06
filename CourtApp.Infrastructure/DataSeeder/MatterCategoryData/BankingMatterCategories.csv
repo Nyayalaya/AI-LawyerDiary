@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+BANKING,LOAN_RECOVERY,Loan Recovery,Recovery of loan amount,1
+BANKING,DRT_CASE,Debt Recovery Tribunal,Proceedings before DRT,2
+BANKING,DRAT_APPEAL,DRAT Appeal,Appeal before DRAT,3
+BANKING,SARFAESI,SARFAESI Proceedings,Proceedings under SARFAESI Act,4
+BANKING,MORTGAGE_DISPUTE,Mortgage Dispute,Mortgage enforcement dispute,5
+BANKING,HYPOTHECATION,Hypothecation,Hypothecation related dispute,6
+BANKING,PLEDGE,Pledge,Pledge related proceedings,7
+BANKING,BANK_GUARANTEE,Bank Guarantee,Bank guarantee invocation dispute,8
+BANKING,LETTER_OF_CREDIT,Letter of Credit,Letter of credit dispute,9
+BANKING,CHEQUE_COLLECTION,Cheque Collection,Cheque collection dispute,10
+BANKING,FRAUD,Fraud,Banking fraud proceedings,11
+BANKING,UNAUTHORISED_TRANSACTION,Unauthorised Transaction,Unauthorized banking transaction dispute,12
+BANKING,NPA_RECOVERY,NPA Recovery,Recovery of non-performing assets,13
+BANKING,RECOVERY_CERTIFICATE,Recovery Certificate,Execution of recovery certificate,14
+BANKING,BANKING_OMBUDSMAN,Banking Ombudsman,Complaint before Banking Ombudsman,15
+BANKING,GUARANTOR_LIABILITY,Guarantor Liability,Liability of guarantor,16
+BANKING,SECURITISATION,Securitisation,Securitisation dispute,17
+BANKING,BANKING_APPEAL,Banking Appeal,Appeal in banking matters,18
+BANKING,BANKING_EXECUTION,Banking Execution,Execution of banking decree,19
+BANKING,BANKING_MISC,Banking Miscellaneous,Other banking proceedings,20

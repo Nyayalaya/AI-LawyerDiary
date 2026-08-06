@@ -1,11 +1,11 @@
 ﻿using AuditTrail.Abstrations;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.CaseDetails
 {
-    [Table("r_case_working", Schema = "ld")]
+    [Table("case_works", Schema = "cases")]
     public class CaseWorkEntity : AuditableEntity
     {
         
@@ -18,8 +18,8 @@ namespace CourtApp.Domain.Entities.CaseDetails
         public string Remark { get; set; }
         public int Status { get; set; }
         public string Abbreviation { get; set; }
-        public virtual WorkMasterEntity WorkType { get; set; }
-        public virtual WorkMasterSubEntity Work { get; set; }
+        public virtual WorkTypeEntity WorkType { get; set; }
+        public virtual WorksEntity Work { get; set; }
         public virtual CaseDetailEntity Case { get; set; }
     }
 }

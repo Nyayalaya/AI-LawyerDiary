@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Advocate
 {
-    [Table("m_gazzet_type",Schema ="ad")]
+    [Table("m_gazzet_type",Schema ="masters")]
     public class GazetteTypeEntity : AuditableEntity
     {
         [Key]

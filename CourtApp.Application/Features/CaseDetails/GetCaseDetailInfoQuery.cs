@@ -4,7 +4,6 @@ using CourtApp.Application.DTOs.CaseDetails;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,23 +48,23 @@ namespace CourtApp.Application.Features.CaseDetails
             {
                 Id = request.CaseId,
                 InstitutionDate = detail.InstitutionDate.ToString("dd/MM/yyyy"),
-                State = detail.State?.Name_En ?? "",
-                CourtType = detail.CourtType?.CourtType ?? "",
+                State = detail.State?.Name ?? "",
+                CourtType = detail.CourtType?.Name ?? "",
                 CourtBench = detail.CourtBench?.CourtBench_En ?? "",
                 CaseNo = detail.CaseNo,
                 CaseYear = detail.CaseYear.ToString(),
-                CaseCategory = detail.CaseCategory?.Name_En ?? "",
+                CaseCategory = detail.CaseCategory?.Name ?? "",
                 CaseType = detail.CaseType?.Name_En ?? "",
                 FirstTitle = detail.FirstTitle,
                 FirstTitleDetail = detail.FTitle?.Name_En ?? "",
                 SecondTitle = detail.SecondTitle,
                 SecondTitleDetail = detail.STitle?.Name_En ?? "",
-                CaseStage = detail.CaseStage?.CaseStage ?? "",
+                CaseStage = detail.CaseStage?.Name ?? "",
                 CisNo = detail.CisNumber ?? "",
                 CisYear = detail.CisYear.ToString(),
                 CnrNo = detail.CnrNumber ?? "",
-                DistrictCourt = detail.CourtDistrict?.Name_En ?? "",
-                CourtComplex = detail.Complex?.Name_En ?? "",
+                DistrictCourt = detail.CourtDistrict?.Name ?? "",
+                CourtComplex = detail.Complex?.Name ?? "",
                 NextDate = caseLatestNextDate,
                 IsCaseAgainstDecision = detail.CaseAgainstEntities?.Any() == true
             };
@@ -74,21 +73,20 @@ namespace CourtApp.Application.Features.CaseDetails
             {
                 ct.AgainstCases = detail.CaseAgainstEntities.Select(item => new AgainstCaseDetail
                 {
-                    ImpugedOrder = item.ImpugedOrderDate.ToString("dd/MM/yyyy"),
-                    State = item.State?.Name_En ?? "",
-                    CourtBench = item.CourtBench?.CourtBench_En ?? "",
-                    CourtType = item.CourtType?.CourtType ?? "",
+                    ImpugedOrder = item.ImpugedOrderDate?.ToString("dd/MM/yyyy") ?? "",
+                    State = item.State?.Name ?? "",
+                    CourtType = item.CourtType?.Name ?? "",
                     CaseNo = item.CaseNo ?? "",
                     CaseYear = item.CaseYear.ToString(),
-                    CisNo = item.CisNo ?? "",
-                    CisYear = item.CisYear.ToString(),
-                    CnrNo = item.CnrNo ?? "",
-                    Cadre = item.Cadre?.Name_En ?? "",
+                    CisNo = item.CisNumber ?? "",
+                    CisYear = item.CisYear?.ToString() ?? "",
+                    CnrNo = item.CnrNumber ?? "",
+                    Cadre = item.Cadre?.Name ?? "",
                     OfficerName = item.OfficerName ?? "",
-                    CaseCategory = item.CaseCategory?.Name_En ?? "",
-                    CourtComplex = item.Complex?.Name_En ?? "",
+                    CaseCategory = item.CaseCategory?.Name ?? "",
+                    CourtComplex = item.CourtComplex?.Name ?? "",
                     CaseType = item.CaseType?.Name_En ?? "",
-                    DistrictCourt = item.CourtDistrict?.Name_En ?? ""
+                    DistrictCourt = item.CourtDistrict?.Name ?? ""
                 }).ToList();
             }
 
@@ -99,18 +97,18 @@ namespace CourtApp.Application.Features.CaseDetails
                 ct.LinkCaseInfo = new LinkCaseInfo
                 {
                     InstitutionDate = lncd.InstitutionDate.ToString("dd/MM/yyyy"),
-                    State = lncd.State?.Name_En ?? "",
-                    CourtType = lncd.CourtType?.CourtType ?? "",
+                    State = lncd.State?.Name ?? "",
+                    CourtType = lncd.CourtType?.Name ?? "",
                     CourtBench = lncd.CourtBench?.CourtBench_En ?? "",
                     CaseNo = lncd.CaseNo,
                     CaseYear = lncd.CaseYear.ToString(),
-                    CaseCategory = lncd.CaseCategory?.Name_En ?? "",
+                    CaseCategory = lncd.CaseCategory?.Name ?? "",
                     CaseType = lncd.CaseType?.Name_En ?? "",
                     FirstTitle = lncd.FirstTitle,
                     FirstTitleDetail = lncd.FTitle?.Name_En ?? "",
                     SecondTitle = lncd.SecondTitle,
                     SecondTitleDetail = lncd.STitle?.Name_En ?? "",
-                    CaseStage = lncd.CaseStage?.CaseStage ?? "",
+                    CaseStage = lncd.CaseStage?.Name ?? "",
                     CisNo = lncd.CisNumber ?? "",
                     CisYear = lncd.CisYear.ToString()
                 };
@@ -131,13 +129,6 @@ namespace CourtApp.Application.Features.CaseDetails
             }
 
             return Result<CaseDetailInfoDto>.Success(ct);
-
-
-
-            //var detail = await _CaseRepo.GetDetailAsync(request.CaseId);
-
-            //// Get the latest proceeding with a next date
-            //var lastProc = detail.CaseProcEntities
             //    .OrderByDescending(d => d.ProceedingDate)
             //    .Select(d => new { d.ProceedingDate, d.NextDate })
             //    .FirstOrDefault();

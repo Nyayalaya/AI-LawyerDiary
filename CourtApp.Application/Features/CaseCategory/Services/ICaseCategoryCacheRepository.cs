@@ -1,4 +1,4 @@
-﻿using CourtApp.Domain.Entities.LawyerDiary;
+﻿using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +8,8 @@ namespace CourtApp.Application.Features.CaseCategory.Services
 {
     public interface ICaseCategoryCacheRepository
     {
-        Task<List<NatureEntity>> GetCachedListAsync();
-        Task<NatureEntity> GetByIdAsync(Guid bookTypeId);
+        Task<List<CaseCategoryEntity>> GetCachedListAsync();
+        Task<CaseCategoryEntity> GetByIdAsync(Guid bookTypeId);
         
     }
 }

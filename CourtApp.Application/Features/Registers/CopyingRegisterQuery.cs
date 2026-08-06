@@ -1,5 +1,6 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Registers;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -60,14 +61,14 @@ ICaseAssignedRepository assignedRepo)
                                        Works = (from w in proc.ProcWork.Works
                                                 join wm in _WorkRepo.Entities.AsNoTracking()
                                                     on w.WorkTypeId equals wm.Id
-                                                where wm.Abbreviation.ToUpper() == "COPY"
+                                                where wm.Code.ToUpper() == "COPY"
                                                 select new
                                                 {
                                                     w.WorkId,
                                                     w.Status,
                                                     AppliedOn = w.AppliedOn, // Raw DateTime here
                                                     ReceivedOn = w.ReceivedOn, // Raw DateTime here
-                                                    WorkTypeName = wm.Work_En
+                                                    WorkTypeName = wm.Name
                                                 }).ToList()
                                    }
                                }).ToList()
@@ -75,10 +76,9 @@ ICaseAssignedRepository assignedRepo)
                                {
                                    Id = c.Id,
                                    Court = c.CourtBench.CourtBench_En.ToString(),
-                                   No = c.CaseNo,
-                                   Year = c.CaseYear.ToString(),
-                                   FirstTitle = c.FirstTitle,
-                                   SecondTitle = c.SecondTitle,
+                                   CaseNumber = c.CaseNo,
+                                   CaseYear = c.CaseYear,
+                                   CaseTitle = c.FirstTitle + " VS " + c.SecondTitle,
                                    CaseType = c.CaseType.Name_En,
                                    // Apply formatting client-side after data retrieval
                                    AppliedOn = Proceedings.SelectMany(s => s.ProcWork.Works)

@@ -12,4 +12,11 @@ namespace CourtApp.Application.Common
         public string Name{ get; set; }
         public string Code{ get; set; }
     }
+
+    public class DropdownInt
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
+    }
 }

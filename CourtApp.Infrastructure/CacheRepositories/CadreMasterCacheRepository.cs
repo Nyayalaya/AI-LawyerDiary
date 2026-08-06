@@ -1,13 +1,12 @@
 ﻿using AspNetCoreHero.Extensions.Caching;
 using AspNetCoreHero.ThrowR;
-using CourtApp.Application.Interfaces.CacheRepositories;
-using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Domain.Entities.LawyerDiary;
 using CourtApp.Application.CacheKeys;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities.Masters;
+using CourtApp.Application.Features.Cadre.Services;
 
 namespace CourtApp.Infrastructure.CacheRepositories
 {
@@ -21,10 +20,10 @@ namespace CourtApp.Infrastructure.CacheRepositories
             _distributedCache = distributedCache;
             this._Repository = _Repository;
         }
-        public async Task<CadreMasterEntity> GetByIdAsync(Guid id)
+        public async Task<CadreEntity> GetByIdAsync(Guid id)
         {
             string cacheKey = CadreMasterCacheKeys.GetKey(id);
-            var detail = await _distributedCache.GetAsync<CadreMasterEntity>(cacheKey);
+            var detail = await _distributedCache.GetAsync<CadreEntity>(cacheKey);
             if (detail == null)
             {
                 detail = await _Repository.GetByIdAsync(id);
@@ -34,10 +33,10 @@ namespace CourtApp.Infrastructure.CacheRepositories
             return detail;
         }
 
-        public async Task<List<CadreMasterEntity>> GetCachedListAsync()
+        public async Task<List<CadreEntity>> GetCachedListAsync()
         {
             string cacheKey = CadreMasterCacheKeys.ListKey;
-            var CadreDataList = await _distributedCache.GetAsync<List<CadreMasterEntity>>(cacheKey);
+            var CadreDataList = await _distributedCache.GetAsync<List<CadreEntity>>(cacheKey);
             if (CadreDataList == null)
             {
                 CadreDataList = await _Repository.GetListAsync();

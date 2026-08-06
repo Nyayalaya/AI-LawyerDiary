@@ -6,7 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.LawyerDiary
 {
-    [Table("m_publisher",Schema ="ld")]
+    [Table("m_publisher",Schema ="masters")]
     public class PublisherEntity : AuditableEntity
     {
         

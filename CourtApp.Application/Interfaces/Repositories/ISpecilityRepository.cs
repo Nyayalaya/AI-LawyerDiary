@@ -1,4 +1,4 @@
-﻿using CourtApp.Domain.Entities.LawyerDiary;
+﻿using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace CourtApp.Application.Interfaces.Repositories
 {
     public interface ISpecilityRepository
     {
-        IQueryable<SpecializationEntity> Entities { get; }
-        Task<List<SpecializationEntity>> GetListAsync();
-        Task<SpecializationEntity> GetByIdAsync(Guid Id);
-        Task<Guid> InsertAsync(SpecializationEntity entity);
-        Task UpdateAsync(SpecializationEntity entity);
-        Task DeleteAsync(SpecializationEntity entity);
+        IQueryable<Specialization> Entities { get; }
+        Task<List<Specialization>> GetListAsync();
+        Task<Specialization> GetByIdAsync(Guid Id);
+        Task<Guid> InsertAsync(Specialization entity);
+        Task UpdateAsync(Specialization entity);
+        Task DeleteAsync(Specialization entity);
     }
 }

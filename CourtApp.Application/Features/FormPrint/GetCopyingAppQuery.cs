@@ -1,5 +1,5 @@
 ﻿using CourtApp.Application.Common;
-using CourtApp.Application.DTOs.FormPrint;
+using CourtApp.Application.Features.FormPrint.Dtos;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -53,7 +53,7 @@ namespace CourtApp.Application.Features.FormPrint
                            SecondTitle = cd.SecondTitle,
                            NoYear = cd.CaseNo + "/" + cd.CaseYear,
                            CaseType = cd.CaseType.Name_En,
-                           CourtType = cd.CourtType.CourtType,
+                           CourtType = cd.CourtType.Code,
                            Court = cd.CourtBench.CourtBench_En,
                            Appearence = "",
                            NextDate = cd.NextDate.HasValue && cd.CaseProcEntities.Any()

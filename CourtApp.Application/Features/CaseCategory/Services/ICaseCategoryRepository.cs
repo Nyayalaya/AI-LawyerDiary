@@ -1,4 +1,4 @@
-﻿using CourtApp.Domain.Entities.LawyerDiary;
+﻿using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,17 +8,17 @@ namespace CourtApp.Application.Features.CaseCategory.Services
 {
     public interface ICaseCategoryRepository
     {
-        IQueryable<NatureEntity> CaseNatures { get; }
+        IQueryable<CaseCategoryEntity> CaseNatures { get; }
 
-        Task<List<NatureEntity>> GetListAsync();
+        Task<List<CaseCategoryEntity>> GetListAsync();
 
-        Task<NatureEntity> GetByIdAsync(Guid caseNatureId);
+        Task<CaseCategoryEntity> GetByIdAsync(Guid caseNatureId);
 
-        Task<Guid> InsertAsync(NatureEntity caseNature);
+        Task<Guid> InsertAsync(CaseCategoryEntity caseNature);
 
-        Task UpdateAsync(NatureEntity caseNature);
+        Task UpdateAsync(CaseCategoryEntity caseNature);
 
-        Task DeleteAsync(NatureEntity caseNature);
+        Task DeleteAsync(CaseCategoryEntity caseNature);
 
         Task<bool> IsCaseCategoryExistAsync(Guid courtTypeId, string category);
     }

@@ -55,15 +55,15 @@ namespace CourtApp.Application.Features.CourtMasters.Command
                 return Result<Guid>.Fail($"Court detail Not Found.");
             else
             {
-                detail.Name_En = request.CourtName;
-                detail.Name_Hn=request.Name_Hn;
-                detail.CourtTypeId = request.CourtTypeId;
-                detail.CourtComplexId=request.CourtComplexId;
-                detail.CourtDistrictId=request.CourtDistrictId;
+                //detail.Name_En = request.CourtName;
+                //detail.Name_Hn=request.Name_Hn;
+                //detail.CourtTypeId = request.CourtTypeId;
+                //detail.CourtComplexId=request.CourtComplexId;
+                //detail.CourtDistrictId=request.CourtDistrictId;
                 //detail.DistrictId=request.DistrictCode;                              
-                detail.StateId=request.StateCode;
-                detail.LastModifiedOn = DateTime.Now;
-                detail.CourtBenches=_mapper.Map<List<CourtBenchEntity>>(request.CBAddress);
+                //detail.StateId=request.StateCode;
+                //detail.LastModifiedOn = DateTime.Now;
+                //detail.CourtBenches=_mapper.Map<List<CourtBenchEntity>>(request.CBAddress);
                 await repository.UpdateAsync(detail);
                 await _unitOfWork.Commit(cancellationToken);
                 return Result<Guid>.Success(detail.Id);

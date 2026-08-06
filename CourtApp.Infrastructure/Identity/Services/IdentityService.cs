@@ -1,18 +1,12 @@
-﻿
-using AspNetCoreHero.ThrowR;
-using CourtApp.Application.Common;
+﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Mail;
 using CourtApp.Application.DTOs.Settings;
 using CourtApp.Application.Features.Auth.Dto;
 using CourtApp.Application.Features.Auth.Services;
 using CourtApp.Application.Interfaces.Shared;
-using CourtApp.Domain.Enums;
-using CourtApp.Infrastructure.DbContexts;
-using CourtApp.Infrastructure.Email.Templates;
 using CourtApp.Infrastructure.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -20,7 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net.Mail;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
@@ -31,32 +24,26 @@ namespace CourtApp.Infrastructure.Identity.Services
     public class IdentityService : IIdentityService
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<IdentityService> _logger;
         private readonly JWTSettings _jwtSettings;
-        private readonly IDateTimeService _dateTimeService;
         private readonly IMailService _mailService;
-        private readonly IdentityContext _identityDbContext;
+        
 
         public IdentityService(
             UserManager<ApplicationUser> userManager,
-            RoleManager<IdentityRole> roleManager,
             IOptions<JWTSettings> jwtSettings,
-            IDateTimeService dateTimeService,
             SignInManager<ApplicationUser> signInManager,
             IMailService mailService,
             ILogger<IdentityService> logger,
             IdentityContext identityDbContext)
         {
             _userManager = userManager;
-            _roleManager = roleManager;
             _jwtSettings = jwtSettings.Value;
-            _dateTimeService = dateTimeService;
             _signInManager = signInManager;
             _mailService = mailService;
             _logger = logger;
-            _identityDbContext = identityDbContext;
+           
         }
 
         public async Task<Result<TokenResponse>> GetTokenAsync(TokenRequest request, string ipAddress)
@@ -64,18 +51,26 @@ namespace CourtApp.Infrastructure.Identity.Services
             try
             {
                 var user = await _userManager.FindByEmailAsync(request.Email);
-                Throw.Exception.IfNull(user, nameof(user), $"No Accounts Registered with {request.Email}.");
+
+                if (user == null)
+                {
+                    _logger.LogWarning($"Login attempt for non-existent email: {request.Email}");
+                    return await Result<TokenResponse>.FailAsync("Invalid email or password");
+                }
 
                 ValidateUserForLogin(user);
 
-                var result = await _signInManager.PasswordSignInAsync(user.UserName, request.Password, false, lockoutOnFailure: false);
-                Throw.Exception.IfFalse(result.Succeeded, $"Invalid Credentials for '{request.Email}'.");
+                var passwordValid = await _userManager.CheckPasswordAsync(user, request.Password);
+                if (!passwordValid)
+                {
+                    _logger.LogWarning($"Failed login attempt for user: {user.Email}");
+                    return await Result<TokenResponse>.FailAsync("Invalid email or password");
+                }
 
-                JwtSecurityToken jwtSecurityToken = await GenerateJWToken(user, ipAddress);
-                var response = BuildTokenResponse(user, jwtSecurityToken);
+                var jwtToken = await GenerateJWToken(user, ipAddress);
+                var response = BuildTokenResponse(user, jwtToken);
                 var refreshToken = GenerateRefreshToken(ipAddress);
                 response.RefreshToken = refreshToken.Token;
-
                 _logger.LogInformation($"User {user.Email} logged in successfully");
                 return await Result<TokenResponse>.SuccessAsync(response, "Authenticated");
             }
@@ -86,60 +81,34 @@ namespace CourtApp.Infrastructure.Identity.Services
             }
         }
 
-        public async Task<Result<string>> RegisterAsync(RegisterRequest request)
-        {
-            try
-            {
-                ValidateRegistrationRequest(request);
-
-                var userExists = await _userManager.FindByEmailAsync(request.Email);
-                Throw.Exception.IfNotNull(userExists,$"Email '{request.Email}' is already registered.");
-
-                var user = CreateApplicationUser(request);
-                var result = await _userManager.CreateAsync(user, request.Password);
-
-                Throw.Exception.IfFalse(result.Succeeded, FormatIdentityErrors(result));
-
-                // Add role based on user type
-                await _userManager.AddToRoleAsync(user, request.UserType.ToString());
-
-                // Add corporate user if needed
-                if (request.UserType == RegisterType.CORPORATE)
-                {
-                    await AddCorporateUser(user, request.CompanyInfoDto);
-                }
-
-                // Generate verification URI and send email
-                var verificationUri = await GenerateVerificationUri(user, request.Origin);
-                await SendVerificationEmail(user, verificationUri);
-
-                _logger.LogInformation($"User {user.Email} registered successfully as {request.UserType}");
-                return Result<string>.Success(user.Id, $"User Registered successfully. Confirmation email has been sent to {user.Email}");
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in RegisterAsync: {ex.Message}");
-                return await Result<string>.FailAsync(ex.Message);
-            }
-        }
-
         public async Task<Result<string>> ConfirmEmailAsync(string userId, string code)
         {
             try
             {
-                //Throw.Exception.IfNullOrEmpty(userId, nameof(userId), "User ID is required.");
-                //Throw.Exception.IfNullOrEmpty(code, nameof(code), "Confirmation code is required.");
+                if (string.IsNullOrWhiteSpace(userId) || string.IsNullOrWhiteSpace(code))
+                {
+                    return await Result<string>.FailAsync("User ID and confirmation code are required.");
+                }
 
                 var user = await _userManager.FindByIdAsync(userId);
-                Throw.Exception.IfNull(user, nameof(user), "User not found.");
+                if (user == null)
+                {
+                    _logger.LogWarning($"Email confirmation attempt for non-existent user: {userId}");
+                    return await Result<string>.FailAsync("User not found.");
+                }
 
                 code = Encoding.UTF8.GetString(WebEncoders.Base64UrlDecode(code));
                 var result = await _userManager.ConfirmEmailAsync(user, code);
 
-                Throw.Exception.IfFalse(result.Succeeded, $"Error confirming email for {user.Email}.");
+                if (!result.Succeeded)
+                {
+                    var errors = FormatIdentityErrors(result);
+                    _logger.LogError($"Email confirmation failed for {user.Email}: {errors}");
+                    return await Result<string>.FailAsync($"Error confirming email: {errors}");
+                }
 
                 _logger.LogInformation($"Email confirmed for user {user.Email}");
-                return Result<string>.Success(user.Id, $"Account Confirmed for {user.Email}. You can now login.");
+                return Result<string>.Success(user.Id, $"Email confirmed for {user.Email}. You can now login.");
             }
             catch (Exception ex)
             {
@@ -152,7 +121,6 @@ namespace CourtApp.Infrastructure.Identity.Services
         {
             try
             {
-                
                 var account = await _userManager.FindByEmailAsync(model.Email);
 
                 if (account == null)
@@ -189,13 +157,25 @@ namespace CourtApp.Infrastructure.Identity.Services
         {
             try
             {
-                Throw.Exception.IfNull(model, nameof(model), "Reset password request cannot be null.");
-                
+                if (model == null)
+                {
+                    return await Result<string>.FailAsync("Reset password request cannot be null.");
+                }
+
                 var account = await _userManager.FindByEmailAsync(model.Email);
-                Throw.Exception.IfNull(account, nameof(account), $"No account found for {model.Email}.");
+                if (account == null)
+                {
+                    _logger.LogWarning($"Password reset attempt for non-existent email: {model.Email}");
+                    return await Result<string>.FailAsync($"No account found for {model.Email}.");
+                }
 
                 var result = await _userManager.ResetPasswordAsync(account, model.Token, model.Password);
-                Throw.Exception.IfFalse(result.Succeeded, FormatIdentityErrors(result));
+                if (!result.Succeeded)
+                {
+                    var errors = FormatIdentityErrors(result);
+                    _logger.LogError($"Password reset failed for {model.Email}: {errors}");
+                    return await Result<string>.FailAsync(errors);
+                }
 
                 _logger.LogInformation($"Password reset successful for {model.Email}");
                 return Result<string>.Success(model.Email, "Password has been reset successfully.");
@@ -207,140 +187,22 @@ namespace CourtApp.Infrastructure.Identity.Services
             }
         }
 
-        public async Task<bool> IsEmailExistAsync(string email)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(email))
-                    return false;
-
-                var user = await _userManager.FindByEmailAsync(email);
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in IsEmailExistAsync: {ex.Message}");
-                return false;
-            }
-        }
-
-        public async Task<bool> IsContactExistAsync(string contact)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(contact))
-                    return false;
-
-                var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Mobile == contact);
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in IsContactExistAsync: {ex.Message}");
-                return false;
-            }
-        }
-
-        public async Task<bool> IsEnrollmentExistAsync(string enrollment)
-        {
-            try
-            {
-                if (string.IsNullOrWhiteSpace(enrollment))
-                    return false;
-
-                var user = await _userManager.Users
-                    .FirstOrDefaultAsync(u => u.ProfessionalInfo != null && u.ProfessionalInfo.EnrollmentNo == enrollment);
-                return user != null;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in IsEnrollmentExistAsync: {ex.Message}");
-                return false;
-            }
-        }
+        
 
         #region Private Methods
 
         private void ValidateUserForLogin(ApplicationUser user)
         {
-            Throw.Exception.IfFalse(user.EmailConfirmed, $"Email is not confirmed for '{user.Email}'. Please check your email.");
-            Throw.Exception.IfFalse(user.IsActive, $"Account for '{user.Email}' is inactive. Please contact support.");
-        }
-
-        private void ValidateRegistrationRequest(RegisterRequest request)
-        {
-            Throw.Exception.IfNull(request, nameof(request), "Registration request cannot be null.");
-            
-            if (request.UserType == RegisterType.LAWYER || request.UserType == RegisterType.CLIENT)
+            if (!user.EmailConfirmed)
             {
-                Throw.Exception.IfNull(request.IndividualInfoDto, nameof(request.IndividualInfoDto), "Individual information is required for this user type.");
+                throw new Exception($"Email not confirmed for '{user.Email}'. Please check your email.");
             }
 
-            if (request.UserType == RegisterType.CORPORATE)
+            if (!user.IsActive)
             {
-                Throw.Exception.IfNull(request.CompanyInfoDto, nameof(request.CompanyInfoDto), "Company information is required for corporate registration.");
+                throw new Exception($"Account for '{user.Email}' is inactive. Please contact support.");
             }
         }
-
-        private ApplicationUser CreateApplicationUser(RegisterRequest request)
-        {
-            var individualInfo = request.IndividualInfoDto;
-            var userName = new MailAddress(request.Email).User;
-
-            var user = new ApplicationUser
-            {
-                UserType = request.UserType.ToString(),
-                UserName = userName,
-                Email = request.Email,
-                FirstName = individualInfo?.FirstName?.Trim().ToUpper() ?? string.Empty,
-                LastName = individualInfo?.LastName?.Trim().ToUpper() ?? string.Empty,
-                
-                Mobile = request.Contact,
-                IsActive = true
-                
-            };
-
-            // Add professional info for lawyers
-            if (request.UserType == RegisterType.LAWYER && individualInfo != null)
-            {
-                user.ProfessionalInfo = new ProfessionalInfo
-                {
-                    EnrollmentNo = individualInfo.EnrollmentNumber ?? string.Empty,
-                    BarAssociationNumber = string.Empty,
-                    PracticeLicenseDate = default,
-                    PracticeSince = 0,
-                    Specializations = null
-                };
-            }
-
-            return user;
-        }
-
-        private async Task AddCorporateUser(ApplicationUser user, CompanyInfoDto companyInfo)
-        {
-            try
-            {
-                var corporateUser = new CorporateUser
-                {
-                    Id = user.Id,
-                    FirmName = companyInfo?.CompanyName ?? string.Empty,
-                    RegistrationNo = companyInfo?.RegistrationNumber ?? string.Empty
-                    //IncorporationDate = companyInfo?.IncorporationDate,
-                    //GstNumber = companyInfo?.GstNumber ?? string.Empty,
-                    //AutherizedPerson = companyInfo?.AutherizedPerson ?? string.Empty,
-                    //CreatedOn = DateTime.UtcNow
-                };
-
-                _identityDbContext.Corporates.Add(corporateUser);
-                await _identityDbContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in AddCorporateUser: {ex.Message}");
-                throw;
-            }
-        }
-
         private async Task<string> GenerateVerificationUri(ApplicationUser user, string origin)
         {
             try
@@ -357,33 +219,7 @@ namespace CourtApp.Infrastructure.Identity.Services
             }
         }
 
-        private async Task SendVerificationEmail(ApplicationUser user, string verificationUri)
-        {
-            try
-            {
-                var emailBody = RegistrationEmailTemplate.GetTemplate(
-                    user.UserName,
-                    user.FirstName,
-                    user.LastName,
-                    verificationUri
-                );
-
-                var mailRequest = new MailRequest
-                {
-                    To = user.Email,
-                    Subject = "Confirm Your Email Address - Court App",
-                    Body = emailBody,
-                    IsHtml = true
-                };
-
-                await _mailService.SendAsync(mailRequest);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error in SendVerificationEmail: {ex.Message}");
-                throw;
-            }
-        }
+        
 
         private TokenResponse BuildTokenResponse(ApplicationUser user, JwtSecurityToken jwtSecurityToken)
         {
@@ -395,7 +231,8 @@ namespace CourtApp.Infrastructure.Identity.Services
                 ExpiresOn = jwtSecurityToken.ValidTo.ToLocalTime(),
                 Email = user.Email,
                 UserName = user.UserName,
-                IsVerified = user.EmailConfirmed
+                IsVerified = user.EmailConfirmed,
+                Roles = user != null ? _userManager.GetRolesAsync(user).Result.ToList() : new List<string>()
             };
         }
 
@@ -403,24 +240,17 @@ namespace CourtApp.Infrastructure.Identity.Services
         {
             try
             {
-                var userClaims = await _userManager.GetClaimsAsync(user);
                 var roles = await _userManager.GetRolesAsync(user);
-                var roleClaims = roles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
 
                 var claims = new List<Claim>
                 {
-                    new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim("uid", user.Id),
-                    new Claim("first_name", user.FirstName ?? string.Empty),
-                    new Claim("last_name", user.LastName ?? string.Empty),
-                    new Claim("full_name", $"{user.FirstName} {user.LastName}".Trim()),
-                    new Claim("ip", ipAddress ?? "Unknown")
+                    new Claim(ClaimTypes.NameIdentifier, user.Id),
+                    new Claim(ClaimTypes.Name, user.UserName)
                 };
 
-                claims.AddRange(userClaims);
-                claims.AddRange(roleClaims);
+                claims.AddRange(roles.Select(r => new Claim(ClaimTypes.Role, r)));
 
                 return GenerateJwtToken(claims);
             }

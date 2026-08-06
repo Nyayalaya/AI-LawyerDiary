@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.FormBuilder
 {
-    [Table("case_petition_detail")]
+    [Table("case_petition_detail",Schema ="cases")]
     public class DraftingDetailEntity : AuditableEntity
     {        
               

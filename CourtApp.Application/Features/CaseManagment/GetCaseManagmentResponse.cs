@@ -22,6 +22,6 @@ namespace CourtApp.Application.Features.ProceedingHead
         public int TitleTypeSecond { get; set; }
         public DateTime NextDate { get; set; }
         public string CaseStageCode { get; set; }
-        public List<CaseDetailAgainstEntity> AgainstCaseDetails { get; set; }
+        public List<CaseAgainstEntity> AgainstCaseDetails { get; set; }
     }
 }

@@ -4,7 +4,6 @@ using CourtApp.Application.CacheKeys;
 using CourtApp.Application.DTOs.Common;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Domain.Entities.Common;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
@@ -13,6 +12,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities;
+using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Application.Features.Common
 {
@@ -61,10 +62,10 @@ namespace CourtApp.Application.Features.Common
                     continue;
 
                 // ✔ Ensure collection is initialized
-                existing.MultiLangs ??= new List<MultiLangDictItem>();
+                //existing.MultiLangs ??= new List<MultiLangDictItem>();
 
                 // ✔ Update language values safely
-                existing.MultiLangs = _mapper.Map<List<MultiLangDictItem>>(updated.MultiLangs);
+                //existing.MultiLangs = _mapper.Map<List<MultiLangDictItem>>(updated.MultiLangs);
 
                 // ✔ Map remaining scalar properties (excluding collections via mapper config)
                 _mapper.Map(updated, existing);

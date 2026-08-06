@@ -13,9 +13,8 @@ namespace CourtApp.Application.Features.ProceedingHead
     public class UpdateProceedingHeadCommand : IRequest<Result<Guid>>
     {
         public Guid Id { get; set; }
-        public string Name_En { get; set; }
-        public string Name_Hn { get; set; }
-        public string Abbreviation { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
     }
     public class UpdateProceedingHeadCommandHandler : IRequestHandler<UpdateProceedingHeadCommand, Result<Guid>>
     {
@@ -39,34 +38,22 @@ namespace CourtApp.Application.Features.ProceedingHead
             // Check for name conflict with other records (excluding the current record)
             var duplicateRecord = await repository.Entities
                 .Where(e => e.Id != request.Id
-                                && e.Abbreviation.ToLower().Trim() == request.Abbreviation.ToLower().Trim()
-                                && e.Name_En.ToLower() == request.Name_En.ToLower().Trim())
+                                && e.Code.ToLower().Trim() == request.Code.ToLower().Trim()
+                                && e.Name.ToLower() == request.Name.ToLower().Trim())
                 .FirstOrDefaultAsync(cancellationToken);
 
             if (duplicateRecord != null)
                 return Result<Guid>.Fail("Another record with the same name already exists.");
 
             // Update the entity fields
-            existingRecord.Name_En = request.Name_En.ToLower().Trim();
-            existingRecord.Name_Hn = request.Name_Hn;
-            existingRecord.Abbreviation = request.Abbreviation.ToLower().Trim();
+            existingRecord.Name = request.Name.ToLower().Trim();
+            existingRecord.Code = request.Code.ToLower().Trim();
 
             await repository.UpdateAsync(existingRecord);
             await _unitOfWork.Commit(cancellationToken);
 
             return Result<Guid>.Success(existingRecord.Id);
-            //var detailById = await repository.GetByIdAsync(request.Id);
-            //if (detailById == null)
-            //    return Result<Guid>.Fail($"Proceeding head not found.");
-            //else
-            //{               
-            //    detailById.Name_En = request.Name_En;
-            //    detailById.Name_Hn = request.Name_Hn;
-            //    detailById.Abbreviation = request.Abbreviation;
-            //    await repository.UpdateAsync(detailById);
-            //    await _unitOfWork.Commit(cancellationToken);
-            //    return Result<Guid>.Success(detailById.Id);
-            //}
+            
         }
     }
 }

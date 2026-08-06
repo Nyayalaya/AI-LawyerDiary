@@ -1,0 +1,167 @@
+{
+  "info": {
+    "name": "CourtApp API - Client & Lookup",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "version": "1.0.0"
+  },
+  "item": [
+    {
+      "name": "Client",
+      "item": [
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ACME Ltd\",\n  \"address\": \"123 Main St\",\n  \"email\": \"info@acme.test\",\n  \"mobile\": \"+1234567890\",\n  \"officeEmail\": \"office@acme.test\",\n  \"phone\": \"0123456789\",\n  \"referalBy\": \"Referral\",\n  \"regNo\": \"REG123\",\n  \"proprietor\": \"John Doe\",\n  \"clientType\": \"Corporate\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/client", "path": ["api","v1","client"] }
+          }
+        },
+        {
+          "name": "Get Client By Id",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/client/{{clientId}}", "path": ["api","v1","client","{{clientId}}"] }
+          }
+        },
+        {
+          "name": "Get All Clients",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/client?PageNumber=1&PageSize=10&SearchTerm=",
+              "path": ["api","v1","client"],
+              "query": [
+                { "key": "PageNumber", "value": "1" },
+                { "key": "PageSize", "value": "10" },
+                { "key": "SearchTerm", "value": "" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Update Client",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{accessToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"ACME Ltd Updated\",\n  \"address\": \"456 New St\",\n  \"email\": \"contact@acme.test\",\n  \"mobile\": \"+1987654321\",\n  \"officeEmail\": \"office@acme.test\",\n  \"phone\": \"0987654321\",\n  \"referralBy\": \"Referral\",\n  \"regNo\": \"REG123\",\n  \"proprietor\": \"Jane Doe\",\n  \"clientType\": \"Corporate\"\n}"
+            },
+            "url": { "raw": "{{baseUrl}}/api/v1/client/{{clientId}}", "path": ["api","v1","client","{{clientId}}"] }
+          }
+        },
+        {
+          "name": "Delete Client",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/client/{{clientId}}", "path": ["api","v1","client","{{clientId}}"] }
+          }
+        },
+        {
+          "name": "Search Clients (paginated)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/client/search?SearchTerm=acme&PageNumber=1&PageSize=10",
+              "path": ["api","v1","client","search"],
+              "query": [
+                { "key": "SearchTerm", "value": "acme" },
+                { "key": "PageNumber", "value": "1" },
+                { "key": "PageSize", "value": "10" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Lookup",
+      "item": [
+        {
+          "name": "Get States",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/lookup/states", "path": ["api","v1","lookup","states"] }
+          }
+        },
+        {
+          "name": "Get Cadres",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/lookup/cadres", "path": ["api","v1","lookup","cadres"] }
+          }
+        },
+        {
+          "name": "Get Case Categories (by CourtTypeId)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/lookup/casecategories?CourtTypeId={{courtTypeId}}",
+              "path": ["api","v1","lookup","casecategories"],
+              "query": [{ "key": "CourtTypeId", "value": "{{courtTypeId}}" }]
+            }
+          }
+        },
+        {
+          "name": "Get User Clients",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/lookup/userclients", "path": ["api","v1","lookup","userclients"] }
+          }
+        },
+        {
+          "name": "Get Case Types",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/lookup/casetypes", "path": ["api","v1","lookup","casetypes"] }
+          }
+        },
+        {
+          "name": "Get Case Stages",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": { "raw": "{{baseUrl}}/api/v1/lookup/casestages", "path": ["api","v1","lookup","casestages"] }
+          }
+        },
+        {
+          "name": "Get Document Types (by TypeId)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{accessToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/lookup/documenttypes?TypeId=1",
+              "path": ["api","v1","lookup","documenttypes"],
+              "query": [{ "key": "TypeId", "value": "1" }]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:5000" },
+    { "key": "accessToken", "value": "" },
+    { "key": "clientId", "value": "" },
+    { "key": "courtTypeId", "value": "" }
+  ]
+}

@@ -36,12 +36,12 @@
     <Compile Remove="Mappings\UserCaseEntryMappings.cs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="AspNetCoreHero.Results" Version="1.1.1" />
     <PackageReference Include="AutoMapper" Version="16.1.1" />
    
     <PackageReference Include="AspNetCoreHero.ThrowR" Version="1.0.0" />
     <PackageReference Include="FluentValidation" Version="12.0.0" />
     <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="12.0.0" />
+    <PackageReference Include="LinqKit.Microsoft.EntityFrameworkCore" Version="9.0.11" />
     <PackageReference Include="MediatR" Version="14.1.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="9.0.8" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.0" />
@@ -54,10 +54,12 @@
   <ItemGroup>
     <Folder Include="DTOs\APIRes\" />
     <Folder Include="DTOs\CaseCategory\" />
+    <Folder Include="DTOs\CourtDistrict\" />
     <Folder Include="DTOs\Work\" />
     <Folder Include="Features\CaseType\Validators\" />
-    <Folder Include="Features\Clients\Validators\" />
-    <Folder Include="Features\Clients\Services\" />
+    <Folder Include="Features\FormManagement\Services\" />
+    <Folder Include="Features\State\Command\" />
+    <Folder Include="Features\WorkMasterSub\Dtos\" />
     <Folder Include="Interfaces\CacheRepositories\LawyerDiary\" />
     <Folder Include="Interfaces\CacheRepositories\Litigation\" />
     <Folder Include="Interfaces\CacheRepositories\Client\" />

@@ -1,49 +1,33 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CourtApp.Domain.Enums;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
 namespace CourtApp.Infrastructure.Identity.Models
 {
     public class ApplicationUser : IdentityUser
-    {
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string Mobile { get; set; }
-        public DateTime DateOfBirth { get; set; }
-        public string Gender { get; set; }
-        //public string ProfileImgPath { get; set; }
-        public byte[] ProfilePicture { get; set; }
+    {  
+        public RegisterType UserType { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? CompanyName { get; set; }
+        public string? EnrollmentNumber { get; set; }     
+        public string? RegistrationNumber { get; set; }   
+        public DateTime? DateOfBirth { get; set; }
+        public GenderType Gender { get; set; }
         public bool IsActive { get; set; } = false;
+        public string ProfileImageUrl { get; set; }
 
-        /// <summary>
-        /// Complete contact information of the lawyer.
-        /// </summary>
-        public ContactInfo ContactInfo { get; set; }
+        // 🔹 Navigation
+        public virtual ICollection<UserAddress> Addresses { get; set; }
+        public virtual ICollection<UserContact> Contacts { get; set; }
 
-        /// <summary>
-        /// Lawyer Address Information
-        /// </summary>
-        public AddressInfo AddressInfo { get; set; }
+        public virtual ProfessionalInfoEntity ProfessionalInfo { get; set; }
 
-        /// <summary>
-        /// Work location information of lawyer
-        /// </summary>
-        public WorkLocation WorkLocInfo { get; set; }
-
-        /// <summary>
-        /// Complete professional information of laywer.
-        /// </summary>
-        public ProfessionalInfo ProfessionalInfo { get; set; }
-
-
-        /// <summary>
-        /// User type whether the user is lawyer, operator and etc.
-        /// </summary>
-        public string UserType { get; set; }
-
-        /// <summary>
-        /// Navigation property for operators if the user is a lawyer.
-        /// </summary>
-        public ICollection<OperatorUser> Operators { get; set; }
+        public virtual ICollection<UserCourtMapping> UserCourts { get; set; }       
+        // 🔥 SELF-REFERENCE
+        public virtual ICollection<UserHierarchy> Parents { get; set; }
+        public virtual ICollection<UserHierarchy> Children { get; set; }
+        public virtual ICollection<UserOrganizationMapping> Organizations { get; set; }
     }
 }

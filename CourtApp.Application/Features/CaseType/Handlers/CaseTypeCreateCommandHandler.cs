@@ -5,6 +5,7 @@ using CourtApp.Application.Features.CaseType.Services;
 using CourtApp.Application.Features.Typeofcasess.Commands;
 using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.Interfaces.Repositories.Common;
+using CourtApp.Domain.Entities;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.LawyerDiary;
 using MediatR;
@@ -81,7 +82,7 @@ namespace CourtApp.Application.Features.CaseType.Handlers
 
             if (keywords.Any())
             {
-                await _multiRepo.BulkInsertAsync(keywords);
+                //await _multiRepo.BulkInsertAsync(keywords);
                 await _unitOfWork.Commit(cancellationToken);
             }
             return Result<string>.Success("Record inserted successfully!");

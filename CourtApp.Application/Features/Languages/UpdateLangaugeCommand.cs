@@ -9,6 +9,7 @@ using AutoMapper;
 using CourtApp.Application.DTOs.Common;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
+using CourtApp.Domain.Entities;
 
 namespace CourtApp.Application.Features.Languages
 {
@@ -41,11 +42,11 @@ namespace CourtApp.Application.Features.Languages
             lngDetail.StateId = request.StateId;
 
             // Clear and repopulate Languages
-            lngDetail.Languages = request.Languages?.Select(lng => new Domain.Entities.Common.LangEntity
-            {
-                Code = lng.Code,
-                Name = lng.Name
-            }).ToList() ?? new List<Domain.Entities.Common.LangEntity>();
+            //lngDetail.Languages = request.Languages?.Select(lng => new Domain.Entities.LangEntity
+            //{
+            //    Code = lng.Code,
+            //    Name = lng.Name
+            //}).ToList() ?? new List<LangEntity>();
 
             // Persist changes
             await repository.UpdateAsync(lngDetail);

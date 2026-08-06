@@ -2,6 +2,8 @@
 using CourtApp.Application.DTOs.Case;
 using CourtApp.Application.Extensions;
 using CourtApp.Application.Features.CaseCategory.Services;
+using CourtApp.Application.Features.CaseDetails.Repositories;
+using CourtApp.Application.Features.CaseStage.Services;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Interfaces.CacheRepositories;
 using CourtApp.Application.Interfaces.Repositories;
@@ -69,8 +71,15 @@ namespace CourtApp.Application.Features.UserCase
             var baseQuery = from c in _RepoCase.Entites.AsNoTracking()
                             join ac in _assignRepo.Entities on c.Id equals ac.CaseId into caseAssignments
                             from ac in caseAssignments.DefaultIfEmpty()
-                            where request.LinkedIds.Contains(c.CreatedBy)
-                                  || request.LinkedIds.Contains(ac.LawyerId.ToString())
+                            where (
+                                    request.CallingFrm != "BTD"
+                                    || c.DisposalDate == null
+                                )
+                                &&
+                                (
+                                    request.LinkedIds.Contains(c.CreatedBy)
+                                    || (ac != null && request.LinkedIds.Contains(ac.LawyerId.ToString()))
+                                )
                             select new
                             {
                                 Case = new
@@ -82,10 +91,10 @@ namespace CourtApp.Application.Features.UserCase
                                     STitleType = c.STitle.Name_En,
                                     c.SecondTitle,
                                     CaseYear = c.CaseYear.ToString(),
-                                    CourtType = c.CourtType.CourtType.ToString(),
+                                    CourtType = c.CourtType.Name.ToString(),
                                     CaseTypeName = c.CaseType.Name_En,
                                     CourtName = c.CourtBench.CourtBench_En,
-                                    c.CaseStage.CaseStage,
+                                    c.CaseStage.Name,
                                     c.CaseProcEntities,
                                     c.NextDate
                                 },
@@ -152,7 +161,7 @@ namespace CourtApp.Application.Features.UserCase
                     CourtType = c.CourtType.ToString(),
                     CaseTypeName = c.CaseTypeName,
                     CourtName = c.CourtName,
-                    CaseStage = c.CaseStage,
+                    CaseStage = c.Name,
                     CaseTitle = (c.FirstTitle + " V/S " + c.SecondTitle + " [" +
                                  (string.IsNullOrEmpty(c.CaseNo)
                                      ? c.CaseYear.ToString()
@@ -162,7 +171,7 @@ namespace CourtApp.Application.Features.UserCase
                     IsProceedingDone = matchingProceeding != null,
                     ProceedingDate = matchingProceeding?.ProceedingDate ?? default,
                     IsCaseAssigned = refer == "Self" && ac != null && ac.CaseId == c.Id,
-                    LawyerId = refer == "Self" && ac != null ? ac.LawyerId : Guid.Empty,
+                    LawyerId = refer == "Self" && ac != null ? ac.LawyerId : string.Empty,
                     HasChild = helperRepository.IsCaseHavingChildAsync(c.Id).Result  //Check whether case has child or not
                 };
             }).ToList();

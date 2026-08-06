@@ -1,4 +1,4 @@
-﻿using CourtApp.Application.DTOs.CaseDetails;
+﻿using CourtApp.Application.Features.CaseDetails.Dtos;
 using System;
 using System.Collections.Generic;
 

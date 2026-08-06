@@ -5,6 +5,7 @@ using MediatR;
 using System.Threading;
 using System.Threading.Tasks;
 using System;
+using CourtApp.Domain.Entities;
 using CourtApp.Domain.Entities.Common;
 
 namespace CourtApp.Application.Features.Subjects.Commands
@@ -29,7 +30,7 @@ namespace CourtApp.Application.Features.Subjects.Commands
         public async Task<Result<Guid>> Handle(CreateSubjectCommand request, CancellationToken cancellationToken)
         {
             var subject = mapper.Map<SubjectEntity>(request);
-            await _repository.InsertAsync(subject);
+            //await _repository.InsertAsync(subject);
             await _unitOfWork.Commit(cancellationToken);
             return Result<Guid>.Success(subject.Id);
         }

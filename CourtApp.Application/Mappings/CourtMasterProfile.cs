@@ -2,11 +2,6 @@
 using CourtApp.Application.DTOs.CourtMaster;
 using CourtApp.Application.Features.CourtMasters.Command;
 using CourtApp.Domain.Entities.LawyerDiary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CourtApp.Application.Mappings
 {

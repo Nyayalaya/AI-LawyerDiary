@@ -2,10 +2,8 @@
 using CourtApp.Application.Common;
 using CourtApp.Application.Features.Clients.Commands;
 using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Application.Interfaces.Repositories.Common;
 using CourtApp.Domain.Entities.LawyerDiary;
 using MediatR;
-using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;

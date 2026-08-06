@@ -1,5 +1,5 @@
 using AuditTrail.Abstrations;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.LawyerDiary
 {
-    [Table("m_court", Schema = "ld")]
+    [Table("m_court_1", Schema = "masters")]
     public class CourtMasterEntity : AuditableEntity
     {
         public int StateId { get; set; }

@@ -11,8 +11,9 @@ namespace CourtApp.Application.Interfaces.Repositories
         IQueryable<CourtDistrictEntity> Entities { get; }
         Task<List<CourtDistrictEntity>> GetListAsync();
         Task<CourtDistrictEntity> GetByIdAsync(Guid Id);
-        Task<Guid> InsertAsync(CourtDistrictEntity Entity);
-        Task<Guid> InsertRangeAsync(List<CourtDistrictEntity> entities);
+        Task<string> InsertAsync(CourtDistrictEntity Entity);
+        Task<string> AddRangeAsync(List<CourtDistrictEntity> Entities);
+        Task<string> InsertRangeAsync(List<CourtDistrictEntity> entities);
         Task UpdateAsync(CourtDistrictEntity Entity);
         Task DeleteAsync(CourtDistrictEntity Entity);
     }

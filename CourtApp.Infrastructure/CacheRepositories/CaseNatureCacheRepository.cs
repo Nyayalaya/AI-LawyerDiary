@@ -4,10 +4,10 @@ using AspNetCoreHero.ThrowR;
 using Microsoft.Extensions.Caching.Distributed;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using CourtApp.Domain.Entities.LawyerDiary;
 using System;
 using System.Linq;
 using CourtApp.Application.Features.CaseCategory.Services;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Infrastructure.CacheRepositories
 {
@@ -21,10 +21,10 @@ namespace CourtApp.Infrastructure.CacheRepositories
             this._natureRepository = _natureRepository;
         }        
 
-        public async Task<NatureEntity> GetByIdAsync(Guid natureId)
+        public async Task<CaseCategoryEntity> GetByIdAsync(Guid natureId)
         {
             string cacheKey = CaseNatureCacheKeys.GetKey(natureId);
-            var bookType = await _distributedCache.GetAsync<NatureEntity>(cacheKey);
+            var bookType = await _distributedCache.GetAsync<CaseCategoryEntity>(cacheKey);
             if (bookType == null)
             {
                 bookType = await _natureRepository.GetByIdAsync(natureId);
@@ -34,10 +34,10 @@ namespace CourtApp.Infrastructure.CacheRepositories
             return bookType;
         }
 
-        public async Task<List<NatureEntity>> GetCachedListAsync()
+        public async Task<List<CaseCategoryEntity>> GetCachedListAsync()
         {
             string cacheKey = CaseNatureCacheKeys.ListKey;
-            var bookTypeList = await _distributedCache.GetAsync<List<NatureEntity>>(cacheKey);
+            var bookTypeList = await _distributedCache.GetAsync<List<CaseCategoryEntity>>(cacheKey);
             if (bookTypeList == null)
             {
                 bookTypeList = await _natureRepository.GetListAsync();

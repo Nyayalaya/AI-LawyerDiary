@@ -7,7 +7,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Advocate
 {
-    [Table("m_act", Schema = "ad")]
+    [Table("m_act", Schema = "masters")]
     public class ActEntity : AuditableEntity
     {
         // Core Act Information

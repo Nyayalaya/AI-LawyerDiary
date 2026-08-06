@@ -36,10 +36,10 @@ namespace CourtApp.Application.Features.CourtMasters
         {
             var query = _repository.Entities
                         .Include(e => e.CourtType)
-                        .Include(e => e.State)
-                        .Include(e => e.CourtComplex)
-                        .Include(e => e.CourtDistrict)
-                        .Include(e => e.CourtBenches) // To avoid N+1 issue when using .Count()
+                        //.Include(e => e.State)
+                        //.Include(e => e.CourtComplex)
+                        //.Include(e => e.CourtDistrict)
+                        /*.Include(e => e.CourtBenches)*/ // To avoid N+1 issue when using .Count()
                         .AsQueryable();
 
             if (request.CourtTypeId != Guid.Empty)
@@ -50,13 +50,13 @@ namespace CourtApp.Application.Features.CourtMasters
             var dtlist = await query.Select(e => new GetCourtMasterDataAllResponse
             {
                 Id = e.Id,
-                CourtType = e.CourtType.CourtType,
-                CourtName = e.Name_En,
-                CourtFullName = e.Name_En,
-                State = e.State.Name_En,
-                District = e.CourtDistrict != null ? e.CourtDistrict.Name_En : null,
-                Complex = e.CourtComplex != null ? e.CourtComplex.Name_En : null,
-                Total = e.CourtBenches.Count
+                CourtType = e.CourtType.Name,
+                //CourtName = e.Name_En,
+                //CourtFullName = e.Name_En,
+                //State = e.State.Name_En,
+                //District = e.CourtDistrict != null ? e.CourtDistrict.Name_En : null,
+                //Complex = e.CourtComplex != null ? e.CourtComplex.Name_En : null,
+                //Total = e.CourtBenches.Count
             }).ToListAsync();
 
             return Result<List<GetCourtMasterDataAllResponse>>.Success(dtlist);

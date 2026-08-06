@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿
 using CourtApp.Application.Common.Behaviors;
 using FluentValidation;
 using MediatR;

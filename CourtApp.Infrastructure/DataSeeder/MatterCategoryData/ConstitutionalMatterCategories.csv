@@ -1,0 +1,16 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+CONSTITUTIONAL,WRIT_PETITION,Writ Petition,Writ petition under the Constitution,1
+CONSTITUTIONAL,PUBLIC_INTEREST_LITIGATION,Public Interest Litigation,Public Interest Litigation (PIL),2
+CONSTITUTIONAL,HABEAS_CORPUS,Habeas Corpus,Writ of Habeas Corpus,3
+CONSTITUTIONAL,MANDAMUS,Mandamus,Writ of Mandamus,4
+CONSTITUTIONAL,CERTIORARI,Certiorari,Writ of Certiorari,5
+CONSTITUTIONAL,PROHIBITION,Prohibition,Writ of Prohibition,6
+CONSTITUTIONAL,QUO_WARRANTO,Quo Warranto,Writ of Quo Warranto,7
+CONSTITUTIONAL,SERVICE_WRIT,Service Writ,Writ relating to service matters,8
+CONSTITUTIONAL,TAX_WRIT,Tax Writ,Writ relating to taxation matters,9
+CONSTITUTIONAL,CRIMINAL_WRIT,Criminal Writ,Constitutional criminal writ,10
+CONSTITUTIONAL,CIVIL_WRIT,Civil Writ,Constitutional civil writ,11
+CONSTITUTIONAL,ELECTION_WRIT,Election Writ,Writ relating to elections,12
+CONSTITUTIONAL,FUNDAMENTAL_RIGHTS,Fundamental Rights,Enforcement of fundamental rights,13
+CONSTITUTIONAL,CONSTITUTIONAL_APPEAL,Constitutional Appeal,Appeal involving constitutional issues,14
+CONSTITUTIONAL,CONSTITUTIONAL_MISC,Constitutional Miscellaneous,Other constitutional proceedings,15

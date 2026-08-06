@@ -31,13 +31,13 @@ namespace CourtApp.Application.Features.CourtType.Query
             var mappedCourtTypes = courtTypeList.Select(ct => new GetCourtTypeResponse
             {
                 Id = ct.Id,
-                CourtType = ct.CourtType.ToUpper(),
-                Abbreviation = ct.Abbreviation,
+                Name = ct.Name.ToUpper(),
+                Code = ct.Code,
                 // 👉 Get first language record safely
-                CourtType_Hn = ct.Languages?
-                                 .FirstOrDefault()?.Name
+                //CourtType_Hn = ct.Languages?
+                //                 .FirstOrDefault()?.Name
             })
-            .OrderBy(o => o.CourtType)
+            .OrderBy(o => o.Name)
             .ToList();
 
             return Result<List<GetCourtTypeResponse>>.Success(mappedCourtTypes);

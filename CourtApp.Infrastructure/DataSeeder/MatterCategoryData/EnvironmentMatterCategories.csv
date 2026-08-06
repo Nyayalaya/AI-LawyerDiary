@@ -1,0 +1,16 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+ENVIRONMENT,ENVIRONMENT_PROTECTION,Environment Protection,Matters relating to environmental protection,1
+ENVIRONMENT,POLLUTION_CONTROL,Pollution Control,Pollution control proceedings,2
+ENVIRONMENT,AIR_POLLUTION,Air Pollution,Air pollution related litigation,3
+ENVIRONMENT,WATER_POLLUTION,Water Pollution,Water pollution related litigation,4
+ENVIRONMENT,NOISE_POLLUTION,Noise Pollution,Noise pollution complaints,5
+ENVIRONMENT,SOLID_WASTE,Solid Waste Management,Solid waste management disputes,6
+ENVIRONMENT,HAZARDOUS_WASTE,Hazardous Waste,Hazardous waste disposal matters,7
+ENVIRONMENT,FOREST_CONSERVATION,Forest Conservation,Forest conservation proceedings,8
+ENVIRONMENT,WILDLIFE_PROTECTION,Wildlife Protection,Wildlife protection matters,9
+ENVIRONMENT,COASTAL_ZONE,Coastal Regulation Zone,CRZ related matters,10
+ENVIRONMENT,MINING_DISPUTE,Mining Dispute,Mining and environmental clearance disputes,11
+ENVIRONMENT,ENVIRONMENT_CLEARANCE,Environmental Clearance,Environmental clearance proceedings,12
+ENVIRONMENT,NGT_APPEAL,NGT Appeal,Appeal before National Green Tribunal,13
+ENVIRONMENT,COMPENSATION,Environmental Compensation,Compensation for environmental damage,14
+ENVIRONMENT,ENVIRONMENT_MISC,Environment Miscellaneous,Other environmental proceedings,15

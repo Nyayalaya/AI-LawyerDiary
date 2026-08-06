@@ -1,20 +1,23 @@
-﻿using CourtApp.Application.Enums;
-using CourtApp.Infrastructure.Identity.Models;
+﻿using CourtApp.Domain.Enums;
 using Microsoft.AspNetCore.Identity;
+using System;
 using System.Threading.Tasks;
 
 namespace CourtApp.Infrastructure.Identity.Seeds
 {
     public static class DefaultRoles
     {
-        public static async Task SeedAsync(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
+        public static async Task SeedAsync(RoleManager<IdentityRole> roleManager)
         {
-            //Seed Roles
-            await roleManager.CreateAsync(new IdentityRole(Roles.SuperAdmin.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Lawyer.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Clerk.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Associate.ToString()));
-            await roleManager.CreateAsync(new IdentityRole(Roles.Corporate.ToString()));
+            var roles = Enum.GetNames(typeof(RegisterType));
+
+            foreach (var role in roles)
+            {
+                if (!await roleManager.RoleExistsAsync(role))
+                {
+                    await roleManager.CreateAsync(new IdentityRole(role));
+                }
+            }
         }
     }
 }

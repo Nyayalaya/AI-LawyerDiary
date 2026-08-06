@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
+
 
 namespace CourtApp.Application.Common
 {
@@ -14,7 +13,7 @@ namespace CourtApp.Application.Common
         public int StatusCode { get; init; }
         public DateTime Timestamp { get; init; } = DateTime.UtcNow;
 
-        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
+        [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingDefault)]
         public T? Data { get; init; }
 
         [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
@@ -67,7 +66,7 @@ namespace CourtApp.Application.Common
                     Status = true,
                     Message = result.Message ?? "Success",
                     StatusCode = successCode,
-                    Data = result.Data,
+                    Data = result.Data.ToList(),
                     Pagination = result.Pagination
                 }
                 : new ApiResponse<List<TItem>>
@@ -75,7 +74,7 @@ namespace CourtApp.Application.Common
                     Status = false,
                     Message = result.Message ?? "An error occurred",
                     StatusCode = 400,
-                    Errors = result.Errors.Count > 0 ? result.Errors : null
+                    Errors = result.Errors.ToList().Count > 0 ? result.Errors.ToList() : null
                 };
 
         // ── Direct factories ──────────────────────────────────────────

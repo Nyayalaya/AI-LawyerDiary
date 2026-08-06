@@ -1,5 +1,5 @@
 ﻿using CourtApp.Application.Common;
-using CourtApp.Application.DTOs.FormPrint;
+using CourtApp.Application.Features.FormPrint.Dtos;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +39,7 @@ namespace CourtApp.Application.Features.FormPrint
                 .Select(s => new ShowCauseNoticeResponse
                 {
                     CaseNoYear = s.CaseNo + "/" + s.CaseYear,
-                    CaseType = s.CaseCategory.Name_En,
+                    CaseType = s.CaseCategory.Name,
                     Petitioner = s.FirstTitle,
                     Respondent = s.SecondTitle,
                     Applicants = s.Titles.Where(t => t.TypeId == 2).SelectMany(t => t.CaseApplicants)

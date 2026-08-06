@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+CORPORATE,COMPANY_PETITION,Company Petition,Petition under Companies Act,1
+CORPORATE,NCLT_PETITION,NCLT Petition,Petition before NCLT,2
+CORPORATE,NCLAT_APPEAL,NCLAT Appeal,Appeal before NCLAT,3
+CORPORATE,OPPRESSION_MISMANAGEMENT,Oppression and Mismanagement,Proceedings under Companies Act,4
+CORPORATE,MERGER,Merger,Corporate merger proceedings,5
+CORPORATE,DEMERGER,Demerger,Corporate demerger proceedings,6
+CORPORATE,AMALGAMATION,Amalgamation,Scheme of amalgamation,7
+CORPORATE,WINDING_UP,Winding Up,Winding up of company,8
+CORPORATE,LIQUIDATION,Liquidation,Corporate liquidation proceedings,9
+CORPORATE,INSOLVENCY,Corporate Insolvency,Corporate insolvency proceedings,10
+CORPORATE,CIRP,Corporate Insolvency Resolution Process,CIRP under IBC,11
+CORPORATE,ROC_MATTER,ROC Matter,Registrar of Companies proceedings,12
+CORPORATE,DIRECTOR_DISPUTE,Director Dispute,Dispute relating to directors,13
+CORPORATE,SHAREHOLDER_DISPUTE,Shareholder Dispute,Shareholder litigation,14
+CORPORATE,SHARE_TRANSFER,Share Transfer Dispute,Transfer of shares dispute,15
+CORPORATE,CORPORATE_GOVERNANCE,Corporate Governance,Governance related litigation,16
+CORPORATE,SEBI_PROCEEDING,SEBI Proceeding,SEBI related proceedings,17
+CORPORATE,LISTING_DISPUTE,Listing Dispute,Stock exchange listing dispute,18
+CORPORATE,COMPANY_APPEAL,Company Appeal,Appeal in company matters,19
+CORPORATE,CORPORATE_MISC,Corporate Miscellaneous,Other corporate proceedings,20

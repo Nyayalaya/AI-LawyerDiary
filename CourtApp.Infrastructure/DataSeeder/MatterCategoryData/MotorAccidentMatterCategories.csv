@@ -1,0 +1,16 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+MOTOR_ACCIDENT,MACT_CLAIM,MACT Claim,Motor Accident Claims Tribunal claim petition,1
+MOTOR_ACCIDENT,FATAL_ACCIDENT,Fatal Accident Claim,Compensation claim arising from fatal accident,2
+MOTOR_ACCIDENT,INJURY_CLAIM,Personal Injury Claim,Compensation for bodily injuries,3
+MOTOR_ACCIDENT,PERMANENT_DISABILITY,Permanent Disability Claim,Claim for permanent disability compensation,4
+MOTOR_ACCIDENT,TEMPORARY_DISABILITY,Temporary Disability Claim,Claim for temporary disability compensation,5
+MOTOR_ACCIDENT,HIT_AND_RUN,Hit and Run Claim,Claim under hit and run compensation scheme,6
+MOTOR_ACCIDENT,NO_FAULT_LIABILITY,No Fault Liability,Compensation under no-fault liability provisions,7
+MOTOR_ACCIDENT,INSURANCE_CLAIM,Motor Insurance Claim,Insurance claim arising from motor accident,8
+MOTOR_ACCIDENT,THIRD_PARTY_CLAIM,Third Party Claim,Third-party insurance compensation claim,9
+MOTOR_ACCIDENT,VEHICLE_DAMAGE,Vehicle Damage Claim,Claim for damage to vehicle,10
+MOTOR_ACCIDENT,DRIVER_NEGLIGENCE,Driver Negligence,Negligence related compensation proceedings,11
+MOTOR_ACCIDENT,OWNER_LIABILITY,Owner Liability,Liability of vehicle owner,12
+MOTOR_ACCIDENT,INSURER_LIABILITY,Insurer Liability,Liability of insurance company,13
+MOTOR_ACCIDENT,MACT_APPEAL,MACT Appeal,Appeal against MACT award,14
+MOTOR_ACCIDENT,MACT_MISC,MACT Miscellaneous,Other motor accident proceedings,15

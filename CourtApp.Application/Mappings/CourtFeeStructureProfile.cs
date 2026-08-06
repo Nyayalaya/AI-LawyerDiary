@@ -15,7 +15,7 @@ namespace CourtApp.Application.Mappings
         public CourtFeeStructureProfile()
         {
             CreateMap<CourtFeeStructureEntity, CourtFeeStructureByIdDto>()
-                .ForPath(d => d.StateName, opt => opt.MapFrom(src => src.State.Name_En));
+                .ForPath(d => d.StateName, opt => opt.MapFrom(src => src.State.Name));
             CreateMap<CourtFeeStructureCreateCommand, CourtFeeStructureEntity>()
                 .ForPath(d => d.State.Id, opt => opt.MapFrom(src => src.StateCode));
         }

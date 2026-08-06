@@ -46,10 +46,9 @@ namespace CourtApp.Application.Features.CaseProceeding
 
             // Assign court-related details from cd (case details)
             md.Court = cd.CourtBench?.CourtBench_En ?? string.Empty;
-            md.FirstTitle = cd.FirstTitle ?? string.Empty;
-            md.SecondTitle = cd.SecondTitle ?? string.Empty;
-            md.Year = cd.CaseYear != 0 ? cd.CaseYear.ToString() : string.Empty;
-            md.No = cd.CaseNo?.ToString() ?? string.Empty;
+            md.CaseTitle = cd.FirstTitle + " VS " + cd.SecondTitle;
+            md.CaseYear = cd.CaseYear;
+            md.CaseNumber = cd.CaseNo;
             md.CaseType = cd.CaseType?.Name_En ?? string.Empty;
 
             // Assign linked case IDs

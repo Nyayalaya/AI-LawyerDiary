@@ -1,4 +1,4 @@
-﻿using CourtApp.Domain.Entities.LawyerDiary;
+﻿using CourtApp.Domain.Entities.Masters;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +9,11 @@ namespace CourtApp.Application.Interfaces.Repositories
 {
     public interface IProceedingSubHeadRepository
     {
-        IQueryable<ProceedingSubHeadEntity> Entities { get; }
-        Task<List<ProceedingSubHeadEntity>> GetListAsync();
-        Task<ProceedingSubHeadEntity> GetByIdAsync(Guid Id);
-        Task<Guid> InsertAsync(ProceedingSubHeadEntity proceedingSubHeadEntity);
-        Task UpdateAsync(ProceedingSubHeadEntity proceedingSubHeadEntity);
-        Task DeleteAsync(ProceedingSubHeadEntity proceedingSubHeadEntity);
+        IQueryable<ProceedingEntity> Entities { get; }
+        Task<List<ProceedingEntity>> GetListAsync();
+        Task<ProceedingEntity> GetByIdAsync(Guid Id);
+        Task<Guid> InsertAsync(ProceedingEntity proceedingSubHeadEntity);
+        Task UpdateAsync(ProceedingEntity proceedingSubHeadEntity);
+        Task DeleteAsync(ProceedingEntity proceedingSubHeadEntity);
     }
 }

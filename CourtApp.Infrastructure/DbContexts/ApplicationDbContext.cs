@@ -7,14 +7,12 @@ using CourtApp.Domain.Entities.CaseDetails;
 using CourtApp.Domain.Entities.Common;
 using CourtApp.Domain.Entities.FormBuilder;
 using CourtApp.Domain.Entities.LawyerDiary;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -25,185 +23,205 @@ namespace CourtApp.Infrastructure.DbContexts
         private readonly IDateTimeService _dateTime;
         private readonly IAuthenticatedUserService _authenticatedUser;
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options,
+        public ApplicationDbContext(
+            DbContextOptions<ApplicationDbContext> options,
             IDateTimeService dateTime,
             IAuthenticatedUserService authenticatedUser) : base(options)
         {
             _dateTime = dateTime;
             _authenticatedUser = authenticatedUser;
+
             AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
-            ChangeTracker.AutoDetectChangesEnabled = false;
+            ChangeTracker.AutoDetectChangesEnabled = false; // 🚀 performance
         }
 
         public IDbConnection Connection => Database.GetDbConnection();
         public bool HasChanges => ChangeTracker.HasChanges();
+
+        #region 🔹 MASTER TABLES
         public DbSet<StateEntity> States { get; set; }
         public DbSet<DistrictEntity> Districts { get; set; }
-        public DbSet<CityEntity> CityEntities { get; set; }
-        public DbSet<BookTypeEntity> BookTypes { get; set; }
-        public DbSet<NatureEntity> NatureEntities { get; set; }
+        public DbSet<CityEntity> Cities { get; set; }
+        public DbSet<CourtTypeEntity> CourtTypes { get; set; }
+        public DbSet<CourtLevelEntity> CourtLevels { get; set; }
+        public DbSet<CourtDistrictEntity> CourtDistricts { get; set; }
+        public DbSet<CourtComplexEntity> CourtComplexes { get; set; }
+        public DbSet<CourtEntity> Courts { get; set; }
+        public DbSet<CourtHallEntity> CourtHalls { get; set; }
+        public DbSet<CourtBenchEntity> CourtBenches { get; set; }
+        public DbSet<JudgeEntity> Judges { get; set; }
+        public DbSet<LocationEntity> Locations { get; set; }
+        public DbSet<LanguageEntity> Languages { get; set; }
+        public DbSet<MultiLangDictEntity> MultiLangDicts { get; set; }
+        public DbSet<CadreEntity> Cadres { get; set; }
+        public DbSet<CourtFormTypeEntity> CourtFormTypes { get; set; }
+        public DbSet<WorksEntity> Works { get; set; }
+        public DbSet<WorkTypeEntity> WorkTypes { get; set; }
+        public DbSet<WorksEntity> WorkSubTypes { get; set; }
+        public DbSet<ProceedingTypeEntity> ProceedingTypes { get; set; }
+        public DbSet<ProceedingEntity> Proceedings { get; set; }
+        public DbSet<FormTypeEntity> FormTypes { get; set; }
+        public DbSet<FormMasterEntity> FormMasters { get; set; }
+        public DbSet<FormSubtypeEntity> FormSubtypes { get; set; }
+        public DbSet<FormTemplateEntity> FormTemplates { get; set; }
+        public DbSet<FormTemplateVersionEntity> FormTemplateVersions { get; set; }
+        public DbSet<FormCaseCategoryMapping> FormCaseTypeMappings { get; set; }
+        public DbSet<FormCourtMapping> FormCourtMappings { get; set; }
+        public DbSet<CourtMasterEntity> CourtMasters { get; set; }
+        public DbSet<MatterTypeEntity> MatterTypes { get; set; }
+        public DbSet<MatterCategoryEntity> MatterCategories { get; set; }
+        public DbSet<MatterSubCategoryEntity> MatterSubCategories { get; set; }
+        public DbSet<DynamicPropertyEntity> DynamicProperties { get; set; }
+
+
+        #endregion
+
+        #region 🔹 CASE MODULE
+        public DbSet<CaseDetailEntity> Cases { get; set; }
+        public DbSet<CaseAgainstEntity> AgainstCases { get; set; }
+        public DbSet<CaseStageEntity> CaseStages { get; set; }
+        public DbSet<CaseCategoryEntity> CaseCategories { get; set; }
+        public DbSet<TypeOfCasesEntity> CaseTypes { get; set; }
+        public DbSet<CaseKindEntity> CaseKinds { get; set; }
+        public DbSet<CaseTitleEntity> CaseTitles { get; set; }
+        public DbSet<CaseProcedingEntity> CaseProceedings { get; set; }
+        public DbSet<CaseWorkEntity> CaseWorks { get; set; }
+        public DbSet<CaseDocsEntity> CaseDocuments { get; set; }
+        public DbSet<CaseAssignedEntity> AssignedCases { get; set; }
+        public DbSet<DOTypeEntity> DOTypes { get; set; }
+        public DbSet<CaseEntity> CasesData { get; set; }
+        #endregion
+
+        #region 🔹 LAWYER DIARY
+        public DbSet<ClientEntity> Clients { get; set; }
+        public DbSet<LawyerMasterEntity> Lawyers { get; set; }
         public DbSet<LDBookEntity> LDBooks { get; set; }
+        public DbSet<BookTypeEntity> BookTypes { get; set; }
         public DbSet<PublisherEntity> Publishers { get; set; }
         public DbSet<SubjectEntity> PracticeSubjects { get; set; }
-        public DbSet<ExpenseHeadEntity> ExpenseHeads { get; set; }
+        public DbSet<Specialization> Specializations { get; set; }
+        #endregion
+
+        #region 🔹 COURT FEES & WORK
         public DbSet<CourtFeeEntity> CourtFees { get; set; }
         public DbSet<CourtFeeTypeEntity> CourtFeeTypes { get; set; }
-        public DbSet<CaseKindEntity> CaseKinds { get; set; }
-        public DbSet<TypeOfCasesEntity> Typeofcases { get; set; }
-        public DbSet<CaseStageEntity> CaseStages { get; set; }
-        public DbSet<CourtMasterEntity> CourtMasters { get; set; }
         public DbSet<CourtFeeStructureEntity> CourtFeeStructures { get; set; }
-        public DbSet<ClientEntity> Clients { get; set; }
-        public DbSet<CourtTypeEntity> CourtType { get; set; }
-        public DbSet<CaseDetailEntity> Cases { get; set; }
-        public DbSet<CaseDetailAgainstEntity> AgainstCaseDetails { get; set; }
-        public DbSet<LawyerMasterEntity> Laywers { get; set; }
-        public DbSet<ProceedingHeadEntity> ProceedingHeads { get; set; }
-        public DbSet<ProceedingSubHeadEntity> ProceedingSubHeads { get; set; }
-        public DbSet<WorkMasterEntity> WorkMasters { get; set; }
-        public DbSet<WorkMasterSubEntity> WorkMasterSubs { get; set; }
-        public DbSet<CourtDistrictEntity> CDistricts { get; set; }
-        public DbSet<CourtComplexEntity> CourtComplex { get; set; }
-        public DbSet<CaseTitleEntity> CaseTitiles { get; set; }
-        public DbSet<CourtBenchEntity> CourtBenchEntities { get; set; }
-        public DbSet<CaseProcedingEntity> CaseProcedingEntities { get; set; }
-        public DbSet<CaseWorkEntity> CaseWorkEntities { get; set; }
-        public DbSet<DOTypeEntity> DOTypeEntities { get; set; }
-        public DbSet<CaseDocsEntity> caseDocsEntities { get; set; }
-        public DbSet<FSTitleEntity> FSTitleEntities { get; set; }
-        public DbSet<FormBuilderEntity> DynamicFrmBuilders { get; set; }
-        public DbSet<DraftingDetailEntity> CaseTempMappings { get; set; }
-        public DbSet<FormTemplateMappingEntity> TempFormMappings { get; set; }
-        public DbSet<CadreMasterEntity> Cadres { get; set; }
-        public DbSet<SpecializationEntity> Specilities { get; set; }
-        public DbSet<AssignCaseEntity> AssignedCases { get; set; }
-        public DbSet<LanguageEntity> LanguageEntities { get; set; }
-        public DbSet<CourtFormTypeEntity> CourtFormTypeEntities { get; set; }
+        public DbSet<ExpenseHeadEntity> ExpenseHeads { get; set; }
         public DbSet<BillingDetailEntity> BillingDetails { get; set; }
-        public DbSet<MultiLangDictEntity> MultiLangDictEntities { get; set; }
 
+        
+        #endregion
+
+        #region 🔹 FORM BUILDER
+        public DbSet<FormBuilderEntity> FormBuilders { get; set; }
+        public DbSet<FormTemplateMappingEntity> FormTemplateMappings { get; set; }
+        public DbSet<DraftingDetailEntity> DraftingDetails { get; set; }
+        public DbSet<FSTitleEntity> FSTitles { get; set; }
+        public DbSet<TemplateInfoEntity> TemplateInfos { get; set; }
+        #endregion
+
+        #region 🔹 AI MODULE
         public DbSet<AIConversation> AIConversations { get; set; }
         public DbSet<DocumentChunk> DocumentChunks { get; set; }
+        public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get; set; }
         public DbSet<LegalCitationEntity> LegalCitations { get; set; }
-        public DbSet<DocumentChunkEmbedding> ChunkEmbeddings { get ; set; }
+         #endregion
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+        #region 🔹 AUDIT
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
             ChangeTracker.DetectChanges();
 
-            foreach (var entry in ChangeTracker.Entries<AuditableEntity>().ToList())
-            {
-                switch (entry.State)
-                {
-                    case EntityState.Added:
-                        entry.Entity.CreatedOn = _dateTime.NowUtc;
-                        entry.Entity.CreatedBy = _authenticatedUser.UserId;
-                        break;
+            var userId = _authenticatedUser?.UserId ?? "SYSTEM";
 
-                    case EntityState.Modified:
-                        entry.Entity.LastModifiedOn ??= _dateTime.NowUtc;
-                        entry.Entity.LastModifiedBy = _authenticatedUser.UserId;
-                        break;
+            foreach (var entry in ChangeTracker.Entries<AuditableEntity>())
+            {
+                if (entry.State == EntityState.Added)
+                {
+                    entry.Entity.CreatedOn = _dateTime.NowUtc;
+                    entry.Entity.CreatedBy = userId;
+                }
+                else if (entry.State == EntityState.Modified)
+                {
+                    entry.Entity.LastModifiedOn = _dateTime.NowUtc;
+                    entry.Entity.LastModifiedBy = userId;
                 }
             }
 
-            if (_authenticatedUser.UserId == null)
-                return await base.SaveChangesAsync(cancellationToken);
-
-            return await base.SaveChangesAsync(_authenticatedUser.UserId);
+            return await base.SaveChangesAsync(cancellationToken);
         }
+        #endregion
 
+        #region 🔹 MODEL CONFIG
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+
+            // ✅ Decimal precision
             foreach (var property in builder.Model.GetEntityTypes()
-            .SelectMany(t => t.GetProperties())
-            .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
+                .SelectMany(t => t.GetProperties())
+                .Where(p => p.ClrType == typeof(decimal) || p.ClrType == typeof(decimal?)))
             {
                 property.SetColumnType("decimal(18,2)");
             }
 
-            base.OnModelCreating(builder);
+            builder.Entity<ClientEntity>()
+                .Property(c => c.ClientType)
+                .HasConversion<string>();
 
+           
+
+            // 🔗 CourtMaster relations
             builder.Entity<CourtMasterEntity>()
-                    .HasOne(e => e.CourtComplex)
-                    .WithMany()
-                    .HasForeignKey(e => e.CourtComplexId)
-                    .IsRequired(false); 
+                .HasOne(e => e.CourtComplex)
+                .WithMany()
+                .HasForeignKey(e => e.CourtComplexId)
+                .IsRequired(false);
 
             builder.Entity<CourtMasterEntity>()
                 .HasOne(e => e.CourtDistrict)
                 .WithMany()
                 .HasForeignKey(e => e.CourtDistrictId)
-                .IsRequired(false); 
+                .IsRequired(false);
 
-            var converter = new ValueConverter<List<string>, string>(
-            v => JsonConvert.SerializeObject(v),
-            v => JsonConvert.DeserializeObject<List<string>>(v));
+            #region JSON CONFIG
 
-            #region Converting Dynamic Form Builder Entity Fields in json format
-           
             builder.Ignore<FieldSizeEntity>();
-            builder.Entity<FormBuilderEntity>().OwnsOne(
-                f => f.FieldsDetails, d =>
-                {
-                    d.ToJson();
-                    d.OwnsMany(d => d.Fields)
-                    .OwnsOne(d => d.FieldSize);
-                }
-                );
-            builder.Entity<DraftingDetailEntity>().OwnsMany(
-                f => f.FieldDetails, d =>
-                {
-                    d.ToJson();
-                }
-                );
 
-            builder.Entity<TemplateInfoEntity>().OwnsMany(
-                f => f.Tags, j =>
-                {
-                    j.ToJson();
-                }
-                );
-            builder.Entity<FormTemplateMappingEntity>().OwnsMany(
-                f => f.FieldsMapping, j =>
-                {
-                    j.ToJson();
-                }
-                );
-            builder.Entity<CaseTitleEntity>().OwnsMany(
-                f => f.CaseApplicants, j =>
-                {
-                    j.ToJson();
-                }
-                );
-            builder.Entity<CaseProcedingEntity>().OwnsOne(
-               f => f.ProcWork, j =>
-               {
-                   j.ToJson();
-                   j.OwnsMany(d => d.Works);
-               }
-               );
-            builder.Entity<LanguageEntity>().OwnsMany(
-                j => j.Languages, k =>
-                {
-                    k.ToJson();
-                }
-                );
+            builder.Entity<FormBuilderEntity>().OwnsOne(f => f.FieldsDetails, d =>
+            {
+                d.ToJson();
+                d.OwnsMany(x => x.Fields).OwnsOne(x => x.FieldSize);
+            });
 
-            builder.Entity<CourtTypeEntity>().OwnsMany(
-               j => j.Languages, k =>
-               {
-                   k.ToJson();
-               }
-               );
-            builder.Entity<MultiLangDictEntity>().OwnsMany(
-               j => j.MultiLangs, k =>
-               {
-                   k.ToJson();
-               }
-               );
+            builder.Entity<DraftingDetailEntity>().OwnsMany(x => x.FieldDetails, j => j.ToJson());
+            builder.Entity<TemplateInfoEntity>().OwnsMany(x => x.Tags, j => j.ToJson());
+            builder.Entity<FormTemplateMappingEntity>().OwnsMany(x => x.FieldsMapping, j => j.ToJson());
+            builder.Entity<CaseTitleEntity>().OwnsMany(x => x.CaseApplicants, j => j.ToJson());
+
+            builder.Entity<CaseProcedingEntity>().OwnsOne(x => x.ProcWork, j =>
+            {
+                j.ToJson();
+                j.OwnsMany(x => x.Works);
+            });
+
+            // Multi-language
+            builder.Entity<LanguageEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<StateEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<CourtEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<LocationEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<MultiLangDictEntity>().OwnsMany(x => x.MultiLangs, j => j.ToJson());
+            builder.Entity<CourtDistrictEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<CaseCategoryEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<CaseStageEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<CourtComplexEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<CourtHallEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+            builder.Entity<CourtTypeEntity>().OwnsMany(x => x.Languages, j => j.ToJson());
+
+
             #endregion
 
+            // ✅ PG VECTOR
             builder.HasPostgresExtension("vector");
 
             builder.Entity<DocumentChunkEmbedding>()
@@ -218,5 +236,6 @@ namespace CourtApp.Infrastructure.DbContexts
             builder.Entity<DocumentChunk>()
                 .HasIndex(x => new { x.DocumentId, x.PageNumber });
         }
+        #endregion
     }
 }

@@ -7,14 +7,15 @@ namespace CourtApp.Application.Common
     {
         public bool Succeeded { get; private set; }
         public string? Message { get; private set; }
-        public List<string> Errors { get; private set; } = new();
-        public List<T> Data { get; private set; } = new();
+        public IReadOnlyList<T> Data { get; private set; } = Array.Empty<T>();
+
+        public IReadOnlyList<string> Errors { get; private set; } = Array.Empty<string>();
         public PaginationMeta Pagination { get; private set; } = default!;
 
         private PaginatedResult() { }
 
         public static PaginatedResult<T> Success(
-            List<T> data,
+            IReadOnlyList<T> data,
             int totalCount,
             int pageNumber,
             int pageSize,
@@ -27,12 +28,12 @@ namespace CourtApp.Application.Common
                 Pagination = PaginationMeta.Create(totalCount, pageNumber, pageSize)
             };
 
-        public static PaginatedResult<T> Failure(string message, List<string>? errors = null)
+        public static PaginatedResult<T> Failure(string message, IReadOnlyList<string>? errors = null)
             => new()
             {
                 Succeeded = false,
                 Message = message,
-                Errors = errors ?? new()
+                Errors = errors ?? Array.Empty<string>()
             };
     }
 }

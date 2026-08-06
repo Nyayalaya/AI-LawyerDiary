@@ -1,4 +1,4 @@
-﻿using CourtApp.Application.DTOs.DropDowns;
+﻿using CourtApp.Application.DTOs.DropdownDtos;
 using MediatR;
 using System;
 using System.Collections.Generic;

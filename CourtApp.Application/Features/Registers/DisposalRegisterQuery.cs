@@ -2,6 +2,7 @@
 using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Registers;
 using CourtApp.Application.Extensions;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -57,15 +58,14 @@ namespace CourtApp.Application.Features.Registers
                               {
                                   DisposalDate = c.DisposalDate.HasValue ? c.DisposalDate.Value.ToString("dd-MM-yyyy") : "",
                                   Id = c.Id,
-                                  FirstTitle = c.FirstTitle,
-                                  SecondTitle = c.SecondTitle,
-                                  No = c.CaseNo,
-                                  Year = c.CaseYear.ToString(),
+                                  CaseTitle = c.FirstTitle + " VS " + c.SecondTitle,
+                                  CaseNumber = c.CaseNo,
+                                  CaseYear = c.CaseYear,
                                   Court = c.CourtBench.CourtBench_En,
                                   CaseType = c.CaseType.Name_En,
-                                  Reason = Proceedings.Select(s => s.SubHead.Name_En).FirstOrDefault() ?? "",
-                                  Reference= assignedOrSelf,
-                                  InsititutionDate=c.InstitutionDate.ToString("dd/MM/yyyy")
+                                  Reason = Proceedings.Select(s => s.SubHead.Name).FirstOrDefault() ?? "",
+                                  Reference = assignedOrSelf,
+                                  InstitutionDate = c.InstitutionDate.ToString("dd/MM/yyyy")
                               };
 
 

@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 namespace CourtApp.Domain.Entities.LawyerDiary
 {
-    [Table("r_case_docs", Schema = "ld")]
+    [Table("case_documents",Schema ="cases")]
     public class CaseDocsEntity:AuditableEntity
     {   
         public Guid CaseId { get; set; }

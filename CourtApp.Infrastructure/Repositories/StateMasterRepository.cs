@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using CourtApp.Application.Features.State.Services;
 using CourtApp.Application.Interfaces.Repositories;
-using CourtApp.Application.Interfaces.Repositories.Common;
-using CourtApp.Entities.Common;
+using CourtApp.Domain.Entities.Masters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 
@@ -22,14 +22,19 @@ namespace CourtApp.Infrastructure.Repositories
 
         public IQueryable<StateEntity> Entities => _repository.Entities;
 
-        public StateEntity GetStateById(int Id)
-        {
-            return _repository.GetByIdAsync(Id).Result;
-        }
+        
+        //public StateEntity GetStateById(int Id)
+        //{
+        //    return _repository.GetByIdAsync(Id).Result;
+        //}
 
         public async Task<List<StateEntity>> GetStateListAsync()
         {
             return await _repository.Entities.ToListAsync();
         }
+
+        
+
+        
     }
 }

@@ -1,12 +1,7 @@
 ﻿using AutoMapper;
-using CourtApp.Application.Features.ProceedingHead;
-using CourtApp.Application.Features.WorkMaster;
-using CourtApp.Domain.Entities.LawyerDiary;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using CourtApp.Application.Features.WorkMaster.Commands;
+using CourtApp.Application.Features.WorkMaster.Dtos;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Mappings
 {
@@ -14,8 +9,21 @@ namespace CourtApp.Application.Mappings
     {
         public WorkMasterProfile()
         {
-            CreateMap<WorkMasterEntity, GetWorkMasterResponse>();
-            CreateMap<WorkMasterCommand, WorkMasterEntity>();
+            // Map WorkTypeEntity to response DTOs
+            CreateMap<WorkTypeEntity, WorkMasterResponse>()
+               ;
+
+            CreateMap<WorkTypeEntity, WorkMasterResponse>();
+            CreateMap<WorkTypeEntity, WorkMasterByIdResponse>();
+
+            // Map Commands to Entity for Create/Update operations
+            CreateMap<CreateWorkMasterCommand, WorkTypeEntity>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name_En))
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Abbreviation));
+
+            CreateMap<UpdateWorkMasterCommand, WorkTypeEntity>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Name_En))
+                .ForMember(dest => dest.Code, opt => opt.MapFrom(src => src.Abbreviation));
         }
     }
 }

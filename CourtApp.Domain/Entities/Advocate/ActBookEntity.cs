@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourtApp.Domain.Entities.Advocate
 {
-    [Table("m_act_book",Schema ="ad")]
+    [Table("m_act_book",Schema ="masters")]
     public class ActBookEntity: AuditableEntity
     {   
         public int BookId { get; set; }

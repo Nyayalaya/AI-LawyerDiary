@@ -12,7 +12,7 @@ namespace CourtApp.Application.Features.CourtType.Validators
 
         public CreateCourtTypeCommandValidator()
         {
-            RuleFor(x => x.CourtType)
+            RuleFor(x => x.Name)
                 .NotEmpty()
                     .WithMessage("Court type name is required.")
                 .MinimumLength(2)
@@ -22,7 +22,7 @@ namespace CourtApp.Application.Features.CourtType.Validators
                 .Matches(SafeTextPattern)
                     .WithMessage("Court type name must not contain special characters.");
 
-            RuleFor(x => x.Abbreviation)
+            RuleFor(x => x.Code)
                 .NotEmpty()
                     .WithMessage("Abbreviation is required.")
                 .MinimumLength(1)

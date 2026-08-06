@@ -1,0 +1,21 @@
+MatterTypeCode,Code,Name,Description,DisplayOrder
+FAMILY,DIVORCE,Divorce Petition,Petition for dissolution of marriage,1
+FAMILY,MUTUAL_DIVORCE,Mutual Consent Divorce,Petition under mutual consent,2
+FAMILY,JUDICIAL_SEPARATION,Judicial Separation,Petition for judicial separation,3
+FAMILY,RESTITUTION_OF_CONJUGAL_RIGHTS,Restitution of Conjugal Rights,Petition for restitution of conjugal rights,4
+FAMILY,MAINTENANCE_WIFE,Maintenance - Wife,Maintenance proceedings for wife,5
+FAMILY,MAINTENANCE_CHILD,Maintenance - Child,Maintenance proceedings for child,6
+FAMILY,MAINTENANCE_PARENTS,Maintenance - Parents,Maintenance under Senior Citizens Act or applicable law,7
+FAMILY,CHILD_CUSTODY,Child Custody,Custody of minor children,8
+FAMILY,VISITATION_RIGHTS,Visitation Rights,Visitation rights of parent,9
+FAMILY,GUARDIANSHIP,Guardianship,Appointment of guardian,10
+FAMILY,ADOPTION,Adoption,Adoption proceedings,11
+FAMILY,FAMILY_SETTLEMENT,Family Settlement,Family settlement disputes,12
+FAMILY,SUCCESSION_CERTIFICATE,Succession Certificate,Succession certificate proceedings,13
+FAMILY,PROBATE,Probate,Grant of probate,14
+FAMILY,LETTERS_OF_ADMINISTRATION,Letters of Administration,Administration of estate,15
+FAMILY,DOMESTIC_VIOLENCE,Domestic Violence,Proceedings under Protection of Women from Domestic Violence Act,16
+FAMILY,CHILD_SUPPORT,Child Support,Financial support for child,17
+FAMILY,SPOUSAL_SUPPORT,Spousal Support,Permanent alimony and spousal support,18
+FAMILY,FAMILY_APPEAL,Family Appeal,Appeal arising from Family Court orders,19
+FAMILY,FAMILY_MISC,Family Miscellaneous,Other family related proceedings,20

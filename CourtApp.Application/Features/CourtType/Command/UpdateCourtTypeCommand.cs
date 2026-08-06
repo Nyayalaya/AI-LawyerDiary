@@ -10,8 +10,8 @@ namespace CourtApp.Application.Features.CourtType.Command
     public class UpdateCourtTypeCommand : IRequest<Result<string>>
     {
         public Guid Id { get; set; }
-        public string CourtType { get; set; }
-        public string Abbreviation { get; set; }
+        public string Name { get; set; }
+        public string Code { get; set; }
         public List<LangDto> Language { get; set; }
     }
 

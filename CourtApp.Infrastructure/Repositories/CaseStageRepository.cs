@@ -1,13 +1,13 @@
 ﻿using CourtApp.Application.Interfaces.Repositories;
 using CourtApp.Application.CacheKeys;
-using CourtApp.Domain.Entities.LawyerDiary;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using CourtApp.Domain.Entities.Masters;
+using CourtApp.Application.Features.CaseStage.Services;
 
 namespace CourtApp.Infrastructure.Repositories
 {
@@ -20,7 +20,7 @@ namespace CourtApp.Infrastructure.Repositories
             this._repository = _repository;
             this._distributedCache = _distributedCache;
         }
-        public IQueryable<CaseStageEntity> QryEntities => _repository.Entities;
+        public IQueryable<CaseStageEntity> Entities => _repository.Entities;
 
         public async Task DeleteAsync(CaseStageEntity objEntity)
         {
@@ -36,7 +36,7 @@ namespace CourtApp.Infrastructure.Repositories
 
         public async Task<List<CaseStageEntity>> GetListAsync()
         {
-            return await _repository.Entities.OrderByDescending(o => o.CaseStage).ToListAsync();
+            return await _repository.Entities.OrderByDescending(o => o.Name).ToListAsync();
         }
 
         public async Task<Guid> InsertAsync(CaseStageEntity objEntity)

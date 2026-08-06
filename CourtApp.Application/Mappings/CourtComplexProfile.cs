@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using CourtApp.Application.DTOs.CourtComplex;
 using CourtApp.Application.Features.CourtComplex;
-using CourtApp.Domain.Entities.LawyerDiary;
+using CourtApp.Domain.Entities.Masters;
 
 namespace CourtApp.Application.Mappings
 {
@@ -9,11 +9,9 @@ namespace CourtApp.Application.Mappings
     {
         public CourtComplexProfile()
         {
-            CreateMap<CreateCourtComplexCommand, CourtComplexEntity>()
-                /*.ForPath(d => d.DistrictCode, opt => opt.MapFrom(src => src.DistrictId))*/;
+            CreateMap<CreateCourtComplexCommand, CourtComplexEntity>();
             CreateMap<CourtComplexEntity, CourtComplexResponse>();
-            CreateMap<CourtComplexEntity, CourtComplexByIdResponse>()
-                 /*.ForPath(d => d.DistrictId, opt => opt.MapFrom(src => src.DistrictCode))*/;
+            CreateMap<CourtComplexEntity, CourtComplexByIdResponse>();
         }
     }
 }

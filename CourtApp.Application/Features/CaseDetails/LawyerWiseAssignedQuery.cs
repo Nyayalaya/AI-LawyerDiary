@@ -1,6 +1,7 @@
 ﻿using CourtApp.Application.Common;
 using CourtApp.Application.DTOs.Case;
 using CourtApp.Application.DTOs.CaseDetails;
+using CourtApp.Application.Features.CaseDetails.Repositories;
 using CourtApp.Application.Interfaces.Repositories;
 using MediatR;
 using System;
@@ -40,10 +41,10 @@ namespace CourtApp.Application.Features.CaseDetails
                                               SecondTitle = _us.SecondTitle,
                                               Year = _us.CaseYear,
                                               No = _us.CaseNo,
-                                              CourtType = _us.CourtType.CourtType,
+                                              CourtType = _us.CourtType.Code,
                                               CourtName = _us.CourtBench.CourtBench_En,
                                               CaseType = _us.CaseType.Name_En,
-                                              CaseStage = _us.CaseStage.CaseStage,
+                                              CaseStage = _us.CaseStage.Name,
                                               DisposalDate = _us.DisposalDate,
                                               CaseDetail = _us.FirstTitle + " V/S " + _us.SecondTitle,
                                               NextDate = _us.CaseProcEntities
