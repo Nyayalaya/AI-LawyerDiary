@@ -1,0 +1,9 @@
+services:
+  courtapp-api:
+    image: courtapp-api
+    container_name: courtapp-api
+    ports:
+      - "10000:10000"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Development
+      ConnectionStrings__Postgres: "Server=aws-0-ap-northeast-2.pooler.supabase.com;Port=5432;User ID=postgres.zhkzynfnikhncgzwebdm ;Password=67yYzODIubWP2AmQ;Database=postgres;SSL Mode=Require;Trust Server Certificate=true;"
