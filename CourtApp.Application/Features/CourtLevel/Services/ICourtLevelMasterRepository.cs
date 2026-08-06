@@ -10,6 +10,6 @@ namespace CourtApp.Application.Features.CourtLevel.Services
     {
         IQueryable<CourtLevelEntity> Entities { get; }
         Task<List<CourtLevelEntity>> GetCourtLevelListAsync();
-        CourtLevelEntity GetCourtLevelById(int Id);
+        //CourtLevelEntity GetCourtLevelById(int Id);
     }
 }

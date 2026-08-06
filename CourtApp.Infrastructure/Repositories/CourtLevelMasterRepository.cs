@@ -21,10 +21,10 @@ namespace CourtApp.Infrastructure.Repositories
 
         public IQueryable<CourtLevelEntity> Entities => _repository.Entities;
 
-        public CourtLevelEntity GetCourtLevelById(int Id)
-        {
-            return _repository.GetByIdAsync(Id).Result;
-        }
+        //public CourtLevelEntity GetCourtLevelById(int Id)
+        //{
+        //    return _repository.GetByIdAsync(Id).Result;
+        //}
 
         public async Task<List<CourtLevelEntity>> GetCourtLevelListAsync()
         {

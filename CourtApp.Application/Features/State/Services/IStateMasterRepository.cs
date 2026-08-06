@@ -11,6 +11,6 @@ namespace CourtApp.Application.Features.State.Services
     {
         IQueryable<StateEntity> Entities { get; }
         Task<List<StateEntity>> GetStateListAsync();
-        StateEntity GetStateById(int Id);
+        //StateEntity GetStateById(int Id);
     }
 }

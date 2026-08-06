@@ -2,7 +2,7 @@ using AutoMapper;
 using CourtApp.Application.Features.CaseDetails.Dtos;
 using CourtApp.Domain.Entities; // Adjust based on your entity structure
 
-namespace CourtApp.Application.Mapping
+namespace CourtApp.Application.Mappings
 {
     /// <summary>
     /// AutoMapper profile for Case-related DTOs

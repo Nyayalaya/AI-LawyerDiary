@@ -27,7 +27,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\Cases\" />
-    <Folder Include="Controllers\Masters\" />
   </ItemGroup>
 
 </Project>

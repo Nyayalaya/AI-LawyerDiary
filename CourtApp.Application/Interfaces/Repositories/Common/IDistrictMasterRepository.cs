@@ -10,6 +10,6 @@ namespace CourtApp.Application.Interfaces.Repositories.Common
     {
         IQueryable<DistrictEntity> Entities{get;}
         Task<List<DistrictEntity>> GetDistrictListByStateAsync(int StateCode);
-        DistrictEntity GetDistrictById(int Id);
+        //DistrictEntity GetDistrictById(int Id);
     }
 }

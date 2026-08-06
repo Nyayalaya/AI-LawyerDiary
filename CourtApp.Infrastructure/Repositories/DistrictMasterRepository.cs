@@ -22,10 +22,10 @@ namespace CourtApp.Infrastructure.Repositories
 
         public IQueryable<DistrictEntity> Entities => _repository.Entities;
 
-        public DistrictEntity GetDistrictById(int Id)
-        {
-            return _repository.GetByIdAsync(Id).Result;
-        }
+        //public DistrictEntity GetDistrictById(int Id)
+        //{
+        //    return _repository.GetByIdAsync(Id).Result;
+        //}
 
         public async Task<List<DistrictEntity>> GetDistrictListByStateAsync(int StateCode)
         {

@@ -15,6 +15,12 @@ namespace CourtApp.Application.Common
         public bool HasPreviousPage => PageNumber > 1;
         public bool HasNextPage => PageNumber < TotalPages;
 
+        public int FirstItemIndex =>
+       TotalCount == 0 ? 0 : ((PageNumber - 1) * PageSize) + 1;
+
+        public int LastItemIndex =>
+            Math.Min(PageNumber * PageSize, TotalCount);
+
         public static PaginationMeta Create(int totalCount, int pageNumber, int pageSize)
         {
             if (pageSize <= 0) pageSize = 10;

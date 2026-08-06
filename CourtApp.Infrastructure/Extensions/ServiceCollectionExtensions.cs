@@ -9,6 +9,7 @@ using CourtApp.Application.Features.CourtHall.Interfaces;
 using CourtApp.Application.Features.CourtLevel.Services;
 using CourtApp.Application.Features.CourtType.Services;
 using CourtApp.Application.Features.FormManagement.Interfaces;
+using CourtApp.Application.Features.Matter.Services;
 using CourtApp.Application.Features.Permission.Services;
 using CourtApp.Application.Features.Profile.Services;
 using CourtApp.Application.Features.State.Services;
@@ -156,8 +157,6 @@ namespace CourtApp.Infrastructure.Extensions
 
         #endregion
 
-       
-
         #region 🔹  REPOSITORIES
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
@@ -240,6 +239,8 @@ namespace CourtApp.Infrastructure.Extensions
             services.AddScoped<IFormCaseCategoryMappingRepository, FormCaseCategoryMappingRepository>();
             services.AddScoped<IFormCourtMappingRepository, FormCourtMappingRepository>();
 
+            services.AddScoped<IMatterService, MatterService>();    
+
             return services;
         }
 
@@ -293,6 +294,10 @@ namespace CourtApp.Infrastructure.Extensions
 
             return services;
         }
+
+        #endregion
+
+        #region 🔹 Matter
 
         #endregion
     }
